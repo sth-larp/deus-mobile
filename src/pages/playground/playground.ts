@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
-
 import { NavController } from 'ionic-angular';
+
+import { TimeService } from '../../time/time.service';
 
 @Component({
   selector: 'page-playground',
@@ -11,17 +11,17 @@ import { NavController } from 'ionic-angular';
 export class PlaygroundPage {
   currentTime: string;
   constructor(public navCtrl: NavController,
-              private http: Http) {
+              private _timeService: TimeService) {
     
     Observable.interval(10000).forEach(() => this.enqueTimeUpdate());
   }
 
   enqueTimeUpdate() : void {
       console.log('enqueTimeUpdate');
-      this.http.get('https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec').subscribe(
-        response => this.currentTime = response.json().hours + ':' + response.json().minutes + ':' + response.json().seconds,
-        error => console.error('Error: ' + error),
-        () => console.log('Completed!'));
+      this._timeService.getTime().subscribe(
+        json => this.currentTime = `${json.hours}:${json.minutes}:${json.seconds}`,
+        error => console.error('Error: ' + error)
+      );
   }
 
 }
