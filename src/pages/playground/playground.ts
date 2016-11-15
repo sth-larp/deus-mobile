@@ -13,7 +13,7 @@ export class PlaygroundPage {
   constructor(public navCtrl: NavController,
               private _timeService: TimeService) {
     
-    Observable.interval(10000).forEach(() => this.enqueTimeUpdate());
+    Observable.timer(0, 10000).forEach(() => this.enqueTimeUpdate());
   }
 
   enqueTimeUpdate() : void {
