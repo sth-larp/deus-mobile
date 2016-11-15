@@ -64,6 +64,10 @@ Init Ionic (TODO: is there a better way?):
 
 Kill Ionic server with `Ctrl+C`.
 
+Install needed plugins:
+
+    ionic plugin add cordova-plugin-nativestorage
+
 Add Android support:
 
     ionic platform add android
@@ -90,3 +94,7 @@ Attach your Android phone and make sure that USB debugging is enabled. Alternati
 Launch the app in another console:
 
     ionic run android --device  # for emulator, replace "--device" with "--emulator"
+
+To run application in browser (not all plugins are supported):
+    
+    ionic run browser
