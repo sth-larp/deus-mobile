@@ -67,6 +67,7 @@ Kill Ionic server with `Ctrl+C`.
 Install needed plugins:
 
     ionic plugin add cordova-plugin-nativestorage
+    ionic plugin add cordova-plugin-whitelist
 
 Add Android support:
 
