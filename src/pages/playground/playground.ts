@@ -20,7 +20,7 @@ export class PlaygroundPage {
       console.log('enqueTimeUpdate');
       this._timeService.getTime().subscribe(
         json => this.currentTime = `${json.hours}:${json.minutes}:${json.seconds}`,
-        error => console.error('Error: ' + error)
+        error => console.error('Error: ' + JSON.stringify((error)))
       );
   }
 
