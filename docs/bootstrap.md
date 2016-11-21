@@ -68,10 +68,13 @@ Install needed plugins:
 
     ionic plugin add cordova-plugin-nativestorage
     ionic plugin add cordova-plugin-whitelist
+    cordova plugin add cordova-plugin-fcm --save
 
 Add Android support:
 
     ionic platform add android
+
+Copy google-services.json from Firebase Cloud Messaging web-console to platforms/android subfolder.
 
 Attach your Android phone and make sure that USB debugging is enabled. Alternatively, you can use an emulator.
 

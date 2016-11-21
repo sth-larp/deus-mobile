@@ -4,6 +4,7 @@ import { StatusBar, Splashscreen } from 'ionic-native';
 
 import { TabsPage } from '../pages/tabs/tabs';
 
+declare var FCMPlugin;
 
 @Component({
   template: `<ion-nav [root]="rootPage"></ion-nav>`
@@ -17,6 +18,35 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
+
+      this.subscribeToPushNotifications();
     });
+  }
+
+  // TODO: move to separate component/service
+  subscribeToPushNotifications() : void {
+      FCMPlugin.getToken(
+          function (token) {
+              console.log(token);
+          },
+          function (err) {
+              console.error('error retrieving token: ' + err);
+          }
+      );
+
+      FCMPlugin.onNotification(
+          (data) => {
+              var dataString : string = JSON.stringify(data);
+              console.log(dataString);
+              alert(dataString);
+              // TODO: data.wasTapped is true if application was (re)-opened due to notification tap.
+          },
+          (msg) => {
+              console.log('onNotification callback successfully registered: ' + msg);
+          },
+          (err) => {
+              console.error('Error registering onNotification callback: ' + err);
+          }
+      );
   }
 }
