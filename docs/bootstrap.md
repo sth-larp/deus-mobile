@@ -64,12 +64,6 @@ Init Ionic (TODO: is there a better way?):
 
 Kill Ionic server with `Ctrl+C`.
 
-Install needed plugins:
-
-    ionic plugin add cordova-plugin-nativestorage
-    ionic plugin add cordova-plugin-whitelist
-    cordova plugin add cordova-plugin-fcm --save
-
 Add Android support:
 
     ionic platform add android
