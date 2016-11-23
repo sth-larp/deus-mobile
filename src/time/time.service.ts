@@ -15,7 +15,7 @@ export class TimeService {
             .do(json => console.log('Received json: ' + JSON.stringify(json)))
             .do(json => this._cacheTime(json));
         var observableLocal: Observable<any> = this._getCachedTime();
-        return Observable.concat(observableLocal, observableHttp);
+        return Observable.onErrorResumeNext(observableLocal, observableHttp);
     }
 
     private _cacheTime(json : any) : void {
