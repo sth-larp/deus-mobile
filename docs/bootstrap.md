@@ -37,14 +37,14 @@ Add this to to your `~/.bashrc`:
 
 ### iOS
 
-TODO
-
-
+Detailed instruction is available at https://cordova.apache.org/docs/en/latest/guide/platforms/ios/.
+Basic steps are:
+ * Make sure you have XCode installed
+ * Run xcode-select --install to install some XCode command-line tools.
 
 ## Windows
 
 TODO
-
 
 
 # Set up Android app
