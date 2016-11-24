@@ -44,8 +44,7 @@ Basic steps are:
 
 ## Windows
 
-TODO
-
+Basically same as Ubuntu, but Node.JS and JDK should be manually downloaded and installed.
 
 # Set up Android app
 
@@ -58,11 +57,9 @@ Install default packages:
 
     npm install
 
-Init Ionic (TODO: is there a better way?):
+Make Cordova believe that we are in Cordova project.
 
-    ionic serve
-
-Kill Ionic server with `Ctrl+C`.
+    mkdir www
 
 Add Android support:
 
