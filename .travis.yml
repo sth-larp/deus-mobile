@@ -1,0 +1,17 @@
+language: objective-c  
+os: osx 
+osx_image: xcode8.2
+cache:
+  directories:
+  - node_modules # NPM packages
+before_install:  
+- export LANG=en_US.UTF-8
+- brew update
+- npm install -g npm
+- npm install -g cordova ionic
+script:  
+- npm install
+- mkdir www
+- ionic platform add ios
+- ionic build ios --device --release
+
