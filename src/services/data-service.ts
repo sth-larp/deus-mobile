@@ -14,9 +14,18 @@ export class DataService {
         "list": {
             "title": "Hi!",
             "items": [
-                "foo",
-                "bar",
-                "buz"
+                {
+                    "text": "foo",
+                    "subtext": "subfoo"
+                },
+                {
+                    "text": "bar",
+                    "subtext": "subbar"
+                },
+                {
+                    "text": "buz",
+                    "subtext": "subbuz"
+                }
             ]
         }
     }
