@@ -3,6 +3,7 @@ import { Component } from '@angular/core';
 import { HomePage } from '../home/home';
 import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
+import { PlainTextPage } from '../plain-text/plain-text';
 import { PlaygroundPage } from '../playground/playground';
 
 @Component({
@@ -15,6 +16,7 @@ export class TabsPage {
   tab2Root: any = AboutPage;
   tab3Root: any = ContactPage;
   tab4Root: any = PlaygroundPage;
+  tab5Root: any = PlainTextPage;
 
   constructor() {
 

@@ -5,8 +5,10 @@ import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
+import { PlainTextPage } from '../pages/plain-text/plain-text';
 import { PlaygroundPage } from '../pages/playground/playground';
 import { TabsPage } from '../pages/tabs/tabs';
+import { DataService } from '../services/data-service';
 import { TimeService } from '../time/time.service';
 
 @NgModule({
@@ -15,6 +17,7 @@ import { TimeService } from '../time/time.service';
     AboutPage,
     ContactPage,
     HomePage,
+    PlainTextPage,
     PlaygroundPage,
     TabsPage
   ],
@@ -28,9 +31,13 @@ import { TimeService } from '../time/time.service';
     AboutPage,
     ContactPage,
     HomePage,
+    PlainTextPage,
     PlaygroundPage,
     TabsPage
   ],
-  providers: [ TimeService ]
+  providers: [
+    DataService,
+    TimeService
+  ]
 })
 export class AppModule {}
