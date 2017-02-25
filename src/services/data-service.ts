@@ -7,10 +7,17 @@ import { NativeStorage } from 'ionic-native';
 export class DataService {
     private _data: string = `
     {
-        "values": ["foo", "bar", "buz"],
         "plain_text": {
             "title": "Hi!",
             "content": "Hello, world!"
+        },
+        "list": {
+            "title": "Hi!",
+            "items": [
+                "foo",
+                "bar",
+                "buz"
+            ]
         }
     }
     `;

@@ -5,6 +5,7 @@ import { MyApp } from './app.component';
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
+import { ListPage } from '../pages/list/list';
 import { PlainTextPage } from '../pages/plain-text/plain-text';
 import { PlaygroundPage } from '../pages/playground/playground';
 import { TabsPage } from '../pages/tabs/tabs';
@@ -17,6 +18,7 @@ import { TimeService } from '../time/time.service';
     AboutPage,
     ContactPage,
     HomePage,
+    ListPage,
     PlainTextPage,
     PlaygroundPage,
     TabsPage
@@ -31,6 +33,7 @@ import { TimeService } from '../time/time.service';
     AboutPage,
     ContactPage,
     HomePage,
+    ListPage,
     PlainTextPage,
     PlaygroundPage,
     TabsPage
