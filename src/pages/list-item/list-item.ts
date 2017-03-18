@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-class ListItemData {
+export class ListItemData {
   text: string;
   subtext: string;
 }
@@ -11,5 +11,5 @@ class ListItemData {
 })
 export class ListItem {
   @Input()
-  data: any;
+  data: ListItemData;
 }

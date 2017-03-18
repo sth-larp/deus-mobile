@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 
 import { DataService } from '../../services/data-service';
+import { ListItemData } from '../list-item/list-item';
 
 class ListData {
-  title: string;
-  items: string[];
+  title: number;
+  items: ListItemData[];
 }
 
 @Component({
@@ -12,7 +13,7 @@ class ListData {
   templateUrl: 'list.html'
 })
 export class ListPage {
-  data: any;
+  data: ListData;
 
   constructor(private _dataService: DataService) {
       this.data = new ListData;

@@ -12,7 +12,7 @@ class PlainTextData {
   templateUrl: 'plain-text.html'
 })
 export class PlainTextPage {
-  data: any;
+  data: PlainTextData;
 
   constructor(private _dataService: DataService) {
       //console.log('PlainTextPage.constructor');
