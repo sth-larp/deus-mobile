@@ -1,6 +1,4 @@
-import { Component } from '@angular/core';
-
-import { DataService } from '../../services/data-service';
+import { Component, Input } from '@angular/core';
 
 class PlainTextData {
   title: string;
@@ -12,14 +10,6 @@ class PlainTextData {
   templateUrl: 'plain-text.html'
 })
 export class PlainTextPage {
+  @Input()
   data: PlainTextData;
-
-  constructor(private _dataService: DataService) {
-      //console.log('PlainTextPage.constructor');
-      this.data = new PlainTextData;
-      _dataService.getData().subscribe(
-        json => this.data = json.plain_text,
-        error => console.error('PlainTextPage JSON parsing error: ' + JSON.stringify((error)))
-      );
-  }
 }

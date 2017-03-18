@@ -6,6 +6,7 @@ import { ContactPage } from '../contact/contact';
 import { ListPage } from '../list/list';
 import { PlainTextPage } from '../plain-text/plain-text';
 import { PlaygroundPage } from '../playground/playground';
+import { SelectorPage } from '../selector/selector';
 
 @Component({
   templateUrl: 'tabs.html'
@@ -19,6 +20,7 @@ export class TabsPage {
   tab4Root: any = PlaygroundPage;
   tab5Root: any = PlainTextPage;
   tab6Root: any = ListPage;
+  tab7Root: any = SelectorPage;
 
   constructor() {
 

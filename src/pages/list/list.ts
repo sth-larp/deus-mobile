@@ -1,10 +1,9 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
-import { DataService } from '../../services/data-service';
 import { ListItemData } from '../list-item/list-item';
 
 class ListData {
-  title: number;
+  title: string;
   items: ListItemData[];
 }
 
@@ -13,13 +12,6 @@ class ListData {
   templateUrl: 'list.html'
 })
 export class ListPage {
+  @Input()
   data: ListData;
-
-  constructor(private _dataService: DataService) {
-      this.data = new ListData;
-      _dataService.getData().subscribe(
-        json => this.data = json.list,
-        error => console.error('ListPage JSON parsing error: ' + JSON.stringify((error)))
-      );
-  }
 }
