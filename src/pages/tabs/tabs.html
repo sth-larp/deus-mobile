@@ -1,9 +1,4 @@
 <ion-tabs>
-  <ion-tab [root]="tab1Root" tabTitle="Home" tabIcon="home"></ion-tab>
-  <ion-tab [root]="tab2Root" tabTitle="About" tabIcon="information-circle"></ion-tab>
-  <ion-tab [root]="tab3Root" tabTitle="Contact" tabIcon="contacts"></ion-tab>
-  <ion-tab [root]="tab4Root" tabTitle="Playground" tabIcon="information-circle"></ion-tab>
-  <ion-tab [root]="tab5Root" tabTitle="Plain text" tabIcon="information-circle"></ion-tab>
-  <ion-tab [root]="tab6Root" tabTitle="List" tabIcon="information-circle"></ion-tab>
-  <ion-tab [root]="tab7Root" tabTitle="Selector" tabIcon="information-circle"></ion-tab>
+  <ion-tab *ngFor="let tab of fixed_tabs" [root]="tab.root" [tabTitle]="tab.title" tabIcon="information-circle"></ion-tab>
+  <ion-tab *ngFor="let tab of selector_tabs" [root]="tab.root" [rootParams]="tab.data" [tabTitle]="tab.title" tabIcon="information-circle"></ion-tab>
 </ion-tabs>

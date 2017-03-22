@@ -3,10 +3,22 @@ import { Component } from '@angular/core';
 import { HomePage } from '../home/home';
 import { AboutPage } from '../about/about';
 import { ContactPage } from '../contact/contact';
-import { ListPage } from '../list/list';
-import { PlainTextPage } from '../plain-text/plain-text';
 import { PlaygroundPage } from '../playground/playground';
-import { SelectorPage } from '../selector/selector';
+import { SelectorPage, SelectorData } from '../selector/selector';
+
+import { DataService } from '../../services/data-service';
+
+class TabData {
+  root: any;
+  title: string;
+}
+
+class SelectorTabData {
+  root: any;
+  title: string;
+  data: SelectorData;
+}
+
 
 @Component({
   templateUrl: 'tabs.html'
@@ -14,15 +26,41 @@ import { SelectorPage } from '../selector/selector';
 export class TabsPage {
   // this tells the tabs component which Pages
   // should be each tab's root Page
-  tab1Root: any = HomePage;
-  tab2Root: any = AboutPage;
-  tab3Root: any = ContactPage;
-  tab4Root: any = PlaygroundPage;
-  tab5Root: any = PlainTextPage;
-  tab6Root: any = ListPage;
-  tab7Root: any = SelectorPage;
+  tab5Root: any = SelectorPage;
 
-  constructor() {
+  fixed_tabs : Array<TabData> = [
+    {
+      root: HomePage,
+      title: "Home"
+    },
+    {
+      root: AboutPage,
+      title: "About"
+    },
+    {
+      root: ContactPage,
+      title: "Contact"
+    },
+    {
+      root: PlaygroundPage,
+      title: "Playground"
+    },
+  ];
 
+  selector_tabs : Array<SelectorTabData> = [];
+
+  constructor(private _dataService: DataService) {
+    this._dataService.getData().subscribe(
+      json => {
+        for (var page of json.pages) {
+          this.selector_tabs.push({
+            root: SelectorPage,
+            title: page.tab_title,
+            data: page
+          })
+        }
+      },
+      error => console.error('SelectorPage JSON parsing error: ' + JSON.stringify((error)))
+    );
   }
 }
