@@ -1,4 +1,4 @@
-import { NgModule } from '@angular/core';
+﻿import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
 import { IonicApp, IonicModule } from 'ionic-angular';
 import { MyApp } from './app.component';
@@ -9,7 +9,7 @@ import { PlainTextPage } from '../pages/plain-text/plain-text';
 import { PlaygroundPage } from '../pages/playground/playground';
 import { SelectorPage } from '../pages/selector/selector';
 import { TabsPage } from '../pages/tabs/tabs';
-import { DataService } from '../services/data-service';
+import { DataService } from '../services/data.service';
 import { TimeService } from '../time/time.service';
 
 @NgModule({
