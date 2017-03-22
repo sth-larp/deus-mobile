@@ -11,11 +11,13 @@ import { DataService } from '../../services/data-service';
 class TabData {
   root: any;
   title: string;
+  icon: string;
 }
 
 class SelectorTabData {
   root: any;
   title: string;
+  icon: string;
   data: SelectorData;
 }
 
@@ -31,19 +33,23 @@ export class TabsPage {
   fixed_tabs : Array<TabData> = [
     {
       root: HomePage,
-      title: "Home"
+      title: "Home",
+      icon: "information-circle"
     },
     {
       root: AboutPage,
-      title: "About"
+      title: "About",
+      icon: "information-circle"
     },
     {
       root: ContactPage,
-      title: "Contact"
+      title: "Contact",
+      icon: "information-circle"
     },
     {
       root: PlaygroundPage,
-      title: "Playground"
+      title: "Playground",
+      icon: "information-circle"
     },
   ];
 
@@ -56,6 +62,7 @@ export class TabsPage {
           this.selector_tabs.push({
             root: SelectorPage,
             title: page.tab_title,
+            icon: page.tab_icon,
             data: page
           })
         }
