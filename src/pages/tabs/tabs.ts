@@ -1,9 +1,6 @@
 import { Component } from '@angular/core';
 
 import { HomePage } from '../home/home';
-import { AboutPage } from '../about/about';
-import { ContactPage } from '../contact/contact';
-import { PlaygroundPage } from '../playground/playground';
 import { SelectorPage, SelectorData } from '../selector/selector';
 
 import { DataService } from '../../services/data-service';
@@ -12,15 +9,8 @@ class TabData {
   root: any;
   title: string;
   icon: string;
-}
-
-class SelectorTabData {
-  root: any;
-  title: string;
-  icon: string;
   data: SelectorData;
 }
-
 
 @Component({
   templateUrl: 'tabs.html'
@@ -34,26 +24,12 @@ export class TabsPage {
     {
       root: HomePage,
       title: "Home",
-      icon: "information-circle"
-    },
-    {
-      root: AboutPage,
-      title: "About",
-      icon: "information-circle"
-    },
-    {
-      root: ContactPage,
-      title: "Contact",
-      icon: "information-circle"
-    },
-    {
-      root: PlaygroundPage,
-      title: "Playground",
-      icon: "information-circle"
-    },
+      icon: "information-circle",
+      data: new SelectorData
+    }
   ];
 
-  selector_tabs : Array<SelectorTabData> = [];
+  selector_tabs : Array<TabData> = [];
 
   constructor(private _dataService: DataService) {
     this._dataService.getData().subscribe(
