@@ -16,10 +16,6 @@ class TabData {
   templateUrl: 'tabs.html'
 })
 export class TabsPage {
-  // this tells the tabs component which Pages
-  // should be each tab's root Page
-  tab5Root: any = SelectorPage;
-
   fixed_tabs : Array<TabData> = [
     {
       root: HomePage,
