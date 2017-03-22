@@ -19,8 +19,8 @@ export class DataService {
       },
       {
         "page_type": "plain_text",
-        "page_title": "Plain text page",
-        "tab_title": "Plain 1",
+        "page_title": "",
+        "tab_title": "Plain 2",
         "tab_icon": "information-circle",
         "body": {
           "content": "Hello, world 2!"
