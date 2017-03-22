@@ -1,7 +1,7 @@
 {
-  "name": "ionic-hello-world",
-  "author": "Ionic Framework",
-  "homepage": "http://ionicframework.com/",
+  "name": "deus-mobile",
+  "author": "sth-larp",
+  "homepage": "http://deus.rpg.ru",
   "private": true,
   "scripts": {
     "ionic:build": "ionic-app-scripts build",
