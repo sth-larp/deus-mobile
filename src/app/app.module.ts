@@ -10,6 +10,7 @@ import { PlaygroundPage } from '../pages/playground/playground';
 import { SelectorPage } from '../pages/selector/selector';
 import { TabsPage } from '../pages/tabs/tabs';
 import { DataService } from '../services/data.service';
+import { ExampleService } from '../services/example.service';
 import { TimeService } from '../time/time.service';
 
 @NgModule({
@@ -39,7 +40,8 @@ import { TimeService } from '../time/time.service';
   ],
   providers: [
     DataService,
-    TimeService
+    TimeService,
+    ExampleService
   ]
 })
 export class AppModule {}

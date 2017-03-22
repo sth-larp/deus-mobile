@@ -3,7 +3,7 @@
   <name>deus-larp-2017</name>
   <description>DeusEx LARP Mobile Application.</description>
   <author email="info@deus.rpg.ru/" href="http://deus.rpg.ru/">Stairway to Heaven</author>
-  <content src="http://192.168.178.29:8100" original-src="index.html"/>
+  <content src="index.html"/>
   <access origin="*"/>
   <allow-intent href="http://*/*"/>
   <allow-intent href="https://*/*"/>
