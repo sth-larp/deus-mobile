@@ -24,9 +24,19 @@ describe('ExampleService', () => {
     headers.append('Content-Type', 'application/json');
     headers.append('Accept', 'application/json');
     var opts: RequestOptionsArgs = { headers: headers };
-    http.post('http://dev.alice.digital/api-mock/development/auth', body, opts).subscribe(
-      response => {console.log("ffff"), done() },
-      error => {console.log("ffsssssff"), done() },
+    http.post('http://dev.alice.digital/api-mock/master/auth', body, opts).subscribe(
+      response => {
+        let sid = response.json()['sid'];
+        var body2: string = JSON.stringify({ sid: sid });
+        http.post('http://dev.alice.digital/api-mock/master/', body2, opts).subscribe(
+          response => {
+            console.log(response);
+            done();
+          },
+          error => done.fail())
+        done();
+      },
+      error => done.fail(),
     )
   });
 });
