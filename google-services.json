@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "786784916655",
+    "firebase_url": "https://deus-larp.firebaseio.com",
+    "project_id": "deus-larp",
+    "storage_bucket": "deus-larp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:786784916655:android:3221f1d942e744f8",
+        "android_client_info": {
+          "package_name": "digital.alice.app.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "786784916655-hv7trc6qd9nl3lkhja5dm65vgp7mv0r4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBH6uXOT-Rn4WVO3C5384Twl1aNeL1stZI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

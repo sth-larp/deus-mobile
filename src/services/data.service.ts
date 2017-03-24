@@ -1,6 +1,7 @@
 ﻿import { Injectable } from '@angular/core'
 import { Observable } from 'rxjs/Rx';
 import { NativeStorage } from 'ionic-native';
+import { FirebaseService } from '../services/firebase.service';
 
 @Injectable()
 export class DataService {
@@ -61,7 +62,8 @@ export class DataService {
     ]
   }
   `;
-  constructor() {
+  // TODO: Can we force FirebaseService instantiation without that hack?
+  constructor(private _firebaseService : FirebaseService) {
     console.log("My amazing JSON: ", JSON.stringify(JSON.parse(this._data)));
     NativeStorage.setItem('data', this._data);
   }

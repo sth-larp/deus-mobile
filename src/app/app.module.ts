@@ -1,7 +1,9 @@
 ﻿import { NgModule } from '@angular/core';
 import { HttpModule } from '@angular/http';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { IonicApp, IonicModule } from 'ionic-angular';
+import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Firebase } from '@ionic-native/firebase';
+
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
@@ -11,6 +13,7 @@ import { PlaygroundPage } from '../pages/playground/playground';
 import { SelectorPage } from '../pages/selector/selector';
 import { TabsPage } from '../pages/tabs/tabs';
 import { DataService } from '../services/data.service';
+import { FirebaseService } from '../services/firebase.service';
 import { TimeService } from '../time/time.service';
 
 @NgModule({
@@ -41,6 +44,8 @@ import { TimeService } from '../time/time.service';
   providers: [
     DataService,
     TimeService,
+    Firebase,
+    FirebaseService,
     BarcodeScanner
   ]
 })
