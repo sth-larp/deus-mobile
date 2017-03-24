@@ -1,5 +1,4 @@
 ﻿import { Injectable } from '@angular/core'
-import { Headers, Http, Response, RequestOptionsArgs } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 import { NativeStorage } from 'ionic-native';
 
@@ -62,32 +61,9 @@ export class DataService {
     ]
   }
   `;
-  private _sid: string;
-  constructor(private _http: Http) {
+  constructor() {
     console.log("My amazing JSON: ", JSON.stringify(JSON.parse(this._data)));
     NativeStorage.setItem('data', this._data);
-
-    var body: string = JSON.stringify({ login: 'vasya@gmail.com', password: 'vasya' });
-
-    var headers: Headers = new Headers();
-    headers.append('Content-Type', 'application/json');
-    headers.append('Accept', 'application/json');
-    var opts: RequestOptionsArgs = { headers: headers };
-
-    this._http.post('http://dev.alice.digital/api-mock/development/auth', body, opts).subscribe(
-      response => {
-        var sid = response.json() && response.json().sid;
-        if (sid) {
-          console.log("Received sid: ", sid);
-          this._sid = sid;
-          var sid_body: string = JSON.stringify({ sid: this._sid });
-          this._http.post('http://dev.alice.digital/api-mock/development/', body, opts).subscribe(
-            response => console.log(response),
-            error => console.error('post2 error: ' + JSON.stringify(error))
-          )
-        }
-      },
-      error => console.error('post error: ' + JSON.stringify(error)));
   }
 
   public getData(): Observable<any> {
