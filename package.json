@@ -53,8 +53,7 @@
     "cordova-plugin-statusbar",
     "cordova-plugin-device",
     "ionic-plugin-keyboard",
-    "cordova-plugin-splashscreen",
-    "phonegap-plugin-barcodescanner"
+    "cordova-plugin-splashscreen"
   ],
   "cordovaPlatforms": [],
   "description": "deus-mobile: An Ionic project"

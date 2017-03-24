@@ -11,6 +11,7 @@ import { TimeService } from '../../time/time.service';
 })
 export class PlaygroundPage {
   currentTime: string;
+  lastQR: string = '(none)';
   constructor(public navCtrl: NavController,
     private _timeService: TimeService,
     private _barcodeScanner: BarcodeScanner) {
@@ -28,9 +29,13 @@ export class PlaygroundPage {
 
   scanQRCode(): void {
     this._barcodeScanner.scan().then((barcodeData) => {
-      console.log(barcodeData);
+      console.log('Read QR code: ', barcodeData);
+      if (barcodeData['cancelled'])
+        this.lastQR = '(cancelled)';
+      else
+        this.lastQR = barcodeData['text'];
     }, (err) => {
-      console.log(err);
+      console.log('Error reading QR code: ', err);
     });
   }
 
