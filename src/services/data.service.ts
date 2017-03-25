@@ -115,4 +115,9 @@ export class DataService {
     NativeStorage.setItem('sid', sid);
     NativeStorage.setItem('username', username);
   }
+
+  public checkAccessRights(area_id: string) : Promise<boolean> {
+    // TODO: query server
+    return new Promise((resolve) => setTimeout(() => resolve(area_id != "SuperPrivate"), 3000));
+  }
 }

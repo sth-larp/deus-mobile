@@ -5,7 +5,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { TimeService } from '../services/time.service';
 import { DataService } from "../services/data.service";
-import { LoginPage } from "./login";
+import { AccessPage } from "./access";
 
 @Component({
   selector: 'page-playground',
@@ -19,7 +19,8 @@ export class PlaygroundPage {
     private _app: App,
     private _timeService: TimeService,
     private _barcodeScanner: BarcodeScanner,
-    private _dataService: DataService) {
+    private _dataService: DataService,
+    private _navController: NavController) {
 
     Observable.timer(0, 10000).forEach(() => this.enqueTimeUpdate());
 
@@ -42,9 +43,25 @@ export class PlaygroundPage {
       if (barcodeData['cancelled'])
         this.lastQR = '(cancelled)';
       else
-        this.lastQR = barcodeData['text'];
+        this.onQRScanned(barcodeData['text']);
     }, (err) => {
       console.log('Error reading QR code: ', err);
     });
   }
+
+  onQRScanned(qr: string) {
+    this.lastQR = qr;
+    if (qr.startsWith('access:')) {
+      let area_name: string = qr.substring(7);
+      this._navController.push(AccessPage, {area_name : area_name});
+    }
+  }
+
+  showQRCode(): void {
+    this._barcodeScanner.encode(this._barcodeScanner.Encode.TEXT_TYPE, "http://www.nytimes.com")
+    .then(success => console.log(success))
+    .then(err => console.log(err))
+  }
+
+
 }

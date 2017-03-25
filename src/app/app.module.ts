@@ -20,6 +20,7 @@ import { LogoutButton } from "../elements/logout-button";
 import { DataService } from '../services/data.service';
 import { FirebaseService } from '../services/firebase.service';
 import { TimeService } from '../services/time.service';
+import { AccessPage } from "../pages/access";
 
 @NgModule({
   declarations: [
@@ -32,7 +33,8 @@ import { TimeService } from '../services/time.service';
     PlainTextPage,
     PlaygroundPage,
     SelectorPage,
-    TabsPage
+    TabsPage,
+    AccessPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -47,7 +49,8 @@ import { TimeService } from '../services/time.service';
     PlainTextPage,
     PlaygroundPage,
     SelectorPage,
-    TabsPage
+    TabsPage,
+    AccessPage
   ],
   providers: [
     DataService,
