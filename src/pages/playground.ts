@@ -47,9 +47,4 @@ export class PlaygroundPage {
       console.log('Error reading QR code: ', err);
     });
   }
-
-  logout() {
-    this._dataService.logout();
-    this._app.getRootNav().setRoot(LoginPage);
-  }
 }

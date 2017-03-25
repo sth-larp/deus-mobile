@@ -15,6 +15,7 @@ import { SelectorPage } from '../pages/selector';
 import { TabsPage } from '../pages/tabs';
 
 import { ListItem } from '../elements/list-item';
+import { LogoutButton } from "../elements/logout-button";
 
 import { DataService } from '../services/data.service';
 import { FirebaseService } from '../services/firebase.service';
@@ -27,6 +28,7 @@ import { TimeService } from '../services/time.service';
     ListPage,
     ListItem,
     LoginPage,
+    LogoutButton,
     PlainTextPage,
     PlaygroundPage,
     SelectorPage,
