@@ -8,6 +8,7 @@ import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { ListPage } from '../pages/list/list';
 import { ListItem } from '../pages/list-item/list-item';
+import { LoginPage } from '../pages/login/login';
 import { PlainTextPage } from '../pages/plain-text/plain-text';
 import { PlaygroundPage } from '../pages/playground/playground';
 import { SelectorPage } from '../pages/selector/selector';
@@ -22,6 +23,7 @@ import { TimeService } from '../time/time.service';
     HomePage,
     ListPage,
     ListItem,
+    LoginPage,
     PlainTextPage,
     PlaygroundPage,
     SelectorPage,
@@ -36,6 +38,7 @@ import { TimeService } from '../time/time.service';
     MyApp,
     HomePage,
     ListPage,
+    LoginPage,
     PlainTextPage,
     PlaygroundPage,
     SelectorPage,

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
-import { Observable } from 'rxjs/Rx';
-import { NavController } from 'ionic-angular';
+import { NavController, App } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { Observable } from 'rxjs/Rx';
 
 import { TimeService } from '../../time/time.service';
+import { DataService } from "../../services/data.service";
+import { LoginPage } from "../login/login";
 
 @Component({
   selector: 'page-playground',
@@ -12,11 +14,18 @@ import { TimeService } from '../../time/time.service';
 export class PlaygroundPage {
   currentTime: string;
   lastQR: string = '(none)';
-  constructor(public navCtrl: NavController,
+  username: string;
+  constructor(
+    private _app: App,
     private _timeService: TimeService,
-    private _barcodeScanner: BarcodeScanner) {
+    private _barcodeScanner: BarcodeScanner,
+    private _dataService: DataService) {
 
     Observable.timer(0, 10000).forEach(() => this.enqueTimeUpdate());
+
+    this._dataService.getUsername().subscribe(
+      (username: string) => this.username = username
+    );
   }
 
   enqueTimeUpdate(): void {
@@ -39,4 +48,8 @@ export class PlaygroundPage {
     });
   }
 
+  logout() {
+    this._dataService.logout();
+    this._app.getRootNav().setRoot(LoginPage);
+  }
 }

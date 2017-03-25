@@ -1,17 +1,20 @@
 import { Firebase } from '@ionic-native/firebase';
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Observable";
 
 @Injectable()
 export class FirebaseService {
+  public token: string = null;
+
   constructor(private _firebase: Firebase) {
     console.log("FirebaseService constructor run");
-    this._firebase.getToken()
-      .then(token => console.log(`The token is ${token}`)) // save the token server-side and use it to push notifications to this device
-      .catch(error => console.error('Error getting token', error));
-
-    this._firebase.onTokenRefresh().subscribe(
-      (token: string) => console.log(`Got a new token ${token}`),
-      err => console.error(`Error getting token: `, err),
+    
+    this.subscribeToTokenChange().subscribe(
+      token => {
+        console.log(`The token is ${token}`);
+        this.token = token;
+      },
+      error => console.error('Error getting token', error)
     );
 
     this._firebase.hasPermission().then()
@@ -29,5 +32,10 @@ export class FirebaseService {
       notification => console.log('Got notification: ', JSON.stringify(notification)),
       err => console.error('Error getting notification: ', err)
     );
+  }
+
+  subscribeToTokenChange(): Observable<string> {
+    return Observable.fromPromise(this._firebase.getToken()).
+      concat(this._firebase.onTokenRefresh());
   }
 }
