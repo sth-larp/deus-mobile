@@ -1,9 +1,9 @@
 ﻿import { Component } from '@angular/core';
 
-import { HomePage } from '../home/home';
-import { SelectorPage, SelectorData } from '../selector/selector';
+import { HomePage } from './home';
+import { SelectorPage, SelectorData } from './selector';
 
-import { DataService } from '../../services/data.service';
+import { DataService } from '../services/data.service';
 
 class TabData {
   root: any;

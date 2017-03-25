@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
 
-import { ListItemData } from '../list-item/list-item';
+import { ListItemData } from '../elements/list-item';
 
 class ListData {
   title: string;

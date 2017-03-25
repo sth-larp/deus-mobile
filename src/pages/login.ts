@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { DataService } from "../../services/data.service";
-import { TabsPage } from "../tabs/tabs";
+import { DataService } from "../services/data.service";
+import { TabsPage } from "./tabs";
 
 @Component({
   selector: 'page-login',

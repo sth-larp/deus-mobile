@@ -1,9 +1,9 @@
 ﻿import { Injectable } from '@angular/core'
-import { Observable } from 'rxjs/Rx';
-import { NativeStorage } from 'ionic-native';
-import { FirebaseService } from '../services/firebase.service';
 import { Headers, RequestOptionsArgs, Http } from "@angular/http";
-import { LoginPage } from "../pages/login/login";
+import { NativeStorage } from 'ionic-native';
+import { Observable } from 'rxjs/Rx';
+import { FirebaseService } from './firebase.service';
+
 
 @Injectable()
 export class DataService {

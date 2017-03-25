@@ -3,9 +3,9 @@ import { NavController, App } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Observable } from 'rxjs/Rx';
 
-import { TimeService } from '../../time/time.service';
-import { DataService } from "../../services/data.service";
-import { LoginPage } from "../login/login";
+import { TimeService } from '../services/time.service';
+import { DataService } from "../services/data.service";
+import { LoginPage } from "./login";
 
 @Component({
   selector: 'page-playground',

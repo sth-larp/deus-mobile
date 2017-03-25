@@ -5,17 +5,20 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Firebase } from '@ionic-native/firebase';
 
 import { MyApp } from './app.component';
-import { HomePage } from '../pages/home/home';
-import { ListPage } from '../pages/list/list';
-import { ListItem } from '../pages/list-item/list-item';
-import { LoginPage } from '../pages/login/login';
-import { PlainTextPage } from '../pages/plain-text/plain-text';
-import { PlaygroundPage } from '../pages/playground/playground';
-import { SelectorPage } from '../pages/selector/selector';
-import { TabsPage } from '../pages/tabs/tabs';
+
+import { HomePage } from '../pages/home';
+import { ListPage } from '../pages/list';
+import { LoginPage } from '../pages/login';
+import { PlainTextPage } from '../pages/plain-text';
+import { PlaygroundPage } from '../pages/playground';
+import { SelectorPage } from '../pages/selector';
+import { TabsPage } from '../pages/tabs';
+
+import { ListItem } from '../elements/list-item';
+
 import { DataService } from '../services/data.service';
 import { FirebaseService } from '../services/firebase.service';
-import { TimeService } from '../time/time.service';
+import { TimeService } from '../services/time.service';
 
 @NgModule({
   declarations: [
