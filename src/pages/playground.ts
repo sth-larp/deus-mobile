@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, App } from 'ionic-angular';
+import { ModalController, App } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { Observable } from 'rxjs/Rx';
 
@@ -20,7 +20,7 @@ export class PlaygroundPage {
     private _timeService: TimeService,
     private _barcodeScanner: BarcodeScanner,
     private _dataService: DataService,
-    private _navController: NavController) {
+    private _modalController: ModalController) {
 
     Observable.timer(0, 10000).forEach(() => this.enqueTimeUpdate());
 
@@ -53,7 +53,8 @@ export class PlaygroundPage {
     this.lastQR = qr;
     if (qr.startsWith('access:')) {
       let area_name: string = qr.substring(7);
-      this._navController.push(AccessPage, {area_name : area_name});
+      let accessModal = this._modalController.create(AccessPage, {area_name : area_name});
+      accessModal.present();
     }
   }
 
