@@ -11,7 +11,7 @@ export class AccessPage {
   public area_name: string;
   constructor(navParams: NavParams,
     private _dataService: DataService) {
-    this.area_name = navParams.data.area_name;
+    this.area_name = navParams.data.value;
     this._dataService.checkAccessRights(this.area_name)
       .then(have_access => {
         if (have_access) 

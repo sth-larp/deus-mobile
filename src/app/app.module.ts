@@ -20,6 +20,7 @@ import { LogoutButton } from "../elements/logout-button";
 import { DataService } from '../services/data.service';
 import { FirebaseService } from '../services/firebase.service';
 import { TimeService } from '../services/time.service';
+import { QrCodeService } from '../services/qrcode.service';
 import { AccessPage } from "../pages/access";
 
 @NgModule({
@@ -55,6 +56,7 @@ import { AccessPage } from "../pages/access";
   providers: [
     DataService,
     TimeService,
+    QrCodeService,
     Firebase,
     FirebaseService,
     BarcodeScanner
