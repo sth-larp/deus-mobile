@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve",
+    "ionic:serve": "ionic-app-scripts serve --iscordovaserve --wwwDir platforms/browser/www/ --buildDir platforms/browser/www/build",
     "test": "ng test"
   },
   "dependencies": {

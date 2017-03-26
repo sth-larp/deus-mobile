@@ -73,9 +73,9 @@ Make Cordova believe that we are in Cordova project.
 
 ## Set up browser emulation
 
-To run application in browser (not all plugins are supported):
+To run application in browser with auto-reload on changes (not all plugins are supported):
     
-    ionic run browser
+    ionic serve
 
 ## Set up Android app
 
