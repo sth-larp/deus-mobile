@@ -1,11 +1,12 @@
-﻿import { Component } from '@angular/core';
+﻿import { Component, ViewChild } from '@angular/core';
 
 import { HomePage } from './home';
 import { SelectorPage, SelectorData } from './selector';
 
 import { DataService } from '../services/data.service';
+import { NavController, Nav } from "ionic-angular";
 
-class TabData {
+class MenuElementData {
   root: any;
   title: string;
   icon: string;
@@ -13,10 +14,10 @@ class TabData {
 }
 
 @Component({
-  templateUrl: 'tabs.html'
+  templateUrl: 'menu.html'
 })
-export class TabsPage {
-  fixed_tabs : Array<TabData> = [
+export class MenuPage {
+  fixed_tabs : Array<MenuElementData> = [
     {
       root: HomePage,
       title: "Home",
@@ -25,9 +26,11 @@ export class TabsPage {
     }
   ];
 
-  selector_tabs : Array<TabData> = [];
+  selector_tabs : Array<MenuElementData> = [];
 
-  constructor(private _dataService: DataService) {
+  @ViewChild(Nav) nav: Nav;
+  
+  constructor(private _dataService: DataService, private _navCtrl: NavController) {
     this._dataService.getData().subscribe(
       json => {
         for (var page of json.pages) {
@@ -41,5 +44,9 @@ export class TabsPage {
       },
       error => console.error('SelectorPage JSON parsing error: ' + JSON.stringify((error)))
     );
+  }
+
+  openPage(page) {
+    this.nav.setRoot(page.root, page.data);
   }
 }

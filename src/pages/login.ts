@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DataService } from "../services/data.service";
-import { TabsPage } from "./tabs";
+import { MenuPage } from "./menu";
 
 @Component({
   selector: 'page-login',
@@ -35,6 +35,6 @@ export class LoginPage {
   }
 
   goToLoggedInArea() {
-    this._navCtrl.setRoot(TabsPage);
+    this._navCtrl.setRoot(MenuPage);
   }
 }

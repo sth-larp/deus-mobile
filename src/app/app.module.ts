@@ -12,7 +12,7 @@ import { LoginPage } from '../pages/login';
 import { PlainTextPage } from '../pages/plain-text';
 import { PlaygroundPage } from '../pages/playground';
 import { SelectorPage } from '../pages/selector';
-import { TabsPage } from '../pages/tabs';
+import { MenuPage } from '../pages/menu';
 
 import { ListItem } from '../elements/list-item';
 import { LogoutButton } from "../elements/logout-button";
@@ -33,7 +33,7 @@ import { AccessPage } from "../pages/access";
     PlainTextPage,
     PlaygroundPage,
     SelectorPage,
-    TabsPage,
+    MenuPage,
     AccessPage
   ],
   imports: [
@@ -49,7 +49,7 @@ import { AccessPage } from "../pages/access";
     PlainTextPage,
     PlaygroundPage,
     SelectorPage,
-    TabsPage,
+    MenuPage,
     AccessPage
   ],
   providers: [

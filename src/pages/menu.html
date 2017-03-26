@@ -1,0 +1,16 @@
+<ion-menu [content]="content">
+  <ion-header>
+    <ion-toolbar>
+      <ion-title>Menu</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+    <ion-list>
+      <button menuClose ion-item *ngFor="let p of fixed_tabs"    (click)="openPage(p)">{{p.title}}</button>
+      <button menuClose ion-item *ngFor="let p of selector_tabs" (click)="openPage(p)">{{p.title}}</button>
+    </ion-list>
+  </ion-content>
+</ion-menu>
+
+<ion-nav [root]="fixed_tabs[0].root" #content swipeBackEnabled="false"></ion-nav>
