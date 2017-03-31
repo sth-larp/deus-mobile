@@ -17,80 +17,19 @@ export class DataService {
     })()
   };
 
-  private _data: string = `
-  {
-    "pages": [
-      {
-        "page_type": "plain_text",
-        "page_title": "Plain text page",
-        "tab_title": "Plain 1",
-        "tab_icon": "information-circle",
-        "body": {
-          "content": "Hello, world 1!"
-        }
-      },
-      {
-        "page_type": "plain_text",
-        "page_title": "",
-        "tab_title": "Plain 2",
-        "tab_icon": "information-circle",
-        "body": {
-          "content": "Hello, world 2!"
-        }
-      },
-      {
-        "page_type": "list",
-        "page_title": "List page",
-        "tab_title": "List",
-        "tab_icon": "information-circle",
-        "body": {
-          "items": [
-            {
-              "text": "foo",
-              "subtext": "subfoo"
-            },
-            {
-              "text": "bar",
-              "subtext": "subbar"
-            },
-            {
-              "text": "buz",
-              "subtext": "subbuz"
-            }
-          ]
-        }
-      },
-      {
-        "page_type": "playground",
-        "page_title": "Playground page",
-        "tab_title": "Playground",
-        "tab_icon": "home"
-      },
-      {
-        "page_type": "unknown",
-        "tab_title": "Unknown",
-        "tab_icon": "contacts"
-      }
-    ]
-  }
-  `;
   // TODO: Can we force FirebaseService instantiation without that hack?
-  constructor(private _firebaseService: FirebaseService, private _http: Http) {
-    console.log("My amazing JSON: ", JSON.stringify(JSON.parse(this._data)));
-    NativeStorage.setItem('data', this._data);
-  }
+  constructor(private _firebaseService: FirebaseService, private _http: Http) { }
 
   public getData(): Observable<any> {
-    // TODO: update when values are updated
-    return Observable.fromPromise(NativeStorage.getItem('data'))
-      .map((str: string) => JSON.parse(str));
+    return this._http.get('assets/example-responses/pages.json')
+      .map(response => response.json());
   }
 
   public getSid(): Observable<string> {
-    return Observable.fromPromise(NativeStorage.getItem('sid')); 
+    return Observable.fromPromise(NativeStorage.getItem('sid'));
   }
   public getUsername(): Observable<string> {
-    return Observable.fromPromise(NativeStorage.getItem('username')); 
+    return Observable.fromPromise(NativeStorage.getItem('username'));
   }
 
   public login(username: string, password: string): Observable<boolean> {
@@ -116,7 +55,7 @@ export class DataService {
     NativeStorage.setItem('username', username);
   }
 
-  public checkAccessRights(area_id: string) : Promise<boolean> {
+  public checkAccessRights(area_id: string): Promise<boolean> {
     // TODO: query server
     return new Promise((resolve) => setTimeout(() => resolve(area_id != "SuperPrivate"), 3000));
   }
