@@ -18,6 +18,7 @@ import { ListItem } from '../elements/list-item';
 import { LogoutButton } from "../elements/logout-button";
 
 import { DataService } from '../services/data.service';
+import { BackendService } from '../services/backend.service';
 import { FirebaseService } from '../services/firebase.service';
 import { TimeService } from '../services/time.service';
 import { QrCodeService } from '../services/qrcode.service';
@@ -55,6 +56,7 @@ import { AccessPage } from "../pages/access";
   ],
   providers: [
     DataService,
+    BackendService,
     TimeService,
     QrCodeService,
     Firebase,
