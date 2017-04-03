@@ -1,17 +1,23 @@
-language: objective-c  
-os: osx 
+language: objective-c
+os: osx
 osx_image: xcode8.2
 cache:
   directories:
-  - node_modules # NPM packages
-before_install:  
+  - node_modules
+before_install:
+- rvm use system
 - export LANG=en_US.UTF-8
 - brew update
 - npm install -g npm
 - npm install -g cordova ionic
-script:  
+before_script:
+- "./scripts/add-key.sh"
+script:
 - npm install
 - mkdir www
 - ionic platform add ios
-- ionic build ios --device --release
-
+- ionic build ios --device --buildConfig ./cordovaBuildConfig.json
+env:
+  global:
+  - PROFILE_NAME="4029b20a-d892-4d1a-93d1-096024fea6d9"
+  - secure: SaKdh0CCGywWY2J4GmL9uzDw4EnyGESs3DVHddfSpxhCItByJSBM2OIYXAdNRH1s+dStHbOejvlYqnPoDap8jIZ9EGi9Sv2K32yqVXlUp7Ku82cr6b0m7EV+xvMC/kDT7Tt1PKjrtsrvxVDJFLuMle0ZETR5bCUZ7i3ay8E+4uBUP3SloWFed+6NGV8FVybX1fCCr3mfwNFGOGSOIAzdwtLq2k/NkhXZI1FPxzoewkhgweUnAhoGlaEcp53n6yRwxGnoHhi6HZAD1z21W5uyZ8kqATxO+p4haxOA3mFsGdAXYodGyz1e3T+o4IjJy45HyZai/0mq9jaKp48k1g0xX1MQFdenr4nBhfloknKSvvxRBpB5ryWZ1dTqzO28HScMgPGxhe2KFR9QIZydNaJYUo1kWwP2XRFdSSGTSLy/fY4ri1/WsnP1+9RPE3NhjvHMcfJmIDr91kTl3yhPB6N2RYzb7s/FfUyg11r7conTGltOygDJrdyPnOa25DAv0bKH5R33GSpRQ+2PbELvrAun0w9bDVfXh67hikF2xbppV87se3sFnXCQHAhsOfE3xRj7X/geU1Hpden+LqkXVu6OK6V4Zt2Lne9nU5k9J1JL2KWdE3jtAlR2Yadpr4lbewXfZgepgEVOPeDA4Cs7QkHocSB47skcdWhoFNFmCU/Xl/g=
