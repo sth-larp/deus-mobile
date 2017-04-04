@@ -17,6 +17,8 @@ script:
 - mkdir www
 - ionic platform add ios
 - ionic build ios --device --buildConfig ./cordovaBuildConfig.json
+# Hack to check if file exists
+- cp platforms/ios/build/device/deus-larp-2018.xcarchive .
 env:
   global:
   - PROFILE_NAME="4029b20a-d892-4d1a-93d1-096024fea6d9"
