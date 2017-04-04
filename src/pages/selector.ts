@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 
+// Needs to be in sync with json, which uses snake case.
+// tslint:disable:variable-name
 export class SelectorData {
   page_type: string;
   page_title: string;
@@ -8,6 +10,7 @@ export class SelectorData {
   tab_icon: string;
   body: any;
 }
+// tslint:enable:variable-name
 
 @Component({
   selector: 'page-selector',

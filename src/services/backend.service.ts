@@ -4,8 +4,8 @@ import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class BackendService {
-  private _root_url: string = 'http://dev.alice.digital/api-mock/master';
-  private _json_request_opts: RequestOptionsArgs = {
+  private _rootUrl: string = 'http://dev.alice.digital/api-mock/master';
+  private _jsonRequestOpts: RequestOptionsArgs = {
     headers: (() => {
       let h = new Headers();
       h.append('Content-Type', 'application/json');
@@ -14,13 +14,13 @@ export class BackendService {
     })()
   };
 
-  private sid_: string = null;
+  private _sid: string = null;
   constructor(private _http: Http) { }
 
   // Returns sid in case of successful authentification
   public auth(username: string, password: string): Observable<string> {
-    let auth_payload: string = JSON.stringify({ login: username, password: password });
-    return this._http.post(this._root_url + '/auth', auth_payload, this._json_request_opts)
+    let authPayload: string = JSON.stringify({ login: username, password: password });
+    return this._http.post(this._rootUrl + '/auth', authPayload, this._jsonRequestOpts)
       .map((response: Response) => {
         if (response && response.json() && response.json()['sid']) {
           let sid: string = response.json()['sid'];
@@ -31,12 +31,12 @@ export class BackendService {
       });
   }
 
-  public setSid(sid: string) { this.sid_ = sid; }
+  public setSid(sid: string) { this._sid = sid; }
 
   // Returns if access to area is allowed for currently logged user
   public access(areaName: string): Observable<boolean> {
-    let access_payload = JSON.stringify({ area_name: areaName, sid: this.sid_ });
-    return this._http.post(this._root_url + '/access', access_payload, this._json_request_opts)
+    let accessPayload = JSON.stringify({ area_name: areaName, sid: this._sid });
+    return this._http.post(this._rootUrl + '/access', accessPayload, this._jsonRequestOpts)
       .map((response: Response) => {
         return (response && response.json() && response.json()['granted'])
       });
@@ -44,8 +44,8 @@ export class BackendService {
 
   // Returns "UI state", i.e. information to generate app pages
   public submitEvents(events: Array<any>): Observable<any> {
-    let submit_payload = JSON.stringify({ events: events, sid: this.sid_ });    
-    return this._http.post(this._root_url + '/submit', submit_payload, this._json_request_opts)
+    let submitPayload = JSON.stringify({ events: events, sid: this._sid });    
+    return this._http.post(this._rootUrl + '/submit', submitPayload, this._jsonRequestOpts)
       .map((response: Response) => {
         // TODO: get optional "config"" update?
         return response.json()['pages'];

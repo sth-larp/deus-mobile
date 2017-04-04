@@ -16,26 +16,26 @@ describe('Server API', () => {
     { provide: RequestOptions, useClass: BaseRequestOptions }
   ]).get(Http);
 
-  let valid_login_payload: string = JSON.stringify({ login: 'vasya@gmail.com', password: 'vasya' });
-  let invalid_login_payload: string = JSON.stringify({ login: 'vasya@gmail.com', password: '1234' });
+  let validLoginPayload: string = JSON.stringify({ login: 'vasya@gmail.com', password: 'vasya' });
+  let invalidLoginPayload: string = JSON.stringify({ login: 'vasya@gmail.com', password: '1234' });
 
-  let request_opts: RequestOptionsArgs = { headers: (() => {
+  let requestOpts: RequestOptionsArgs = { headers: (() => {
     let h = new Headers();
     h.append('Content-Type', 'application/json');
     h.append('Accept', 'application/json');
     return h;
   })()};
 
-  let root_url: string = 'http://dev.alice.digital/api-mock/master';
+  let rootUrl: string = 'http://dev.alice.digital/api-mock/master';
 
   it('Authentificate and get status', (done: DoneFn) => {
-    http.post(root_url + '/auth', valid_login_payload, request_opts).subscribe(
+    http.post(rootUrl + '/auth', validLoginPayload, requestOpts).subscribe(
       response => {
         expect(response.json()).toBeTruthy();
         let sid = response.json()['sid'];
         expect(sid).toBeDefined();
-        let sid_payload: string = JSON.stringify({ sid: sid });
-        http.post(root_url + '/', sid_payload, request_opts).subscribe(
+        let sidPayload: string = JSON.stringify({ sid: sid });
+        http.post(rootUrl + '/', sidPayload, requestOpts).subscribe(
           response => {
             expect(response.json()).toBeTruthy();
             let state = response.json()['state'];
@@ -51,14 +51,14 @@ describe('Server API', () => {
   });
 
   it('Auth with wrong credentials', (done: DoneFn) => {
-    http.post(root_url + '/auth', invalid_login_payload, request_opts).subscribe(
+    http.post(rootUrl + '/auth', invalidLoginPayload, requestOpts).subscribe(
       response => done.fail('Can login with invalid credentials'),
       error => done()
     );
   });
 
   it('Status without auth', (done: DoneFn) => {
-    http.post(root_url + '/', JSON.stringify(''), request_opts).subscribe(
+    http.post(rootUrl + '/', JSON.stringify(''), requestOpts).subscribe(
       response => done.fail('Can get status without auth'),
       error => done()
     );

@@ -8,13 +8,13 @@ import { DataService } from "../services/data.service";
 })
 export class AccessPage {
   public imagePath: string = 'assets/icon/wait.png';
-  public area_name: string;
+  public areaName: string;
   constructor(navParams: NavParams,
     private _dataService: DataService) {
-    this.area_name = navParams.data.value;
-    this._dataService.checkAccessRights(this.area_name)
-      .then(have_access => {
-        if (have_access) 
+    this.areaName = navParams.data.value;
+    this._dataService.checkAccessRights(this.areaName)
+      .then(haveAccess => {
+        if (haveAccess) 
           this.imagePath = 'assets/icon/access_granted.png';
         else
           this.imagePath = 'assets/icon/access_denied.png';

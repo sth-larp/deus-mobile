@@ -1,5 +1,5 @@
 ﻿import { Injectable } from '@angular/core'
-import { Headers, RequestOptionsArgs, Http } from "@angular/http";
+import { Http } from "@angular/http";
 import { NativeStorage } from 'ionic-native';
 import { FirebaseService } from './firebase.service';
 import { BackendService } from "./backend.service";
@@ -18,9 +18,9 @@ export class DataService {
       .map(response => response.json());
   }
 
-  public checkAccessRights(area_id: string): Promise<boolean> {
+  public checkAccessRights(areaId: string): Promise<boolean> {
     // TODO: query server
-    return new Promise((resolve) => setTimeout(() => resolve(area_id != "SuperPrivate"), 3000));
+    return new Promise((resolve) => setTimeout(() => resolve(areaId != "SuperPrivate"), 3000));
   }
 
   public getSid(): Observable<string> {

@@ -17,7 +17,7 @@ class MenuElementData {
   templateUrl: 'menu.html'
 })
 export class MenuPage {
-  fixed_tabs : Array<MenuElementData> = [
+  fixedTabs : Array<MenuElementData> = [
     {
       root: HomePage,
       title: "Home",
@@ -26,7 +26,7 @@ export class MenuPage {
     }
   ];
 
-  selector_tabs : Array<MenuElementData> = [];
+  selectorTabs : Array<MenuElementData> = [];
 
   @ViewChild(Nav) nav: Nav;
   
@@ -34,7 +34,7 @@ export class MenuPage {
     this._dataService.getData().subscribe(
       json => {
         for (var page of json.pages) {
-          this.selector_tabs.push({
+          this.selectorTabs.push({
             root: SelectorPage,
             title: page.tab_title,
             icon: page.tab_icon,

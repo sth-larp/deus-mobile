@@ -4,7 +4,6 @@ import { Observable } from 'rxjs/Rx';
 import { TimeService } from '../services/time.service';
 import { DataService } from "../services/data.service";
 import { QrCodeService } from "../services/qrcode.service";
-import { AccessPage } from "./access";
 
 @Component({
   selector: 'page-playground',

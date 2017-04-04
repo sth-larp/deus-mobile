@@ -11,9 +11,9 @@ class SplitQrCodeContent {
 }
 
 export function splitQrContent(content: string): SplitQrCodeContent {
-  let separator_index: number = content.indexOf(':');
-  if (separator_index >= 0)
-    return { prefix: content.slice(0, separator_index), value: content.slice(separator_index + 1) };
+  let separatorIndex: number = content.indexOf(':');
+  if (separatorIndex >= 0)
+    return { prefix: content.slice(0, separatorIndex), value: content.slice(separatorIndex + 1) };
   else
     return { prefix: 'invalid', value: '' };
 }

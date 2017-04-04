@@ -3,6 +3,11 @@
     "no-duplicate-variable": true,
     "no-unused-variable": [
       true
+    ],
+    "variable-name": [
+        "ban-keywords",
+        "check-format",
+        "allow-leading-underscore"
     ]
   },
   "rulesDirectory": [
