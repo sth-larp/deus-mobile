@@ -8,7 +8,8 @@
         "ban-keywords",
         "check-format",
         "allow-leading-underscore"
-    ]
+    ],
+    "member-access": true
   },
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules"

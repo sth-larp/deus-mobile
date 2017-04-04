@@ -10,7 +10,7 @@ import { LoginPage } from "../pages/login";
 export class LogoutButton {
   constructor(private _app: App, private _dataService: DataService) { }
 
-  logout() {
+  public logout() {
     this._dataService.logout();
     this._app.getRootNav().setRoot(LoginPage);
   }

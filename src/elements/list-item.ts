@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 export class ListItemData {
-  text: string;
-  subtext: string;
+  public text: string;
+  public subtext: string;
 }
 
 @Component({
@@ -11,5 +11,5 @@ export class ListItemData {
 })
 export class ListItem {
   @Input()
-  data: ListItemData;
+  public data: ListItemData;
 }

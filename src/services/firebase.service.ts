@@ -9,7 +9,7 @@ export class FirebaseService {
   constructor(private _firebase: Firebase) {
     console.log("FirebaseService constructor run");
     
-    this.subscribeToTokenChange().subscribe(
+    this._subscribeToTokenChange().subscribe(
       token => {
         console.log(`The token is ${token}`);
         this.token = token;
@@ -34,7 +34,7 @@ export class FirebaseService {
     );
   }
 
-  subscribeToTokenChange(): Observable<string> {
+  private _subscribeToTokenChange(): Observable<string> {
     return Observable.fromPromise(this._firebase.getToken()).
       concat(this._firebase.onTokenRefresh());
   }

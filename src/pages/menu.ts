@@ -7,17 +7,17 @@ import { DataService } from '../services/data.service';
 import { NavController, Nav } from "ionic-angular";
 
 class MenuElementData {
-  root: any;
-  title: string;
-  icon: string;
-  data: SelectorData;
+  public root: any;
+  public title: string;
+  public icon: string;
+  public data: SelectorData;
 }
 
 @Component({
   templateUrl: 'menu.html'
 })
 export class MenuPage {
-  fixedTabs : Array<MenuElementData> = [
+  public fixedTabs : Array<MenuElementData> = [
     {
       root: HomePage,
       title: "Home",
@@ -26,9 +26,9 @@ export class MenuPage {
     }
   ];
 
-  selectorTabs : Array<MenuElementData> = [];
+  public selectorTabs : Array<MenuElementData> = [];
 
-  @ViewChild(Nav) nav: Nav;
+  @ViewChild(Nav) private _nav: Nav;
   
   constructor(private _dataService: DataService, private _navCtrl: NavController) {
     this._dataService.getData().subscribe(
@@ -46,7 +46,7 @@ export class MenuPage {
     );
   }
 
-  openPage(page) {
-    this.nav.setRoot(page.root, page.data);
+  public openPage(page) {
+    this._nav.setRoot(page.root, page.data);
   }
 }

@@ -3,8 +3,8 @@ import { Component, Input } from '@angular/core';
 import { ListItemData } from '../elements/list-item';
 
 class ListData {
-  title: string;
-  items: ListItemData[];
+  public title: string;
+  public items: ListItemData[];
 }
 
 @Component({
@@ -13,5 +13,5 @@ class ListData {
 })
 export class ListPage {
   @Input()
-  data: ListData;
+  public data: ListData;
 }

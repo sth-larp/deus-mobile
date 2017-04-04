@@ -10,8 +10,8 @@ import { QrCodeService } from "../services/qrcode.service";
   templateUrl: 'playground.html'
 })
 export class PlaygroundPage {
-  currentTime: string;
-  username: string;
+  public currentTime: string;
+  public username: string;
   constructor(
     private _timeService: TimeService,
     private _dataService: DataService,
@@ -23,7 +23,7 @@ export class PlaygroundPage {
     );
   }
 
-  enqueTimeUpdate(): void {
+  public enqueTimeUpdate(): void {
     console.log('enqueTimeUpdate');
     this._timeService.getTime().subscribe(
       json => this.currentTime = `${json.hours}:${json.minutes}:${json.seconds}`,
@@ -31,11 +31,11 @@ export class PlaygroundPage {
     );
   }
 
-  scanQRCode(): void {
+  public scanQRCode(): void {
     this._qrCodeService.scanQRCode();
   }
 
-  showQRCode(): void {
+  public showQRCode(): void {
     this._qrCodeService.showQRCode('access:Some Weird Place');
   }
 }

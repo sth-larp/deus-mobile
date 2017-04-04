@@ -6,8 +6,8 @@ import { AccessPage } from '../pages/access'
 
 
 class SplitQrCodeContent {
-  prefix: string;
-  value: string;
+  public prefix: string;
+  public value: string;
 }
 
 export function splitQrContent(content: string): SplitQrCodeContent {
@@ -23,7 +23,7 @@ export class QrCodeService {
   constructor(private _barcodeScanner: BarcodeScanner,
     private _modalController: ModalController) { }
 
-  showQRCode(content: string): void {
+  public showQRCode(content: string): void {
     this._barcodeScanner.encode(this._barcodeScanner.Encode.TEXT_TYPE, content)
       .then(success => console.log(success))
       .then(err => console.error(err))
@@ -41,7 +41,7 @@ export class QrCodeService {
     disableSuccessBeep: true
   };
 
-  scanQRCode(): void {
+  public scanQRCode(): void {
     this._barcodeScanner.scan(this._qrScanningOptions).then((barcodeData) => {
       console.log('Read QR code: ', barcodeData);
       if (!barcodeData['cancelled'])

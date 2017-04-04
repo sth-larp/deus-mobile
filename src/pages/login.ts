@@ -18,23 +18,23 @@ export class LoginPage {
     });
   }
 
-  login() {
+  public login() {
     this._dataService.login(
       this.loginForm.value['username'],
       this.loginForm.value['password']).subscribe(
-        (success: boolean) => {if (success) this.goToLoggedInArea()},
+        (success: boolean) => {if (success) this._goToLoggedInArea()},
         err => console.error(err)
       );
   }
 
-  ionViewDidLoad() {
+  public ionViewDidLoad() {
     this._dataService.getSid().subscribe(
-      (sid: string) => this.goToLoggedInArea(),
+      (sid: string) => this._goToLoggedInArea(),
       err => {} // It's ok, no sid stored
     );
   }
 
-  goToLoggedInArea() {
+  private _goToLoggedInArea() {
     this._navCtrl.setRoot(MenuPage);
   }
 }

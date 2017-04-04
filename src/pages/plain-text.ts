@@ -1,8 +1,8 @@
 import { Component, Input } from '@angular/core';
 
 class PlainTextData {
-  title: string;
-  content: string;
+  public title: string;
+  public content: string;
 }
 
 @Component({
@@ -11,5 +11,5 @@ class PlainTextData {
 })
 export class PlainTextPage {
   @Input()
-  data: PlainTextData;
+  public data: PlainTextData;
 }

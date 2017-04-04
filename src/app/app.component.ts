@@ -8,7 +8,7 @@ import { LoginPage } from '../pages/login';
   template: `<ion-nav [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  rootPage = LoginPage;
+  public rootPage = LoginPage;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {
