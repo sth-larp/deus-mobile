@@ -1,4 +1,10 @@
-<div padding>
-  <div><b>{{data.text}}</b></div>
-  <div>{{data.subtext}}</div>
+<div style="position:relative; padding:8px">
+  <div style="">
+    <div><b>{{data.text}}</b></div>
+    <div>{{data.subtext}}</div>
+  </div>
+  <div style="z-index:-1; position:absolute;
+              top:0px; left:0px; height:100%;
+              background-color:#00ff00;"
+       [ngStyle]="{'width':data.percent+'%'}"></div>
 </div>

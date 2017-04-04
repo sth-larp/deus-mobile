@@ -27,11 +27,13 @@
           "items": [
             {
               "text": "foo",
-              "subtext": "subfoo"
+              "subtext": "subfoo",
+              "percent": "30"
             },
             {
               "text": "bar",
-              "subtext": "subbar"
+              "subtext": "subbar",
+              "percent": 70
             },
             {
               "text": "buz",
