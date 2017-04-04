@@ -9,7 +9,8 @@
         "check-format",
         "allow-leading-underscore"
     ],
-    "member-access": true
+    "member-access": true,
+    "no-trailing-whitespace": true
   },
   "rulesDirectory": [
     "node_modules/tslint-eslint-rules/dist/rules"

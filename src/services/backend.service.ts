@@ -44,11 +44,11 @@ export class BackendService {
 
   // Returns "UI state", i.e. information to generate app pages
   public submitEvents(events: Array<any>): Observable<any> {
-    let submitPayload = JSON.stringify({ events: events, sid: this._sid });    
+    let submitPayload = JSON.stringify({ events: events, sid: this._sid });
     return this._http.post(this._rootUrl + '/submit', submitPayload, this._jsonRequestOpts)
       .map((response: Response) => {
         // TODO: get optional "config"" update?
         return response.json()['pages'];
       });
-  } 
+  }
 }

@@ -29,7 +29,7 @@ export class MenuPage {
   public selectorTabs : Array<MenuElementData> = [];
 
   @ViewChild(Nav) private _nav: Nav;
-  
+
   constructor(private _dataService: DataService, private _navCtrl: NavController) {
     this._dataService.getData().subscribe(
       json => {

@@ -14,7 +14,7 @@ export class AccessPage {
     this.areaName = navParams.data.value;
     this._dataService.checkAccessRights(this.areaName)
       .then(haveAccess => {
-        if (haveAccess) 
+        if (haveAccess)
           this.imagePath = 'assets/icon/access_granted.png';
         else
           this.imagePath = 'assets/icon/access_denied.png';

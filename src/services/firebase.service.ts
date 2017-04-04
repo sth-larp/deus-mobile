@@ -8,7 +8,7 @@ export class FirebaseService {
 
   constructor(private _firebase: Firebase) {
     console.log("FirebaseService constructor run");
-    
+
     this._subscribeToTokenChange().subscribe(
       token => {
         console.log(`The token is ${token}`);

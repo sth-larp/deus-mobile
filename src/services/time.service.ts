@@ -8,7 +8,7 @@ import { NativeStorage } from 'ionic-native';
 export class TimeService {
     private _url: string = 'https://script.google.com/macros/s/AKfycbyd5AcbAnWi2Yn0xhFRbyzS4qMq1VucMVgVvhul5XqS9HkAyJY/exec';
     constructor(private _http: Http) {}
-    
+
     public getTime() : Observable<any> {
         var observableHttp: Observable<any> = this._http.get(this._url)
             .map((response : Response) => response.json())
