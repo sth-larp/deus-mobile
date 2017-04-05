@@ -1,7 +1,19 @@
-<ion-item>
-  <div style="position:relative; padding:8px">
-    <h2>{{data.text}}</h2>
-    <p>{{data.subtext}}</p>
-    <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%'}"></div>
-  </div>
-</ion-item>
+<ion-item-sliding>
+  <ion-item>
+    <div style="position:relative; padding:8px">
+      <h2>{{data.text}}</h2>
+      <p>{{data.subtext}}</p>
+      <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%'}"></div>
+    </div>
+  </ion-item>
+  <ion-item-options side="right">
+    <button ion-button color="primary">
+      <ion-icon name="bulb"></ion-icon>
+      Toggle enable
+    </button>
+    <button ion-button color="primary">
+      <ion-icon name="send"></ion-icon>
+      Transfer
+    </button>
+  </ion-item-options>
+</ion-item-sliding>
