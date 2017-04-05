@@ -1,6 +1,6 @@
 list-item {
   .backgroundprogressbar {
-    background-color:#00ff00;
+    background-color : color($colors, secondary, base);
     z-index:-1;
     position:absolute;
     top:0px;
