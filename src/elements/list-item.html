@@ -2,9 +2,6 @@
   <div style="position:relative; padding:8px">
     <h2>{{data.text}}</h2>
     <p>{{data.subtext}}</p>
-    <div style="z-index:-1; position:absolute;
-                top:0px; left:0px; height:100%;
-                background-color:#00ff00;"
-        [ngStyle]="{'width':data.percent+'%'}"></div>
+    <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%'}"></div>
   </div>
 </ion-item>
