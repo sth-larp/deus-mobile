@@ -1,21 +1,46 @@
 ﻿import { Injectable } from '@angular/core'
-import { Http } from "@angular/http";
 import { NativeStorage } from 'ionic-native';
 import { FirebaseService } from './firebase.service';
 import { BackendService } from "./backend.service";
 import { Observable } from "rxjs/Rx";
-
+import { DbConnectionService } from "./db-connection.service";
 
 @Injectable()
 export class DataService {
   // TODO: Can we force FirebaseService instantiation without that hack?
   constructor(private _firebaseService: FirebaseService,
     private _backendService: BackendService,
-    private _httpRemoveMe: Http) { }
+    private _dbConnectionService: DbConnectionService) {
+  }
 
   public getData(): Observable<any> {
-    return this._httpRemoveMe.get('assets/example-responses/pages.json')
-      .map(response => response.json());
+    // TODO: just returning Observable with dummy object can be not enough:
+    // what if someone subscribed to getData() and then pagesDb was created?
+    if (!this._dbConnectionService.pagesDb) return Observable.create({});
+    let existingData: Observable<any> = Observable.from(
+      // TODO: provide proper query
+      this._dbConnectionService.pagesDb.allDocs({ include_docs: true, limit: 1 })
+      .then(
+      docs => {
+        if (!docs.rows.length) return { pages: {} };
+        return docs.rows[0].doc;
+      }));
+
+    let futureUpdates: Observable<any> = Observable.create(observer => {
+      // Listen for changes on the database.
+      this._dbConnectionService.pagesDb.changes({ live: true, since: 'now', include_docs: true })
+        .on('change', change => {
+          console.log(change);
+          console.log(JSON.stringify(change));
+          observer.next(change.doc);
+        });
+    });
+
+    return existingData.concat(futureUpdates);
+  }
+
+  public pushEvent() {
+    this._dbConnectionService.eventsDb.post({"hello" : "world"});
   }
 
   public checkAccessRights(areaId: string): Promise<boolean> {
@@ -46,11 +71,13 @@ export class DataService {
     NativeStorage.remove('sid');
     NativeStorage.remove('username');
     this._backendService.setSid(null);
+    this._dbConnectionService.onLogout();
   }
 
   private _saveCredentials(sid: string, username: string) {
     NativeStorage.setItem('sid', sid);
     NativeStorage.setItem('username', username);
     this._backendService.setSid(sid);
+    this._dbConnectionService.onLogin(username);
   }
 }

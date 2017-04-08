@@ -7,10 +7,10 @@
 
   <ion-content>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of fixedTabs"    (click)="openPage(p)">{{p.title}}</button>
-      <button menuClose ion-item *ngFor="let p of selectorTabs" (click)="openPage(p)">{{p.title}}</button>
+      <button menuClose ion-item *ngFor="let p of fixedPages"    (click)="openFixedPage(p.root)">{{p.menu_title}}</button>
+      <button menuClose ion-item *ngFor="let p of selectorPages" (click)="openSelectorPage(p.menu_title)">{{p.menu_title}}</button>
     </ion-list>
   </ion-content>
 </ion-menu>
 
-<ion-nav [root]="fixedTabs[0].root" #content swipeBackEnabled="false"></ion-nav>
+<ion-nav [root]="fixedPages[0].root" #content swipeBackEnabled="false"></ion-nav>

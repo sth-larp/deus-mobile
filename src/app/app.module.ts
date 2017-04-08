@@ -23,6 +23,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { TimeService } from '../services/time.service';
 import { QrCodeService } from '../services/qrcode.service';
 import { AccessPage } from "../pages/access";
+import { DbConnectionService } from "../services/db-connection.service";
 
 @NgModule({
   declarations: [
@@ -55,6 +56,7 @@ import { AccessPage } from "../pages/access";
     AccessPage
   ],
   providers: [
+    DbConnectionService,
     DataService,
     BackendService,
     TimeService,

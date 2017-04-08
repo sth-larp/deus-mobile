@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
+import { DataService } from "../services/data.service";
+import { Subscription } from "rxjs/Rx";
 
 // Needs to be in sync with json, which uses snake case.
 // tslint:disable:variable-name
 export class SelectorData {
   public page_type: string;
+  public menu_title: string;
   public page_title: string;
-  public tab_label: string;
-  public tab_icon: string;
   public body: any;
 }
 // tslint:enable:variable-name
@@ -17,9 +18,27 @@ export class SelectorData {
   templateUrl: 'selector.html',
 })
 export class SelectorPage {
-  public data: SelectorData;
+  public data = new SelectorData;
+  private _title: string;
+  private _subscription: Subscription = null;
+  constructor(navParams: NavParams, private _dataService: DataService) {
+    this._title = navParams.data;
+  }
 
-  constructor(navParams: NavParams) {
-    this.data = navParams.data;
+  // tslint:disable-next-line:no-unused-variable
+  private ionViewWillEnter() {
+    this._subscription = this._dataService.getData().subscribe(json => {
+      for (let p of json.pages)
+        if (p.menu_title == this._title)
+          this.data = p;
+    });
+  }
+
+  // tslint:disable-next-line:no-unused-variable
+  private ionViewDidLeave() {
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+      this._subscription = null;
+    }
   }
 }

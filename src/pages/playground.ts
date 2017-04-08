@@ -38,4 +38,8 @@ export class PlaygroundPage {
   public showQRCode(): void {
     this._qrCodeService.showQRCode('access:Some Weird Place');
   }
+
+  public pushEvent(): void {
+    this._dataService.pushEvent();
+  }
 }

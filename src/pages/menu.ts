@@ -1,52 +1,66 @@
 ﻿import { Component, ViewChild } from '@angular/core';
 
 import { HomePage } from './home';
-import { SelectorPage, SelectorData } from './selector';
+import { SelectorPage } from './selector';
 
 import { DataService } from '../services/data.service';
 import { NavController, Nav } from "ionic-angular";
+import { Subscription } from "rxjs/Subscription";
 
-class MenuElementData {
+class FixedPageData {
   public root: any;
-  public title: string;
-  public icon: string;
-  public data: SelectorData;
+  // tslint:disable-next-line:variable-name
+  public menu_title: string;
 }
+
+class SelectorPageData {
+  // tslint:disable-next-line:variable-name
+  public menu_title: string;
+}
+
 
 @Component({
   templateUrl: 'menu.html'
 })
 export class MenuPage {
-  public fixedTabs : Array<MenuElementData> = [
-    {
-      root: HomePage,
-      title: "Home",
-      icon: "information-circle",
-      data: new SelectorData
-    }
-  ];
 
-  public selectorTabs : Array<MenuElementData> = [];
+  private _subscription: Subscription = null;
+
+  public fixedPages: Array<FixedPageData> = [{ root: HomePage, menu_title: "Home" }];
+  public selectorPages = new Array<SelectorPageData>();
+
+  private _selectorPage = SelectorPage;
 
   @ViewChild(Nav) private _nav: Nav;
 
-  constructor(private _dataService: DataService, private _navCtrl: NavController) {
-    this._dataService.getData().subscribe(
+  constructor(private _dataService: DataService, private _navCtrl: NavController) {}
+
+  // tslint:disable-next-line:no-unused-variable
+  private ionViewWillEnter() {
+    this._subscription = this._dataService.getData().subscribe(
       json => {
-        for (var page of json.pages) {
-          this.selectorTabs.push({
-            root: SelectorPage,
-            title: page.tab_title,
-            icon: page.tab_icon,
-            data: page
-          })
-        }
+        this.selectorPages = [];
+        for (let p of json.pages)
+          this.selectorPages.push({ menu_title: p.menu_title });
       },
       error => console.error('SelectorPage JSON parsing error: ' + JSON.stringify((error)))
     );
   }
 
-  public openPage(page) {
-    this._nav.setRoot(page.root, page.data);
+  // tslint:disable-next-line:no-unused-variable
+  private ionViewDidLeave() {
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+      this._subscription = null;
+    }
   }
+
+  public openFixedPage(page) {
+    this._nav.setRoot(page);
+  }
+
+  public openSelectorPage(title: string) {
+    this._nav.setRoot(this._selectorPage, title);
+  }
+
 }
