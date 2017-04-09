@@ -20,7 +20,6 @@ import { LogoutButton } from "../elements/logout-button";
 import { DataService } from '../services/data.service';
 import { BackendService } from '../services/backend.service';
 import { FirebaseService } from '../services/firebase.service';
-import { TimeService } from '../services/time.service';
 import { QrCodeService } from '../services/qrcode.service';
 import { AccessPage } from "../pages/access";
 import { DbConnectionService } from "../services/db-connection.service";
@@ -59,7 +58,6 @@ import { DbConnectionService } from "../services/db-connection.service";
     DbConnectionService,
     DataService,
     BackendService,
-    TimeService,
     QrCodeService,
     Firebase,
     FirebaseService,
