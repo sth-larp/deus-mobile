@@ -10,8 +10,8 @@ export class DbConnectionService {
   public eventsDb: PouchDB.Database<{}>;
 
   public onLogin(username: string) {
-    this.pagesDb = this.setupLocalAndRemoteDb(username, "pages");
-    this.eventsDb = this.setupLocalAndRemoteDb(username, "events");
+    this.pagesDb = this.setupLocalAndRemoteDb(username, "pages-dev");
+    this.eventsDb = this.setupLocalAndRemoteDb(username, "events-dev");
   }
 
   public onLogout() {
@@ -27,7 +27,7 @@ export class DbConnectionService {
     let db = new PouchDB(localDbName);
 
     // TODO: provide proper credentials
-    const removeDbName = `https://aeremin:petya@aeremin.cloudant.com/${localDbName}`;
+    const removeDbName = `http://dev.alice.digital:5984/${dbName}`;
     let replicationOptions = {
       live: true,
       retry: true,
