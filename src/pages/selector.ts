@@ -28,9 +28,13 @@ export class SelectorPage {
   // tslint:disable-next-line:no-unused-variable
   private ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe(json => {
-      for (let p of json.pages)
-        if (p.menu_title == this._title)
+      console.log("Updating page");
+      for (let p of json.pages) {
+        if (p.menu_title == this._title) {
+          console.log("Updating page ", p);
           this.data = p;
+        }
+      }
     });
   }
 
