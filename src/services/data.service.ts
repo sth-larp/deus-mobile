@@ -2,8 +2,9 @@
 import { NativeStorage } from 'ionic-native';
 import { FirebaseService } from './firebase.service';
 import { BackendService } from "./backend.service";
-import { Observable } from "rxjs/Rx";
+
 import { DbConnectionService } from "./db-connection.service";
+import { Observable } from "rxjs/Rx";
 
 @Injectable()
 export class DataService {
@@ -20,27 +21,26 @@ export class DataService {
     let existingData: Observable<any> = Observable.from(
       // TODO: provide proper query
       this._dbConnectionService.pagesDb.allDocs({ include_docs: true, limit: 1 })
-      .then(
-      docs => {
-        if (!docs.rows.length) return { pages: {} };
-        return docs.rows[0].doc;
-      }));
+        .then(
+        docs => {
+          if (!docs.rows.length) return { pages: {} };
+          return docs.rows[0].doc;
+        }));
 
     let futureUpdates: Observable<any> = Observable.create(observer => {
       // Listen for changes on the database.
-      this._dbConnectionService.pagesDb.changes({ live: true, since: 'now', include_docs: true })
-        .on('change', change => {
-          console.log(change);
-          console.log(JSON.stringify(change));
-          observer.next(change.doc);
-        });
+      let changesStream = this._dbConnectionService.pagesDb.changes({ live: true, since: 'now', include_docs: true });
+      changesStream.on('change', change => {
+        console.log(JSON.stringify(change));
+        observer.next(change.doc);
+      });
+      return () => { changesStream.cancel(); }
     });
-
     return existingData.concat(futureUpdates);
   }
 
   public pushEvent() {
-    this._dbConnectionService.eventsDb.post({"hello" : "world"});
+    this._dbConnectionService.eventsDb.post({ "hello": "world" });
   }
 
   public checkAccessRights(areaId: string): Promise<boolean> {
