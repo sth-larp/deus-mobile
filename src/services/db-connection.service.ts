@@ -32,6 +32,8 @@ export class DbConnectionService {
       live: true,
       retry: true,
       continuous: true,
+      filter: 'character/by_name',
+      query_params: { "character": username }
     };
     db.sync(removeDbName, replicationOptions);
     return db;

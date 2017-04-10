@@ -8,6 +8,7 @@ import { Observable } from "rxjs/Rx";
 
 @Injectable()
 export class DataService {
+  private _username: string = null;
   // TODO: Can we force FirebaseService instantiation without that hack?
   constructor(private _firebaseService: FirebaseService,
     private _backendService: BackendService,
@@ -40,7 +41,9 @@ export class DataService {
   }
 
   public pushEvent() {
-    this._dbConnectionService.eventsDb.post({ "hello": "world" });
+    this._dbConnectionService.eventsDb.post({ "hello": "world", "character": this._username })
+    .then(response => console.log(JSON.stringify(response)))
+    .catch(err => console.log(JSON.stringify(err)))
   }
 
   public checkAccessRights(areaId: string): Promise<boolean> {
@@ -72,6 +75,7 @@ export class DataService {
     NativeStorage.remove('username');
     this._backendService.setSid(null);
     this._dbConnectionService.onLogout();
+    this._username = null;
   }
 
   private _saveCredentials(sid: string, username: string) {
@@ -79,5 +83,6 @@ export class DataService {
     NativeStorage.setItem('username', username);
     this._backendService.setSid(sid);
     this._dbConnectionService.onLogin(username);
+    this._username = username;
   }
 }
