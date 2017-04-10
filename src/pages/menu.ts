@@ -36,7 +36,7 @@ export class MenuPage {
   constructor(private _dataService: DataService, private _navCtrl: NavController) {}
 
   // tslint:disable-next-line:no-unused-variable
-  private ionViewWillEnter() {
+  private ionViewDidEnter() {
     this._subscription = this._dataService.getData().subscribe(
       json => {
         this.selectorPages = [];
