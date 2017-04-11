@@ -18,7 +18,7 @@ export class BackendService {
   constructor(private _http: Http) { }
 
   // Returns sid in case of successful authentification
-  public auth(username: string, password: string): Observable<string> {
+  public auth(username: string, password: string): Promise<string> {
     let authPayload: string = JSON.stringify({ login: username, password: password });
     return this._http.post(this._rootUrl + '/auth', authPayload, this._jsonRequestOpts)
       .map((response: Response) => {
@@ -27,8 +27,8 @@ export class BackendService {
           console.log(`Successful login, get sid=${sid}`);
           return sid
         }
-        return null;
-      });
+        throw "Get OK response, but no sid provided. Indicates server issue";
+      }).toPromise();
   }
 
   public setSid(sid: string) { this._sid = sid; }

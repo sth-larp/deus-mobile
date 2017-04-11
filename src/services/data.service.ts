@@ -9,6 +9,8 @@ import { Observable } from "rxjs/Rx";
 @Injectable()
 export class DataService {
   private _username: string = null;
+  private _sid: string = null;
+
   // TODO: Can we force FirebaseService instantiation without that hack?
   constructor(private _firebaseService: FirebaseService,
     private _backendService: BackendService,
@@ -16,9 +18,6 @@ export class DataService {
   }
 
   public getData(): Observable<any> {
-    // TODO: just returning Observable with dummy object can be not enough:
-    // what if someone subscribed to getData() and then pagesDb was created?
-    if (!this._dbConnectionService.pagesDb) return Observable.create({});
     let existingData: Observable<any> = Observable.from(
       // TODO: provide proper query
       this._dbConnectionService.pagesDb.allDocs({ include_docs: true, limit: 1 })
@@ -42,8 +41,8 @@ export class DataService {
 
   public pushEvent() {
     this._dbConnectionService.eventsDb.post({ "hello": "world", "character": this._username })
-    .then(response => console.log(JSON.stringify(response)))
-    .catch(err => console.log(JSON.stringify(err)))
+      .then(response => console.log(JSON.stringify(response)))
+      .catch(err => console.log(JSON.stringify(err)))
   }
 
   public checkAccessRights(areaId: string): Promise<boolean> {
@@ -51,23 +50,35 @@ export class DataService {
     return new Promise((resolve) => setTimeout(() => resolve(areaId != "SuperPrivate"), 3000));
   }
 
-  public getSid(): Observable<string> {
-    return Observable.fromPromise(NativeStorage.getItem('sid'));
-  }
-
   public getUsername(): Observable<string> {
     return Observable.fromPromise(NativeStorage.getItem('username'));
   }
 
-  public login(username: string, password: string): Observable<boolean> {
+  public login(username: string, password: string): Promise<void> {
     return this._backendService.auth(username, password)
-      .map((sid: string) => {
-        if (sid) {
-          this._saveCredentials(sid, username);
-          return true;
-        }
-        return false;
+      .then((sid: string) => {
+        this._saveCredentials(sid, username);
+        return;
       });
+  }
+
+  public checkAuthentication(): Promise<void> {
+    return NativeStorage.getItem('sid')
+      .then((sid: string) => {
+        this._sid = sid;
+        return NativeStorage.getItem('username');
+      }).then((username: string) => {
+        this._username = username;
+        this._dbConnectionService.onLogin(username);
+      });
+  }
+
+  private _saveCredentials(sid: string, username: string) {
+    this._username = username;
+    this._backendService.setSid(sid);
+    this._dbConnectionService.onLogin(username);
+    NativeStorage.setItem('sid', sid);
+    NativeStorage.setItem('username', username);
   }
 
   public logout() {
@@ -76,13 +87,6 @@ export class DataService {
     this._backendService.setSid(null);
     this._dbConnectionService.onLogout();
     this._username = null;
-  }
-
-  private _saveCredentials(sid: string, username: string) {
-    NativeStorage.setItem('sid', sid);
-    NativeStorage.setItem('username', username);
-    this._backendService.setSid(sid);
-    this._dbConnectionService.onLogin(username);
-    this._username = username;
+    this._sid = null;
   }
 }
