@@ -36,7 +36,7 @@ describe('BackendService', () => {
             body: '{ "sid": "123" }'
           })))
         });
-        backendService.auth("", "").subscribe((sid) => {
+        backendService.auth("", "").then((sid) => {
           expect(sid).toEqual("123");
           done();
         });
@@ -49,9 +49,9 @@ describe('BackendService', () => {
         mockBackend.connections.subscribe((connection) => {
           connection.mockError(new Error("access denied"));
         });
-        backendService.auth("", "").subscribe((sid) => {
+        backendService.auth("", "").then(() => {
           done.fail("Should not be authorized");
-        }, err => done());
+        }).catch(err => done());
       })();
   });
 
