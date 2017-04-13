@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core'
 import { Headers, RequestOptionsArgs, Response, Http } from "@angular/http";
 import { Observable } from 'rxjs/Rx';
+import { LoggingService } from "./logging.service";
 
 @Injectable()
 export class BackendService {
@@ -15,7 +16,8 @@ export class BackendService {
   };
 
   private _sid: string = null;
-  constructor(private _http: Http) { }
+  constructor(private _http: Http,
+              private _logging: LoggingService) { }
 
   // Returns sid in case of successful authentification
   public auth(username: string, password: string): Promise<string> {
@@ -24,7 +26,7 @@ export class BackendService {
       .map((response: Response) => {
         if (response && response.json() && response.json()['sid']) {
           let sid: string = response.json()['sid'];
-          console.log(`Successful login, get sid=${sid}`);
+          this._logging.debug(`Successful login, get sid=${sid}`);
           return sid
         }
         throw "Get OK response, but no sid provided. Indicates server issue";

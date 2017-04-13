@@ -23,6 +23,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { QrCodeService } from '../services/qrcode.service';
 import { AccessPage } from "../pages/access";
 import { DbConnectionService } from "../services/db-connection.service";
+import { LoggingService } from "../services/logging.service";
 
 @NgModule({
   declarations: [
@@ -59,9 +60,10 @@ import { DbConnectionService } from "../services/db-connection.service";
     DataService,
     BackendService,
     QrCodeService,
+    LoggingService,
     Firebase,
     FirebaseService,
-    BarcodeScanner
+    BarcodeScanner,
   ]
 })
 export class AppModule {}

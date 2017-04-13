@@ -3,6 +3,7 @@ import { TestBed, inject, async } from '@angular/core/testing'
 import { Http, HttpModule, BaseRequestOptions, Response, ResponseOptions } from '@angular/http'
 import { MockBackend } from '@angular/http/testing'
 import { BackendService } from './backend.service'
+import { LoggingService, NoOpLoggingService } from "./logging.service";
 
 describe('BackendService', () => {
   beforeEach(async(() => {
@@ -10,6 +11,7 @@ describe('BackendService', () => {
       declarations: [],
       providers: [
         BackendService,
+        {provide: LoggingService, useClass: NoOpLoggingService},
         MockBackend,
         BaseRequestOptions,
         {

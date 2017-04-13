@@ -3,6 +3,7 @@ import { ModalController } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { AccessPage } from '../pages/access'
+import { LoggingService } from "./logging.service";
 
 
 class SplitQrCodeContent {
@@ -21,12 +22,11 @@ export function splitQrContent(content: string): SplitQrCodeContent {
 @Injectable()
 export class QrCodeService {
   constructor(private _barcodeScanner: BarcodeScanner,
-    private _modalController: ModalController) { }
+    private _modalController: ModalController,
+    private _logging: LoggingService) { }
 
   public showQRCode(content: string): void {
-    this._barcodeScanner.encode(this._barcodeScanner.Encode.TEXT_TYPE, content)
-      .then(success => console.log(success))
-      .then(err => console.error(err))
+    this._barcodeScanner.encode(this._barcodeScanner.Encode.TEXT_TYPE, content);
   }
 
   private _qrScanningOptions = {
@@ -43,14 +43,14 @@ export class QrCodeService {
 
   public scanQRCode(): void {
     this._barcodeScanner.scan(this._qrScanningOptions).then((barcodeData) => {
-      console.log('Read QR code: ', barcodeData);
+      this._logging.info('Read QR code: ' + JSON.stringify(barcodeData));
       if (!barcodeData['cancelled'])
         this.onQRScanned(barcodeData['text']);
       else
-        console.log('QR code scanning was canncelled by user');
+        this._logging.info('QR code scanning was canncelled by user');
     }, (err) => {
       // TODO: show some error page?
-      console.error('Error reading QR code: ', err);
+      this._logging.warning('Error reading QR code: ' + err);
     });
   }
 
@@ -62,12 +62,12 @@ export class QrCodeService {
     let split: SplitQrCodeContent = splitQrContent(qr);
 
     if (this._prefixToPage.has(split.prefix)) {
-      console.log(`Scanner QR with prefix "${split.prefix}" corresponds to page, redirecting`);
+      this._logging.info(`Scanner QR with prefix "${split.prefix}" corresponds to page, redirecting`);
       let accessModal = this._modalController.create(AccessPage, { value: split.value });
       accessModal.present();
     } else {
       // TODO: show some error page?
-      console.warn('Unsupported QR code scanned');
+      this._logging.warning('Unsupported QR code scanned');
     }
   }
 }

@@ -5,6 +5,7 @@ import { BackendService } from "./backend.service";
 
 import { DbConnectionService } from "./db-connection.service";
 import { Observable } from "rxjs/Rx";
+import { LoggingService } from "./logging.service";
 
 @Injectable()
 export class DataService {
@@ -14,7 +15,8 @@ export class DataService {
   // TODO: Can we force FirebaseService instantiation without that hack?
   constructor(private _firebaseService: FirebaseService,
     private _backendService: BackendService,
-    private _dbConnectionService: DbConnectionService) {
+    private _dbConnectionService: DbConnectionService,
+    private _logging: LoggingService) {
   }
 
   public getData(): Observable<any> {
@@ -31,7 +33,7 @@ export class DataService {
       // Listen for changes on the database.
       let changesStream = this._dbConnectionService.pagesDb.changes({ live: true, since: 'now', include_docs: true });
       changesStream.on('change', change => {
-        console.log(JSON.stringify(change));
+        this._logging.debug(JSON.stringify(change));
         observer.next(change.doc);
       });
       return () => { changesStream.cancel(); }
@@ -41,8 +43,8 @@ export class DataService {
 
   public pushEvent() {
     this._dbConnectionService.eventsDb.post({ "hello": "world", "character": this._username })
-      .then(response => console.log(JSON.stringify(response)))
-      .catch(err => console.log(JSON.stringify(err)))
+      .then(response => this._logging.debug(JSON.stringify(response)))
+      .catch(err => this._logging.debug(JSON.stringify(err)))
   }
 
   public checkAccessRights(areaId: string): Promise<boolean> {
@@ -50,8 +52,8 @@ export class DataService {
     return new Promise((resolve) => setTimeout(() => resolve(areaId != "SuperPrivate"), 3000));
   }
 
-  public getUsername(): Observable<string> {
-    return Observable.fromPromise(NativeStorage.getItem('username'));
+  public getUsername(): string {
+    return this._username;
   }
 
   public login(username: string, password: string): Promise<void> {

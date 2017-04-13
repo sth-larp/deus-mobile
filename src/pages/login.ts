@@ -3,6 +3,7 @@ import { NavController, LoadingController, Loading } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { DataService } from "../services/data.service";
 import { MenuPage } from "./menu";
+import { LoggingService } from "../services/logging.service";
 
 @Component({
   selector: 'page-login',
@@ -15,7 +16,8 @@ export class LoginPage {
   constructor(private _navCtrl: NavController,
     private _loadingCtrl: LoadingController,
     private _formBuilder: FormBuilder,
-    private _dataService: DataService) {
+    private _dataService: DataService,
+    private _logging: LoggingService) {
     this.loginForm = this._formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required],
@@ -38,11 +40,11 @@ export class LoginPage {
   private _checkIfAlreadyAuthentificated() {
     this._showLoader();
     this._dataService.checkAuthentication().then(() => {
-      console.log("Found saved token and username, skipping authentification");
+      this._logging.info("Found saved token and username, skipping authentification");
       this._hideLoader();
       this._goToLoggedInArea();
     }, (err) => {
-      console.log("No token/username found, need to authentificate");
+      this._logging.info("No token/username found, need to authentificate");
       this._hideLoader();
     });
   }

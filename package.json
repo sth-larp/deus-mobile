@@ -21,6 +21,7 @@
     "@ionic-native/barcode-scanner": "^3.2.2",
     "@ionic-native/core": "^3.2.2",
     "@ionic-native/firebase": "^3.2.2",
+    "@ionic-native/native-storage": "^3.4.4",
     "@ionic/storage": "2.0.1",
     "@types/pouchdb": "5.4.28",
     "ionic-angular": "2.3.0",

@@ -8,10 +8,12 @@ import { Injectable } from "@angular/core";
 export class DbConnectionService {
   public pagesDb: PouchDB.Database<{}>;
   public eventsDb: PouchDB.Database<{}>;
+  public loggingDb: PouchDB.Database<{}>;
 
   public onLogin(username: string) {
     this.pagesDb = this.setupLocalAndRemoteDb(username, "pages-dev");
     this.eventsDb = this.setupLocalAndRemoteDb(username, "events-dev");
+    this.loggingDb = this.setupLocalAndRemoteDb(username, "logging-dev");
   }
 
   public onLogout() {
@@ -19,6 +21,7 @@ export class DbConnectionService {
     // existing databases.
     this.pagesDb = null;
     this.eventsDb = null;
+    this.loggingDb = null;
   }
 
   private setupLocalAndRemoteDb(username: string, dbName: string) : PouchDB.Database<{}> {

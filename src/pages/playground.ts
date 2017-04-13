@@ -13,9 +13,7 @@ export class PlaygroundPage {
   constructor(
     private _dataService: DataService,
     private _qrCodeService: QrCodeService) {
-    this._dataService.getUsername().subscribe(
-      (username: string) => this.username = username
-    );
+    this.username = this._dataService.getUsername();
   }
 
   public scanQRCode(): void {

@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { NavParams } from 'ionic-angular';
 import { DataService } from "../services/data.service";
 import { Subscription } from "rxjs/Rx";
+import { LoggingService } from "../services/logging.service";
 
 // Needs to be in sync with json, which uses snake case.
 // tslint:disable:variable-name
@@ -21,17 +22,18 @@ export class SelectorPage {
   public data = new SelectorData;
   private _title: string;
   private _subscription: Subscription = null;
-  constructor(navParams: NavParams, private _dataService: DataService) {
+  constructor(navParams: NavParams,
+              private _dataService: DataService,
+              private _logging: LoggingService) {
     this._title = navParams.data;
   }
 
   // tslint:disable-next-line:no-unused-variable
   private ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe(json => {
-      console.log("Updating page");
       for (let p of json.pages) {
         if (p.menu_title == this._title) {
-          console.log("Updating page ", p);
+          this._logging.debug("Updating page " + JSON.stringify(p));
           this.data = p;
         }
       }
