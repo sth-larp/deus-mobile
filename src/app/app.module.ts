@@ -24,6 +24,8 @@ import { QrCodeService } from '../services/qrcode.service';
 import { AccessPage } from "../pages/access";
 import { DbConnectionService } from "../services/db-connection.service";
 import { LoggingService } from "../services/logging.service";
+import { BrowserModule } from "@angular/platform-browser";
+import { FormsModule } from "@angular/forms";
 
 @NgModule({
   declarations: [
@@ -41,6 +43,8 @@ import { LoggingService } from "../services/logging.service";
   ],
   imports: [
     IonicModule.forRoot(MyApp),
+    BrowserModule,
+    FormsModule,
     HttpModule
   ],
   bootstrap: [IonicApp],
