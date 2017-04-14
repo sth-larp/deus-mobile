@@ -4,6 +4,7 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { AccessPage } from '../pages/access'
 import { LoggingService } from "./logging.service";
+import { CharacterPage } from "../pages/character";
 
 
 class SplitQrCodeContent {
@@ -21,9 +22,16 @@ export function splitQrContent(content: string): SplitQrCodeContent {
 
 @Injectable()
 export class QrCodeScanService {
+  private _prefixToPage = new  Map<string, any>();
+
   constructor(private _barcodeScanner: BarcodeScanner,
     private _modalController: ModalController,
-    private _logging: LoggingService) { }
+    private _logging: LoggingService) {
+      // For some incredibly stupid reason it's the only way
+      // to populate map in our case. Because JavaScript.
+      this._prefixToPage.set('access', AccessPage);
+      this._prefixToPage.set('character', CharacterPage);
+  }
 
   public showQRCode(content: string): void {
     this._barcodeScanner.encode(this._barcodeScanner.Encode.TEXT_TYPE, content);
@@ -54,17 +62,14 @@ export class QrCodeScanService {
     });
   }
 
-  private _prefixToPage: Map<string, any> = new Map([
-    ['access', AccessPage]
-  ]);
-
   private onQRScanned(qr: string) {
     let split: SplitQrCodeContent = splitQrContent(qr);
 
+    console.log(this._prefixToPage.keys());
     if (this._prefixToPage.has(split.prefix)) {
       this._logging.info(`Scanner QR with prefix "${split.prefix}" corresponds to page, redirecting`);
-      let accessModal = this._modalController.create(AccessPage, { value: split.value });
-      accessModal.present();
+      let modal = this._modalController.create(this._prefixToPage.get(split.prefix), { value: split.value });
+      modal.present();
     } else {
       // TODO: show some error page?
       this._logging.warning('Unsupported QR code scanned');

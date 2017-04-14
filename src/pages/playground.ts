@@ -10,13 +10,13 @@ import { ViewQrCodePage } from "./view-qrcode";
   templateUrl: 'playground.html'
 })
 export class PlaygroundPage {
-  public currentTime: string;
   public username: string;
   constructor(
     private _dataService: DataService,
     private _qrCodeScanService: QrCodeScanService,
     private _modalController: ModalController) {
     this.username = this._dataService.getUsername();
+    console.log("Playground ctor")
   }
 
   public scanQRCode(): void {
@@ -24,7 +24,7 @@ export class PlaygroundPage {
   }
 
   public showQRCode(): void {
-    let accessModal = this._modalController.create(ViewQrCodePage, { value : 'access:Some Weird Place' });
+    let accessModal = this._modalController.create(ViewQrCodePage, { value : `character:${this.username}` });
     accessModal.present();
   }
 
