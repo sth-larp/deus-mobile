@@ -27,6 +27,7 @@ import { LoggingService } from "../services/logging.service";
 import { ViewQrCodePage } from "../pages/view-qrcode";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
+import { CharacterPage } from "../pages/character";
 
 @NgModule({
   declarations: [
@@ -41,7 +42,8 @@ import { FormsModule } from "@angular/forms";
     SelectorPage,
     MenuPage,
     AccessPage,
-    ViewQrCodePage
+    ViewQrCodePage,
+    CharacterPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -60,7 +62,8 @@ import { FormsModule } from "@angular/forms";
     SelectorPage,
     MenuPage,
     AccessPage,
-    ViewQrCodePage
+    ViewQrCodePage,
+    CharacterPage
   ],
   providers: [
     DbConnectionService,
