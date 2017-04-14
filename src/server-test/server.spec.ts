@@ -5,14 +5,12 @@ import {
   RequestOptions, BaseRequestOptions, ResponseOptions, RequestOptionsArgs, Headers
 } from '@angular/http';
 
-class MyCookieXSRFStrategy extends CookieXSRFStrategy { }
-
 describe('Server API', () => {
   let http = ReflectiveInjector.resolveAndCreate([
     Http, BrowserXhr,
     { provide: ConnectionBackend, useClass: XHRBackend },
     { provide: ResponseOptions, useClass: BaseResponseOptions },
-    { provide: XSRFStrategy, useClass: MyCookieXSRFStrategy },
+    { provide: XSRFStrategy, useValue: new CookieXSRFStrategy('RESPONSE_TOKEN', 'X-CSRFToken') },
     { provide: RequestOptions, useClass: BaseRequestOptions }
   ]).get(Http);
 

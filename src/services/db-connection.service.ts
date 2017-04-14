@@ -1,4 +1,4 @@
-import PouchDB from 'pouchdb';
+import * as PouchDB from 'pouchdb';
 import { Injectable } from "@angular/core";
 
 // Manages to connection to local and remote databases,
