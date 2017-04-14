@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
 
 import { DataService } from "../services/data.service";
-import { QrCodeService } from "../services/qrcode.service";
+import { QrCodeScanService } from "../services/qrcode-scan.service";
+import { ModalController } from "ionic-angular";
+import { ViewQrCodePage } from "./view-qrcode";
 
 @Component({
   selector: 'page-playground',
@@ -12,16 +14,18 @@ export class PlaygroundPage {
   public username: string;
   constructor(
     private _dataService: DataService,
-    private _qrCodeService: QrCodeService) {
+    private _qrCodeScanService: QrCodeScanService,
+    private _modalController: ModalController) {
     this.username = this._dataService.getUsername();
   }
 
   public scanQRCode(): void {
-    this._qrCodeService.scanQRCode();
+    this._qrCodeScanService.scanQRCode();
   }
 
   public showQRCode(): void {
-    this._qrCodeService.showQRCode('access:Some Weird Place');
+    let accessModal = this._modalController.create(ViewQrCodePage, { value : 'access:Some Weird Place' });
+    accessModal.present();
   }
 
   public pushEvent(): void {

@@ -1,5 +1,5 @@
 /// <reference path="../../node_modules/@types/jasmine/index.d.ts" />
-import { splitQrContent } from './qrcode.service'
+import { splitQrContent } from './qrcode-scan.service'
 
 describe('QRCodeService', () => {
   it('Splits normal string', () => {

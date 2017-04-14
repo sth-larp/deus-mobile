@@ -20,10 +20,11 @@ import { LogoutButton } from "../elements/logout-button";
 import { DataService } from '../services/data.service';
 import { BackendService } from '../services/backend.service';
 import { FirebaseService } from '../services/firebase.service';
-import { QrCodeService } from '../services/qrcode.service';
+import { QrCodeScanService } from '../services/qrcode-scan.service';
 import { AccessPage } from "../pages/access";
 import { DbConnectionService } from "../services/db-connection.service";
 import { LoggingService } from "../services/logging.service";
+import { ViewQrCodePage } from "../pages/view-qrcode";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 
@@ -39,7 +40,8 @@ import { FormsModule } from "@angular/forms";
     PlaygroundPage,
     SelectorPage,
     MenuPage,
-    AccessPage
+    AccessPage,
+    ViewQrCodePage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -57,13 +59,14 @@ import { FormsModule } from "@angular/forms";
     PlaygroundPage,
     SelectorPage,
     MenuPage,
-    AccessPage
+    AccessPage,
+    ViewQrCodePage
   ],
   providers: [
     DbConnectionService,
     DataService,
     BackendService,
-    QrCodeService,
+    QrCodeScanService,
     LoggingService,
     Firebase,
     FirebaseService,

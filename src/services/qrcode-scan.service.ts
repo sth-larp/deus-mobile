@@ -20,7 +20,7 @@ export function splitQrContent(content: string): SplitQrCodeContent {
 }
 
 @Injectable()
-export class QrCodeService {
+export class QrCodeScanService {
   constructor(private _barcodeScanner: BarcodeScanner,
     private _modalController: ModalController,
     private _logging: LoggingService) { }
