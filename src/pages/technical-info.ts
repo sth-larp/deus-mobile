@@ -11,7 +11,11 @@ export class TechnicalInfoPage {
 
   // tslint:disable-next-line:no-unused-variable
   private ionViewWillEnter() {
-    this._dbConnectionService.loggingDb
+    this._queryLogs();
+  }
+
+  private _queryLogs(): Promise<void> {
+    return this._dbConnectionService.loggingDb
       .query('mobile/latest', { include_docs: true, limit: 20, descending: true })
       .then(res => {
         this.logEntries = [];
@@ -27,4 +31,12 @@ export class TechnicalInfoPage {
       text: row.doc.msg,
     }
   }
+
+  public doRefresh(refresher: Refresher) {
+    this._queryLogs()
+    .then(() => refresher.complete())
+    .catch(() => refresher.complete());
+  }
+
+
 }

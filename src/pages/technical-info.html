@@ -8,12 +8,15 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
-<div class="log">
-  <ion-list no-lines>
-    <ion-item *ngFor="let entry of logEntries">
-      <h2>{{entry.text}}</h2>
-      <p>{{entry.subtext}}</p>
-    </ion-item>
-  </ion-list>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+  <div class="log">
+    <ion-list no-lines>
+      <ion-item *ngFor="let entry of logEntries">
+        <h2>{{entry.text}}</h2>
+        <p>{{entry.subtext}}</p>
+      </ion-item>
+    </ion-list>
   </div>
 </ion-content>
