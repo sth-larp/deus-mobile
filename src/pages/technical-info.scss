@@ -2,5 +2,17 @@ page-technical-info {
   .log {
     margin-top: -0.5rem;
     margin-bottom: -0.5rem;
+    .debug {
+      color: #1E90FF;
+    }
+    .info {
+      color: #000000;
+    }
+    .warning {
+      color: #DAA520;
+    }
+    .error {
+      color: #8B0000;
+    }
   }
 }

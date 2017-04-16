@@ -2,13 +2,18 @@ import { Component } from '@angular/core';
 import { DbConnectionService } from "../services/db-connection.service";
 import { Refresher, InfiniteScroll } from "ionic-angular";
 
+class LogEntry {
+  public text: string;
+  public level: number; // 0 - debug, 1 - info, 2 - warning, 3 - error
+}
+
 @Component({
   selector: 'page-technical-info',
   templateUrl: 'technical-info.html'
 })
 export class TechnicalInfoPage {
-  public logEntries = new Array<any>();
-
+  public logEntries = new Array<LogEntry>();
+  public level: string = "info";
   private _numEntries = 20;
 
   constructor(private _dbConnectionService: DbConnectionService) { }
@@ -21,7 +26,7 @@ export class TechnicalInfoPage {
 
   private _queryLogs(): Promise<void> {
     return this._dbConnectionService.loggingDb
-      .query('mobile/latest', { include_docs: true, limit: this._numEntries, descending: true })
+      .query(`mobile/${this.level}`, { include_docs: true, limit: this._numEntries, descending: true })
       .then(res => {
         this.logEntries = [];
         for(let row of res.rows)
@@ -30,11 +35,16 @@ export class TechnicalInfoPage {
       .catch(err => console.log(JSON.stringify(err)));
   }
 
-  private _rowToLogEntry(row: any): any {
+  private _rowToLogEntry(row: any): LogEntry {
     return {
-      subtext: row.doc.level,
       text: row.doc.msg,
+      level: row.doc.level
     }
+  }
+
+  public onLevelSelect(level: string) {
+    this.level = level;
+    this._queryLogs();
   }
 
   public doRefresh(refresher: Refresher) {

@@ -6,13 +6,29 @@
     </button>
     <ion-title>Technical info</ion-title>
   </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment [ngModel]="level">
+      <ion-segment-button value="debug" (ionSelect)="onLevelSelect('debug')">
+        debug
+      </ion-segment-button>
+      <ion-segment-button value="info" (ionSelect)="onLevelSelect('info')">
+        info
+      </ion-segment-button>
+      <ion-segment-button value="warning" (ionSelect)="onLevelSelect('warning')">
+        warning
+      </ion-segment-button>
+      <ion-segment-button value="error" (ionSelect)="onLevelSelect('error')">
+        error
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>  
 </ion-header>
 <ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
   <div class="log" *ngFor="let entry of logEntries">
-      <p>{{entry.text}}</p>
+      <p [class]="entry.level">{{entry.text}}</p>
   </div>
   <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>

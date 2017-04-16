@@ -49,8 +49,17 @@ export class DbConnectionService {
     upsert(this.loggingDb, {
       _id: "_design/mobile",
       views: {
-        latest: {
+        debug: {
           map: "function (doc) { if (doc.timestamp) emit(doc.timestamp); }"
+        },
+        info: {
+          map: "function (doc) { if (doc.timestamp && (doc.level == 'info' || doc.level == 'warning' || doc.level == 'error')) emit(doc.timestamp); }"
+        },
+        warning: {
+          map: "function (doc) { if (doc.timestamp && (doc.level == 'warning' || doc.level == 'error')) emit(doc.timestamp); }"
+        },
+        error: {
+          map: "function (doc) { if (doc.timestamp && doc.level == 'error') emit(doc.timestamp); }"
         }
       }
     });
