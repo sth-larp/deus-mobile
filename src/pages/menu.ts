@@ -6,6 +6,7 @@ import { SelectorPage } from './selector';
 import { DataService } from '../services/data.service';
 import { NavController, Nav } from "ionic-angular";
 import { Subscription } from "rxjs/Subscription";
+import { TechnicalInfoPage } from "./technical-info";
 
 class FixedPageData {
   public root: any;
@@ -26,7 +27,8 @@ export class MenuPage {
 
   private _subscription: Subscription = null;
 
-  public fixedPages: Array<FixedPageData> = [{ root: HomePage, menu_title: "Home" }];
+  public fixedPages: Array<FixedPageData> = [{ root: HomePage, menu_title: "Home" },
+                                             { root: TechnicalInfoPage, menu_title: "Technical info" }];
   public selectorPages = new Array<SelectorPageData>();
 
   private _selectorPage = SelectorPage;

@@ -28,6 +28,7 @@ import { ViewQrCodePage } from "../pages/view-qrcode";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { CharacterPage } from "../pages/character";
+import { TechnicalInfoPage } from "../pages/technical-info";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { CharacterPage } from "../pages/character";
     MenuPage,
     AccessPage,
     ViewQrCodePage,
-    CharacterPage
+    CharacterPage,
+    TechnicalInfoPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -63,7 +65,8 @@ import { CharacterPage } from "../pages/character";
     MenuPage,
     AccessPage,
     ViewQrCodePage,
-    CharacterPage
+    CharacterPage,
+    TechnicalInfoPage
   ],
   providers: [
     DbConnectionService,

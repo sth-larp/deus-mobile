@@ -1,5 +1,6 @@
 import * as PouchDB from 'pouchdb';
 import { Injectable } from "@angular/core";
+import { upsert } from "../utils/pouchdb-utils";
 
 // Manages to connection to local and remote databases,
 // creates per-user databases if needed.
@@ -14,6 +15,8 @@ export class DbConnectionService {
     this.pagesDb = this.setupLocalAndRemoteDb(username, "pages-dev");
     this.eventsDb = this.setupLocalAndRemoteDb(username, "events-dev");
     this.loggingDb = this.setupLocalAndRemoteDb(username, "logging-dev");
+
+    this._setUpLoggingDb();
   }
 
   public onLogout() {
@@ -24,7 +27,7 @@ export class DbConnectionService {
     this.loggingDb = null;
   }
 
-  private setupLocalAndRemoteDb(username: string, dbName: string) : PouchDB.Database<{}> {
+  private setupLocalAndRemoteDb(username: string, dbName: string): PouchDB.Database<{}> {
     // TODO: remove slice hack when we switch to proper usernames
     const localDbName = `${username.slice(0, 5)}_${dbName}`;
     let db = new PouchDB(localDbName);
@@ -40,5 +43,16 @@ export class DbConnectionService {
     };
     db.sync(removeDbName, replicationOptions);
     return db;
+  }
+
+  private _setUpLoggingDb() {
+    upsert(this.loggingDb, {
+      _id: "_design/mobile",
+      views: {
+        latest: {
+          map: "function (doc) { if (doc.timestamp) emit(doc.timestamp); }"
+        }
+      }
+    });
   }
 }

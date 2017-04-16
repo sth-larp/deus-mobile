@@ -1,0 +1,19 @@
+<!-- TODO: migrate to SelectorPage and remove it from here -->
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Technical info</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+<div class="log">
+  <ion-list no-lines>
+    <ion-item *ngFor="let entry of logEntries">
+      <h2>{{entry.text}}</h2>
+      <p>{{entry.subtext}}</p>
+    </ion-item>
+  </ion-list>
+  </div>
+</ion-content>
