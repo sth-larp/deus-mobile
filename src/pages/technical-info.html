@@ -11,15 +11,10 @@
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <div class="log">
-    <ion-list no-lines>
-      <ion-item *ngFor="let entry of logEntries">
-        <h2>{{entry.text}}</h2>
-        <p>{{entry.subtext}}</p>
-      </ion-item>
-    </ion-list>
+  <div class="log" *ngFor="let entry of logEntries">
+      <p>{{entry.text}}</p>
   </div>
- <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
-   <ion-infinite-scroll-content></ion-infinite-scroll-content>
- </ion-infinite-scroll>  
+  <ion-infinite-scroll (ionInfinite)="doInfinite($event)">
+    <ion-infinite-scroll-content></ion-infinite-scroll-content>
+  </ion-infinite-scroll>
 </ion-content>
