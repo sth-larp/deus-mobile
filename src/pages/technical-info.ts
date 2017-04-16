@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DbConnectionService } from "../services/db-connection.service";
+import { Refresher, InfiniteScroll } from "ionic-angular";
 
 @Component({
   selector: 'page-technical-info',
@@ -7,16 +8,20 @@ import { DbConnectionService } from "../services/db-connection.service";
 })
 export class TechnicalInfoPage {
   public logEntries = new Array<any>();
+
+  private _numEntries = 20;
+
   constructor(private _dbConnectionService: DbConnectionService) { }
 
   // tslint:disable-next-line:no-unused-variable
   private ionViewWillEnter() {
+    this._numEntries = 20;
     this._queryLogs();
   }
 
   private _queryLogs(): Promise<void> {
     return this._dbConnectionService.loggingDb
-      .query('mobile/latest', { include_docs: true, limit: 20, descending: true })
+      .query('mobile/latest', { include_docs: true, limit: this._numEntries, descending: true })
       .then(res => {
         this.logEntries = [];
         for(let row of res.rows)
@@ -38,5 +43,8 @@ export class TechnicalInfoPage {
     .catch(() => refresher.complete());
   }
 
-
+  public doInfinite(infiniteScroll: InfiniteScroll) {
+    this._numEntries += 20;
+    infiniteScroll.waitFor(this._queryLogs());
+  }
 }
