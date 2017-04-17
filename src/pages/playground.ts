@@ -27,8 +27,4 @@ export class PlaygroundPage {
     let accessModal = this._modalController.create(ViewQrCodePage, { value : `character:${this.username}` });
     accessModal.present();
   }
-
-  public pushEvent(): void {
-    this._dataService.pushEvent();
-  }
 }

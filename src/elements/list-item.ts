@@ -1,4 +1,6 @@
 import { Component, Input } from '@angular/core';
+import { DetailsData, DetailsPage } from "../pages/details";
+import { ModalController } from "ionic-angular";
 
 export class ListItemData {
   public text: string;
@@ -11,7 +13,7 @@ export class ListItemData {
   public hasIcon: boolean;
   public icon: string;
 
-  public clickable: boolean;
+  public details: DetailsData;
 
   public tag: string;
 }
@@ -23,4 +25,10 @@ export class ListItemData {
 export class ListItem {
   @Input()
   public data: ListItemData;
+  constructor(private _modalCtrl: ModalController) { }
+
+  public openDetails(details: DetailsData) {
+    let accessModal = this._modalCtrl.create(DetailsPage, { value: details });
+    accessModal.present();
+  }
 }

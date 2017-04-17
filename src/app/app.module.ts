@@ -29,6 +29,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { CharacterPage } from "../pages/character";
 import { TechnicalInfoPage } from "../pages/technical-info";
+import { DetailsPage } from "../pages/details";
 
 @NgModule({
   declarations: [
@@ -45,7 +46,8 @@ import { TechnicalInfoPage } from "../pages/technical-info";
     AccessPage,
     ViewQrCodePage,
     CharacterPage,
-    TechnicalInfoPage
+    TechnicalInfoPage,
+    DetailsPage
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -66,7 +68,8 @@ import { TechnicalInfoPage } from "../pages/technical-info";
     AccessPage,
     ViewQrCodePage,
     CharacterPage,
-    TechnicalInfoPage
+    TechnicalInfoPage,
+    DetailsPage
   ],
   providers: [
     DbConnectionService,

@@ -1,0 +1,20 @@
+<ion-header>
+  <ion-navbar>
+    <ion-buttons left>
+      <button ion-button navPop icon-only>
+			<ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+		</button>
+    </ion-buttons>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <h2>{{data.header}}</h2>
+  <p>{{data.text}}</p>
+</ion-content>
+
+<ion-footer *ngIf="data.actions" no-shadow>
+	<ion-toolbar position="bottom" (click)="showActions()">
+		<button ion-button full>Actions</button>
+	</ion-toolbar>
+</ion-footer>

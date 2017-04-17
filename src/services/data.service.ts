@@ -41,8 +41,14 @@ export class DataService {
     return existingData.concat(futureUpdates);
   }
 
-  public pushEvent() {
-    this._dbConnectionService.eventsDb.post({ "hello": "world", "character": this._username })
+  public pushEvent(eventType: string, data: any) {
+    const currentTimestamp = new Date().valueOf();
+    this._dbConnectionService.eventsDb.post({
+      character: this._username,
+      timestamp: currentTimestamp,
+      eventType: eventType,
+      data: data
+    })
       .then(response => this._logging.debug(JSON.stringify(response)))
       .catch(err => this._logging.debug(JSON.stringify(err)))
   }
