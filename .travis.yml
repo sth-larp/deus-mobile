@@ -19,6 +19,8 @@ script:
 - ionic build ios --device --buildConfig ./cordovaBuildConfig.json
 # Hack to check if file exists
 - cp platforms/ios/build/device/deus-larp-2017.ipa .
+after_success:
+- "./scripts/upload-to-hockeyapp.sh"
 env:
   global:
   - PROFILE_NAME="4029b20a-d892-4d1a-93d1-096024fea6d9"
