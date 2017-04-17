@@ -1,3 +1,13 @@
-<ion-list>
-  <list-item *ngFor="let item of data.items" [data]="item"></list-item>
-</ion-list>
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>{{body.title}}</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
+  <ion-list>
+    <list-item *ngFor="let item of body.items" [data]="item"></list-item>
+  </ion-list>
+</ion-content>

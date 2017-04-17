@@ -1,4 +1,14 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle>
+      <ion-icon name="menu"></ion-icon>
+    </button>
+    <ion-title>Playground</ion-title>
+  </ion-navbar>
+</ion-header>
+<ion-content>
 <button ion-button (click)='scanQRCode()'>Scan QR code</button><br>
 <button ion-button (click)='showQRCode()'>Show QR code with my ID</button><br>
 <logout-button></logout-button><br>
 Username: {{username}}<br>
+</ion-content>

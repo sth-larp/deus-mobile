@@ -9,3 +9,10 @@ export function upsert(db: PouchDB.Database<{}>, doc: any): Promise<any> {
     return db.put(doc);
   })
 }
+
+export function insertIfNotExists(db: PouchDB.Database<{}>, doc: any): Promise<any> {
+  return db.get(doc._id)
+  .catch(err => {
+    return db.put(doc);
+  })
+}

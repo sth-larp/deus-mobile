@@ -16,7 +16,6 @@ export class PlaygroundPage {
     private _qrCodeScanService: QrCodeScanService,
     private _modalController: ModalController) {
     this.username = this._dataService.getUsername();
-    console.log("Playground ctor")
   }
 
   public scanQRCode(): void {

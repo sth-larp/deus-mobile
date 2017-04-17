@@ -1,6 +1,6 @@
 import * as PouchDB from 'pouchdb';
 import { Injectable } from "@angular/core";
-import { upsert } from "../utils/pouchdb-utils";
+import { upsert, insertIfNotExists } from "../utils/pouchdb-utils";
 
 // Manages to connection to local and remote databases,
 // creates per-user databases if needed.
@@ -17,6 +17,7 @@ export class DbConnectionService {
     this.loggingDb = this.setupLocalAndRemoteDb(username, "logging-dev");
 
     this._setUpLoggingDb();
+    this._setUpPagesDb(username);
   }
 
   public onLogout() {
@@ -62,6 +63,13 @@ export class DbConnectionService {
           map: "function (doc) { if (doc.timestamp && doc.level == 'error') emit(doc.timestamp); }"
         }
       }
+    });
+  }
+
+  private _setUpPagesDb(username: string) {
+    insertIfNotExists(this.loggingDb, {
+      _id: username,
+      pages: []
     });
   }
 }

@@ -20,20 +20,14 @@ export class DataService {
   }
 
   public getData(): Observable<any> {
-    let existingData: Observable<any> = Observable.from(
-      // TODO: provide proper query
-      this._dbConnectionService.pagesDb.allDocs({ include_docs: true, limit: 1 })
-        .then(
-        docs => {
-          if (!docs.rows.length) return { pages: {} };
-          return docs.rows[0].doc;
-        }));
+    let existingData: Observable<any> = Observable.fromPromise(
+      this._dbConnectionService.pagesDb.get(this._username))
 
     let futureUpdates: Observable<any> = Observable.create(observer => {
-      // Listen for changes on the database.
-      let changesStream = this._dbConnectionService.pagesDb.changes({ live: true, since: 'now', include_docs: true });
+      let changesStream = this._dbConnectionService.pagesDb.changes(
+        { live: true, since: 'now', include_docs: true, doc_ids: [this._username] });
       changesStream.on('change', change => {
-        this._logging.debug(JSON.stringify(change));
+        this._logging.debug("Received page update: " + JSON.stringify(change));
         observer.next(change.doc);
       });
       return () => { changesStream.cancel(); }

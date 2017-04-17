@@ -10,7 +10,6 @@ import { ListPage } from '../pages/list';
 import { LoginPage } from '../pages/login';
 import { PlainTextPage } from '../pages/plain-text';
 import { PlaygroundPage } from '../pages/playground';
-import { SelectorPage } from '../pages/selector';
 import { MenuPage } from '../pages/menu';
 
 import { ListItem } from '../elements/list-item';
@@ -39,7 +38,6 @@ import { DetailsPage } from "../pages/details";
     LogoutButton,
     PlainTextPage,
     PlaygroundPage,
-    SelectorPage,
     MenuPage,
     AccessPage,
     ViewQrCodePage,
@@ -60,7 +58,6 @@ import { DetailsPage } from "../pages/details";
     LoginPage,
     PlainTextPage,
     PlaygroundPage,
-    SelectorPage,
     MenuPage,
     AccessPage,
     ViewQrCodePage,
