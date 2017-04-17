@@ -1,4 +1,11 @@
-#!/bin/sh
+#!/bin/bash
+set -e
+
+if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then  
+    echo "No need to add security keys for Android build"
+    exit 0
+fi
+
 if [[ -z "$CERT_PASSWORD" ]]; then  
     echo "Error: Missing password for adding private key"
     exit 1

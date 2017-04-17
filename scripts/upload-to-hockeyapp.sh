@@ -1,7 +1,18 @@
+#!/bin/bash
+set -e
+
 changes=$(git log -1 --pretty=%B)
-echo $changes
+
+if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
+  file_to_upload="platforms/ios/build/device/deus-larp-2017.ipa"
+fi
+
+if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
+  file_to_upload="platforms/android/build/outputs/apk/android-debug.apk"
+fi
+
 curl \
-  -F "ipa=@platforms/ios/build/device/deus-larp-2017.ipa" \
+  -F "ipa=@$file_to_upload" \
   -F "notes=$changes" \
   -F "notes_type=0" \
   -F "status=2" \
