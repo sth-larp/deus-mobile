@@ -5,9 +5,19 @@
     </button>
     <ion-title>{{body.title}}</ion-title>
   </ion-navbar>
+  <ion-toolbar *ngIf="body.filters" no-border-top>
+    <ion-segment [ngModel]="currentFilter">
+      <ion-segment-button value="" (ionSelect)="onFilter('')">
+        all
+      </ion-segment-button>
+      <ion-segment-button *ngFor="let f of body.filters" [value]="f" (ionSelect)="onFilter(f)">
+        {{f}}
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>  
 </ion-header>
 <ion-content>
   <ion-list>
-    <list-item *ngFor="let item of body.items" [data]="item"></list-item>
+    <list-item *ngFor="let item of body.items" [data]="item" [filter]="currentFilter"></list-item>
   </ion-list>
 </ion-content>

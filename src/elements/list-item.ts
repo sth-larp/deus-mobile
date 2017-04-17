@@ -25,6 +25,9 @@ export class ListItemData {
 export class ListItem {
   @Input()
   public data: ListItemData;
+  @Input()
+  public filter: string;
+
   constructor(private _modalCtrl: ModalController) { }
 
   public openDetails(details: DetailsData) {

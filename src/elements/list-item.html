@@ -4,6 +4,7 @@
      incorrectly (under the text instead of right side).
      So let's copy-paste, hooray!
   -->
+<div *ngIf="!filter || filter == data.tag">
 <button ion-item *ngIf="data.details" (click)="openDetails(data.details)" >
   <ion-icon *ngIf="data.hasIcon" [name]='data.icon' item-left></ion-icon>
   <!-- <div style="position:relative; padding:0px"> -->
@@ -24,6 +25,7 @@
   <!-- </div> -->
   <ion-note item-right [ngStyle]="{'color': data.valueColor}">{{data.value}}</ion-note>
 </ion-item >
+</div>
 <!-- TODO: it looks like we don't want to have buttons like this,
            but who knows, so letting it be for a while.
 <ion-item-sliding>

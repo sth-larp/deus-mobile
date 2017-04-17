@@ -1,5 +1,5 @@
-import { Component } from '@angular/core';
-import { NavParams } from "ionic-angular";
+import { Component, ViewChild } from '@angular/core';
+import { NavParams, Content, Segment } from "ionic-angular";
 import { ListItemData } from '../elements/list-item';
 import { UpdatablePage } from "./updatable";
 import { LoggingService } from "../services/logging.service";
@@ -8,6 +8,7 @@ import { DataService } from "../services/data.service";
 class ListBody {
   public title: string;
   public items: ListItemData[];
+  public filters: Array<string>;
 }
 
 @Component({
@@ -15,7 +16,12 @@ class ListBody {
   templateUrl: 'list.html'
 })
 export class ListPage extends UpdatablePage {
-  public body: ListBody = { title: "", items: [] };
+  @ViewChild(Content) public _content: Content;
+  @ViewChild(Segment) private _segment: Segment;
+
+  public body: ListBody = { title: "", items: [], filters: [] };
+  public currentFilter = "";
+  public filters: Array<string> = [];
 
   constructor(dataService: DataService,
     logging: LoggingService,
@@ -27,7 +33,23 @@ export class ListPage extends UpdatablePage {
     // If any of items has icon, we want to shift all of them
     // by setting hasIcon to every one of them.
     this.body = body;
-    const hasIcon = this.body.items.some(item => {return item.icon.length > 0;});
+    const hasIcon = this.body.items.some(item => { return item.icon.length > 0; });
     this.body.items.forEach(item => item.hasIcon = hasIcon);
+
+    // Dark magic to fix dynamic header height.
+    // See https://github.com/driftyco/ionic/issues/9709
+    this._content.resize();
+
+    // Dark magic to fix dynamic ion-segment items.
+    // See https://github.com/driftyco/ionic/issues/6923
+    setTimeout(() => {
+      if (this._segment) {
+        this._segment.ngAfterViewInit();
+      }
+    });
+  }
+
+  public onFilter(filter: string) {
+    this.currentFilter = filter;
   }
 }
