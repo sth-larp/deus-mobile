@@ -1,3 +1,9 @@
+<!-- It appears not to be easy to fix this code duplication:
+     For some reason, if <ion-item> and <ion-note> are used in different
+     files (i.e. different Angular components), ion-note positioned
+     incorrectly (under the text instead of right side).
+     So let's copy-paste, hooray!
+  -->
 <button ion-item *ngIf="data.clickable">
   <ion-icon *ngIf="data.hasIcon" [name]='data.icon' item-left></ion-icon>
   <!-- <div style="position:relative; padding:0px"> -->
