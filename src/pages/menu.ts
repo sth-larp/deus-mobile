@@ -1,6 +1,5 @@
 ﻿import { Component, ViewChild } from '@angular/core';
 
-import { HomePage } from './home';
 import { SelectorPage } from './selector';
 
 import { DataService } from '../services/data.service';
@@ -27,8 +26,7 @@ export class MenuPage {
 
   private _subscription: Subscription = null;
 
-  public fixedPages: Array<FixedPageData> = [{ root: HomePage, menu_title: "Home" },
-                                             { root: TechnicalInfoPage, menu_title: "Technical info" }];
+  public fixedPages: Array<FixedPageData> = [{ root: TechnicalInfoPage, menu_title: "Technical info" }];
   public selectorPages = new Array<SelectorPageData>();
 
   private _selectorPage = SelectorPage;

@@ -6,7 +6,6 @@ import { Firebase } from '@ionic-native/firebase';
 
 import { MyApp } from './app.component';
 
-import { HomePage } from '../pages/home';
 import { ListPage } from '../pages/list';
 import { LoginPage } from '../pages/login';
 import { PlainTextPage } from '../pages/plain-text';
@@ -34,7 +33,6 @@ import { DetailsPage } from "../pages/details";
 @NgModule({
   declarations: [
     MyApp,
-    HomePage,
     ListPage,
     ListItem,
     LoginPage,
@@ -58,7 +56,6 @@ import { DetailsPage } from "../pages/details";
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
-    HomePage,
     ListPage,
     LoginPage,
     PlainTextPage,
