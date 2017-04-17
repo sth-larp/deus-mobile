@@ -1,12 +1,27 @@
+<button ion-item *ngIf="data.clickable">
+  <ion-icon *ngIf="data.hasIcon" [name]='data.icon' item-left></ion-icon>
+  <!-- <div style="position:relative; padding:0px"> -->
+  <h2>{{data.text}}</h2>
+  <p>{{data.subtext}}</p>
+  <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': data.progressBarColor}">
+  </div>
+  <!-- </div> -->
+  <ion-note item-right [ngStyle]="{'color': data.valueColor}">{{data.value}}</ion-note>
+</button >
+<ion-item *ngIf="!data.clickable">
+  <ion-icon *ngIf="data.hasIcon" [name]='data.icon' item-left></ion-icon>
+  <!-- <div style="position:relative; padding:0px"> -->
+  <h2>{{data.text}}</h2>
+  <p>{{data.subtext}}</p>
+  <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': data.progressBarColor}">
+  </div>
+  <!-- </div> -->
+  <ion-note item-right [ngStyle]="{'color': data.valueColor}">{{data.value}}</ion-note>
+</ion-item >
+<!-- TODO: it looks like we don't want to have buttons like this,
+           but who knows, so letting it be for a while.
 <ion-item-sliding>
-  <ion-item>
-    <div style="position:relative; padding:8px">
-      <h2>{{data.text}}</h2>
-      <p>{{data.subtext}}</p>
-      <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%'}"></div>
-    </div>
-  </ion-item>
-  <ion-item-options side="right">
+   <ion-item-options side="right">
     <button ion-button color="primary">
       <ion-icon name="bulb"></ion-icon>
       Toggle enable
@@ -17,3 +32,4 @@
     </button>
   </ion-item-options>
 </ion-item-sliding>
+  -->

@@ -1,10 +1,50 @@
 list-item {
   .backgroundprogressbar {
-    background-color : color($colors, secondary, base);
     z-index:-1;
     position:absolute;
     top:0px;
     left:0px;
     height:100%;
+  }
+  .label-md {
+    margin: 0px 8px 0px 0;
+  }
+  .item-md ion-icon[item-left], .item-md ion-icon[item-right] {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0px;
+  }
+
+  .item-md ion-icon[item-left] + .item-inner {
+    margin-left: 0px;    
+  }
+
+  .item-md [item-left] {
+    margin-right: 8px;
+  }
+
+  .item-md {
+    padding-left: 8px;
+  }
+
+  .label-ios {
+    margin: 0px 8px 0px 0;
+  }
+  .item-ios ion-icon[item-left], .item-ios ion-icon[item-right] {
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0px;
+  }
+
+  .item-ios ion-icon[item-left] + .item-inner {
+    margin-left: 0px;    
+  }
+  
+  .item-ios [item-left] {
+    margin-right: 8px;
+  }
+
+  .item-ios {
+    padding-left: 8px;
   }
 }
