@@ -43,7 +43,7 @@ export class MenuPage {
         for (let p of json.pages)
           this.pages.push({ root: this._pageTypeToPage.get(p.page_type), menu_title: p.menu_title });
       },
-      error => this._logging.error('JSON parsing error: ' + JSON.stringify((error)))
+      error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
   }
 

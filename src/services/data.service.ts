@@ -32,7 +32,9 @@ export class DataService {
       });
       return () => { changesStream.cancel(); }
     });
-    return existingData.concat(futureUpdates);
+    // It's possible that we don't have proper data on device yet (first login),
+    // so we need to skip an error and wait until synchronization.
+    return existingData.onErrorResumeNext(futureUpdates);
   }
 
   public pushEvent(eventType: string, data: any) {
