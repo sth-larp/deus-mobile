@@ -13,6 +13,8 @@ matrix:
     - os: osx
       osx_image: xcode8.2
       language: objective-c
+      addons:
+        firefox: latest
 cache:
   directories:
   - node_modules
@@ -23,11 +25,14 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then ./scripts/install-jdk.sh; fi
 - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then nvm install node; nvm use node; fi
 - npm install -g cordova ionic
+- npm install -g angular-cli
+- npm install -g karma
 before_script:
 - "./scripts/add-key.sh"
 script:
 - npm install
 - mkdir www
+- karma start karma.conf.js --single-run -browsers Firefox
 - "./scripts/build.sh"
 after_success:
 - "./scripts/upload-to-hockeyapp.sh"
