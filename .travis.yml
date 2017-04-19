@@ -28,8 +28,7 @@ before_install:
 - npm install -g angular-cli
 - npm install -g karma
 before_script:
-- export DISPLAY=:99.0
-- sh -e /etc/init.d/xvfb start
+- if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then sh -e /etc/init.d/xvfb start; fi  
 - "./scripts/add-key.sh"
 script:
 - npm install
