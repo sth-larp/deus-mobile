@@ -32,7 +32,7 @@ before_script:
 script:
 - npm install
 - mkdir www
-- karma start karma.conf.js --single-run -browsers Firefox
+- karma start karma.conf.js --single-run --browsers Firefox
 - "./scripts/build.sh"
 after_success:
 - "./scripts/upload-to-hockeyapp.sh"
