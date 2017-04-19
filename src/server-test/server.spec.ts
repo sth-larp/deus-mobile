@@ -61,8 +61,4 @@ describe('Server API', () => {
       error => done()
     );
   });
-
-  it('Special faulty test to test if Travis will report error', () => {
-    expect(false).toBeTruthy();
-  });
 });
