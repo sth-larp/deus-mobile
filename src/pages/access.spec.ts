@@ -42,8 +42,8 @@ describe('Access Page', () => {
   it('Shows access granted image if there is access', fakeAsync(() => {
     mockDataService.setup(x => x.checkAccessRights("TestAreaName")).returns(x => Promise.resolve(true));
     fixture = TestBed.createComponent(AccessPage);
-    tick(); // Here we force promise above to resolve, see
-            // https://angular-2-training-book.rangle.io/handout/testing/components/async.html
+    tick(1000); // Here we force promise above to resolve, see
+                // https://angular-2-training-book.rangle.io/handout/testing/components/async.html
     comp = fixture.componentInstance;
     expect(comp.imagePath).toContain("granted");
   }));
@@ -51,7 +51,7 @@ describe('Access Page', () => {
   it('Shows access denied image if there is no access', fakeAsync(() => {
     mockDataService.setup(x => x.checkAccessRights("TestAreaName")).returns(x => Promise.resolve(false));
     fixture = TestBed.createComponent(AccessPage);
-    tick();
+    tick(1000);
     comp = fixture.componentInstance;
     expect(comp.imagePath).toContain("denied");
   }));
@@ -60,7 +60,7 @@ describe('Access Page', () => {
   it('Shows access denied image if there is no server connection', fakeAsync(() => {
     mockDataService.setup(x => x.checkAccessRights("TestAreaName")).returns(x => Promise.reject("Stuff is broken"));
     fixture = TestBed.createComponent(AccessPage);
-    tick();
+    tick(1000);
     comp = fixture.componentInstance;
     expect(comp.imagePath).toContain("denied");
   }));
