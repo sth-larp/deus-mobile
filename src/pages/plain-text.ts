@@ -1,7 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { UpdatablePage } from "./updatable";
 import { DataService } from "../services/data.service";
-import { LoggingService } from "../services/logging.service";
 import { NavParams } from "ionic-angular";
 
 class PlainTextData {
@@ -17,10 +16,8 @@ export class PlainTextPage extends UpdatablePage {
   @Input()
   public body: PlainTextData = {title: "", content: ""};
 
-  constructor(dataService: DataService,
-    logging: LoggingService,
-    navParams: NavParams) {
-    super(navParams.data.id, dataService, logging);
+  constructor(dataService: DataService, navParams: NavParams) {
+    super(navParams.data.id, dataService);
   }
 
   protected setBody(body: any) {

@@ -2,7 +2,6 @@ import { Component, ViewChild } from '@angular/core';
 import { NavParams, Content, Segment } from "ionic-angular";
 import { ListItemData } from '../elements/list-item';
 import { UpdatablePage } from "./updatable";
-import { LoggingService } from "../services/logging.service";
 import { DataService } from "../services/data.service";
 
 class ListBody {
@@ -23,10 +22,8 @@ export class ListPage extends UpdatablePage {
   public currentFilter = "";
   public filters: Array<string> = [];
 
-  constructor(dataService: DataService,
-    logging: LoggingService,
-    navParams: NavParams) {
-    super(navParams.data.id, dataService, logging);
+  constructor(dataService: DataService, navParams: NavParams) {
+    super(navParams.data.id, dataService);
   }
 
   protected setBody(body: any) {

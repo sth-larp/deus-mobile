@@ -1,6 +1,6 @@
 import { DataService } from "../services/data.service";
 import { Subscription } from "rxjs/Rx";
-import { LoggingService } from "../services/logging.service";
+import { Observable } from "rxjs/Observable";
 
 // Needs to be in sync with json, which uses snake case.
 // tslint:disable:variable-name
@@ -16,8 +16,7 @@ export abstract class UpdatablePage {
   private _subscription: Subscription = null;
   public pageTitle: string;
   constructor(private _title: string,
-              private _dataService: DataService,
-              private _logging: LoggingService) {
+              private _dataService: DataService) {
   }
 
   protected abstract setBody(body: any);
