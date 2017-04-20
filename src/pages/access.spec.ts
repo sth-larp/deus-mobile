@@ -13,6 +13,11 @@ describe('Access Page', () => {
   let comp: AccessPage;
   let mockDataService: TypeMoq.IMock<DataService> = TypeMoq.Mock.ofType(DataService);
 
+  function getImagePath(): string {
+    fixture.detectChanges();
+    return fixture.debugElement.query(By.css("img")).properties.src;
+  }
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [AccessPage, MyApp],
@@ -45,7 +50,7 @@ describe('Access Page', () => {
     tick(1000); // Here we force promise above to resolve, see
                 // https://angular-2-training-book.rangle.io/handout/testing/components/async.html
     comp = fixture.componentInstance;
-    expect(comp.imagePath).toContain("granted");
+    expect(getImagePath()).toContain("granted");
   }));
 
   it('Shows access denied image if there is no access', fakeAsync(() => {
@@ -53,7 +58,7 @@ describe('Access Page', () => {
     fixture = TestBed.createComponent(AccessPage);
     tick(1000);
     comp = fixture.componentInstance;
-    expect(comp.imagePath).toContain("denied");
+    expect(getImagePath()).toContain("denied");
   }));
 
   // Is this behaviour ok?
@@ -62,7 +67,7 @@ describe('Access Page', () => {
     fixture = TestBed.createComponent(AccessPage);
     tick(1000);
     comp = fixture.componentInstance;
-    expect(comp.imagePath).toContain("denied");
+    expect(getImagePath()).toContain("denied");
   }));
 });
 
