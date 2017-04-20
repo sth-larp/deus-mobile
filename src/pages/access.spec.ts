@@ -2,7 +2,7 @@ import { AccessPage } from "./access";
 import { DataService } from "../services/data.service";
 import { TestBed, async } from "@angular/core/testing";
 import * as TypeMoq from "typemoq";
-import { ComponentFixture } from "@angular/core/testing";
+import { ComponentFixture, fakeAsync, tick } from "@angular/core/testing";
 import { IonicModule, NavParams } from "ionic-angular";
 import { Observable } from "rxjs/Rx";
 import { MyApp } from "../app/app.component";
@@ -38,24 +38,30 @@ describe('Access Page', () => {
     expect(comp.areaName).toEqual("TestAreaName");
   });
 
-  it('Shows access granted image if there is access', (done: DoneFn) => {
+  it('Shows access granted image if there is access', fakeAsync(() => {
     mockDataService.setup(x => x.checkAccessRights("TestAreaName")).returns(x => Promise.resolve(true));
     fixture = TestBed.createComponent(AccessPage);
+    tick(); // Here we force promise above to resolve, see
+            // https://angular-2-training-book.rangle.io/handout/testing/components/async.html
     comp = fixture.componentInstance;
-    setTimeout(() => {
-      expect(comp.imagePath).toContain("granted");
-      done();
-    }, 0);
-  });
+    expect(comp.imagePath).toContain("granted");
+  }));
 
-  it('Shows access denied image if there is no access', (done: DoneFn) => {
+  it('Shows access denied image if there is no access', fakeAsync(() => {
     mockDataService.setup(x => x.checkAccessRights("TestAreaName")).returns(x => Promise.resolve(false));
     fixture = TestBed.createComponent(AccessPage);
+    tick();
     comp = fixture.componentInstance;
-    setTimeout(() => {
-      expect(comp.imagePath).toContain("denied");
-      done();
-    }, 0);
-  });
+    expect(comp.imagePath).toContain("denied");
+  }));
+
+  // Is this behaviour ok?
+  it('Shows access denied image if there is no server connection', fakeAsync(() => {
+    mockDataService.setup(x => x.checkAccessRights("TestAreaName")).returns(x => Promise.reject("Stuff is broken"));
+    fixture = TestBed.createComponent(AccessPage);
+    tick();
+    comp = fixture.componentInstance;
+    expect(comp.imagePath).toContain("denied");
+  }));
 });
 
