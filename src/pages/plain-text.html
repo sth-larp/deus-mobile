@@ -9,3 +9,10 @@
 <ion-content>
 {{body.content}}
 </ion-content>
+<ion-content>
+  <ion-list>
+    <list-item *ngFor="let item of body.items" [data]="item" [filter]="currentFilter"></list-item>
+  </ion-list>
+</ion-content>
+
+<quick-actions></quick-actions>

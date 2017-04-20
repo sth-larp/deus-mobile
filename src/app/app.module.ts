@@ -28,6 +28,7 @@ import { FormsModule } from "@angular/forms";
 import { CharacterPage } from "../pages/character";
 import { TechnicalInfoPage } from "../pages/technical-info";
 import { DetailsPage } from "../pages/details";
+import { QuickActions } from "../elements/quick-actions";
 
 @NgModule({
   declarations: [
@@ -43,7 +44,8 @@ import { DetailsPage } from "../pages/details";
     ViewQrCodePage,
     CharacterPage,
     TechnicalInfoPage,
-    DetailsPage
+    DetailsPage,
+    QuickActions
   ],
   imports: [
     IonicModule.forRoot(MyApp),

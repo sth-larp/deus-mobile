@@ -1,43 +1,18 @@
-<!-- It appears not to be easy to fix this code duplication:
-     For some reason, if <ion-item> and <ion-note> are used in different
-     files (i.e. different Angular components), ion-note positioned
-     incorrectly (under the text instead of right side).
-     So let's copy-paste, hooray!
-  -->
 <div *ngIf="!filter || filter == data.tag">
 <button ion-item *ngIf="data.details" (click)="openDetails(data.details)" >
   <ion-icon *ngIf="data.hasIcon" [name]='data.icon' item-left></ion-icon>
-  <!-- <div style="position:relative; padding:0px"> -->
   <h2>{{data.text}}</h2>
   <p>{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': data.progressBarColor}">
   </div>
-  <!-- </div> -->
   <ion-note item-right [ngStyle]="{'color': data.valueColor}">{{data.value}}</ion-note>
 </button >
 <ion-item *ngIf="!data.details">
   <ion-icon *ngIf="data.hasIcon" [name]='data.icon' item-left></ion-icon>
-  <!-- <div style="position:relative; padding:0px"> -->
   <h2>{{data.text}}</h2>
   <p>{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': data.progressBarColor}">
   </div>
-  <!-- </div> -->
   <ion-note item-right [ngStyle]="{'color': data.valueColor}">{{data.value}}</ion-note>
 </ion-item >
 </div>
-<!-- TODO: it looks like we don't want to have buttons like this,
-           but who knows, so letting it be for a while.
-<ion-item-sliding>
-   <ion-item-options side="right">
-    <button ion-button color="primary">
-      <ion-icon name="bulb"></ion-icon>
-      Toggle enable
-    </button>
-    <button ion-button color="primary">
-      <ion-icon name="send"></ion-icon>
-      Transfer
-    </button>
-  </ion-item-options>
-</ion-item-sliding>
-  -->
