@@ -22,7 +22,7 @@ export abstract class UpdatablePage {
   protected abstract setBody(body: any);
 
   // tslint:disable-next-line:no-unused-variable
-  private ionViewWillEnter() {
+  public ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe(json => {
       for (const p of json.pages) {
         const pTyped: UpdatablePageData = p;
@@ -34,7 +34,7 @@ export abstract class UpdatablePage {
   }
 
   // tslint:disable-next-line:no-unused-variable
-  private ionViewDidLeave() {
+  public ionViewDidLeave() {
     if (this._subscription) {
       this._subscription.unsubscribe();
       this._subscription = null;
