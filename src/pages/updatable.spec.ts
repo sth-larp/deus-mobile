@@ -19,28 +19,24 @@ describe('Updatable Page', () => {
   const myPageData1: UpdatablePageData = {
     page_type: "Test",
     menu_title: "Test Title",
-    page_title: "Test Page Title",
     body: "body1"
   };
 
   const myPageData2: UpdatablePageData = {
     page_type: "Test",
     menu_title: "Test Title",
-    page_title: "Test Page Title",
     body: "body2"
   };
 
   const someOtherPageData1: UpdatablePageData = {
     page_type: "Other1",
     menu_title: "Other1 title",
-    page_title: "Other1 Page Title",
     body: {}
   };
 
   const someOtherPageData2: UpdatablePageData = {
     page_type: "Other2",
     menu_title: "Other2 title",
-    page_title: "Other2 Page Title",
     body: {}
   };
 
