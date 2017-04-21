@@ -27,11 +27,7 @@ export class TechnicalInfoPage {
   private _queryLogs(): Promise<void> {
     return this._dbConnectionService.getLoggingDb()
       .query(`mobile/${this.level}`, { include_docs: true, limit: this._numEntries, descending: true })
-      .then(res => {
-        this.logEntries = [];
-        for(let row of res.rows)
-          this.logEntries.push(this._rowToLogEntry(row));
-      })
+      .then(res => this.logEntries = res.rows.map(row => this._rowToLogEntry(row)))
       .catch(err => console.log(JSON.stringify(err)));
   }
 
