@@ -33,10 +33,6 @@ export class QrCodeScanService {
       this._prefixToPage.set('character', CharacterPage);
   }
 
-  public showQRCode(content: string): void {
-    this._barcodeScanner.encode(this._barcodeScanner.Encode.TEXT_TYPE, content);
-  }
-
   private _qrScanningOptions = {
     preferFrontCamera: false,
     showFlipCameraButton: false,
