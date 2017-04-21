@@ -20,6 +20,8 @@ export class DataService {
   }
 
   public getData(): Observable<any> {
+    let dummyData: Observable<any> = Observable.of({pages : [{page_type: "plain_test", menu_title: ""}]});
+
     let existingData: Observable<any> = Observable.fromPromise(
       this._dbConnectionService.pagesDb.get(this._username))
 
@@ -34,7 +36,7 @@ export class DataService {
     });
     // It's possible that we don't have proper data on device yet (first login),
     // so we need to skip an error and wait until synchronization.
-    return existingData.onErrorResumeNext(futureUpdates);
+    return dummyData.concat(existingData.onErrorResumeNext(futureUpdates));
   }
 
   public pushEvent(eventType: string, data: any) {

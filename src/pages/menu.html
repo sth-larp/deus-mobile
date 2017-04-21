@@ -1,15 +1,23 @@
 <ion-menu [content]="content">
-  <ion-header>
-    <ion-toolbar>
-      <ion-title>Menu</ion-title>
-    </ion-toolbar>
-  </ion-header>
-
   <ion-content>
-    <ion-list>
+    <ion-item class="menu-header">
+      <ion-avatar item-left class="menu-avatar">
+        <h1>
+          <ion-icon name="person"></ion-icon>
+        </h1>
+      </ion-avatar>
+      <h2>{{getCharacterName()}}</h2>
+      <p>Anonymous Player</p>
+    </ion-item>
+    <ion-list [ngStyle]="{'position': 'relative'}">
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">{{p.menu_title}}</button>
     </ion-list>
   </ion-content>
+  <ion-footer>
+    <ion-list>
+      <button menuClose ion-item detail-none (click)="logout()">Logout</button>
+    </ion-list>
+  </ion-footer>
 </ion-menu>
 
-<ion-nav  [root]="pages[0].root" #content swipeBackEnabled="false"></ion-nav>
+<ion-nav [root]="pages[0].root" #content swipeBackEnabled="false"></ion-nav>

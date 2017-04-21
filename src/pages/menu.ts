@@ -8,6 +8,7 @@ import { ListPage } from "./list";
 import { PlainTextPage } from "./plain-text";
 import { PlaygroundPage } from "./playground";
 import { LoggingService } from "../services/logging.service";
+import { LoginPage } from "./login";
 
 class PageData {
   public root: any;
@@ -60,4 +61,12 @@ export class MenuPage {
       .catch(err => this._logging.error(JSON.stringify(err)));
   }
 
+  public getCharacterName() {
+    return this._dataService.getUsername();
+  }
+
+  public logout() {
+    this._dataService.logout();
+    this._navCtrl.setRoot(LoginPage);
+  }
 }
