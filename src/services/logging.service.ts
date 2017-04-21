@@ -38,7 +38,7 @@ export class LoggingService implements LoggingService {
     const currentDate = new Date();
     NativeStorage.getItem('username')
       .then(username => {
-        return this._dbConnectionService.loggingDb.post(
+        return this._dbConnectionService.getLoggingDb().post(
           { character: username, level: level, msg: msg, timestamp: currentDate.valueOf() }
         );
       })

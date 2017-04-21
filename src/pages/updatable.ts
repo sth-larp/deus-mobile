@@ -1,6 +1,5 @@
 import { DataService } from "../services/data.service";
 import { Subscription } from "rxjs/Rx";
-import { Observable } from "rxjs/Observable";
 
 // Needs to be in sync with json, which uses snake case.
 // tslint:disable:variable-name

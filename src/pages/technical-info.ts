@@ -25,7 +25,7 @@ export class TechnicalInfoPage {
   }
 
   private _queryLogs(): Promise<void> {
-    return this._dbConnectionService.loggingDb
+    return this._dbConnectionService.getLoggingDb()
       .query(`mobile/${this.level}`, { include_docs: true, limit: this._numEntries, descending: true })
       .then(res => {
         this.logEntries = [];

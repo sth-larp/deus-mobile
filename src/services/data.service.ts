@@ -23,10 +23,10 @@ export class DataService {
     let dummyData: Observable<any> = Observable.of({pages : [{page_type: "plain_test", menu_title: ""}]});
 
     let existingData: Observable<any> = Observable.fromPromise(
-      this._dbConnectionService.pagesDb.get(this._username))
+      this._dbConnectionService.getViewModelDb().get(this._username))
 
     let futureUpdates: Observable<any> = Observable.create(observer => {
-      let changesStream = this._dbConnectionService.pagesDb.changes(
+      let changesStream = this._dbConnectionService.getViewModelDb().changes(
         { live: true, since: 'now', include_docs: true, doc_ids: [this._username] });
       changesStream.on('change', change => {
         this._logging.debug("Received page update: " + JSON.stringify(change));
@@ -41,7 +41,7 @@ export class DataService {
 
   public pushEvent(eventType: string, data: any) {
     const currentTimestamp = new Date().valueOf();
-    this._dbConnectionService.eventsDb.post({
+    this._dbConnectionService.getEventsDb().post({
       character: this._username,
       timestamp: currentTimestamp,
       eventType: eventType,

@@ -1,37 +1,53 @@
 import * as PouchDB from 'pouchdb';
 import { Injectable } from "@angular/core";
-import { upsert, insertIfNotExists } from "../utils/pouchdb-utils";
+import { upsert } from "../utils/pouchdb-utils";
 
 // Manages to connection to local and remote databases,
 // creates per-user databases if needed.
 
+class DbAndSync {
+  public db: PouchDB.Database<{}>;
+  public sync: PouchDB.Replication.Sync<{}>;
+}
+
 @Injectable()
 export class DbConnectionService {
-  public pagesDb: PouchDB.Database<{}>;
-  public eventsDb: PouchDB.Database<{}>;
-  public loggingDb: PouchDB.Database<{}>;
+  private _dbs = new Map<string, DbAndSync>();
+  private _username: string = null;
+
+  public getLoggingDb(): PouchDB.Database<{}> { return this._dbs.get("logging-dev").db; }
+  public getViewModelDb(): PouchDB.Database<{}> { return this._dbs.get("pages-dev").db; }
+  public getEventsDb(): PouchDB.Database<{}> { return this._dbs.get("events-dev").db; }
 
   public onLogin(username: string) {
-    this.pagesDb = this.setupLocalAndRemoteDb(username, "pages-dev");
-    this.eventsDb = this.setupLocalAndRemoteDb(username, "events-dev");
-    this.loggingDb = this.setupLocalAndRemoteDb(username, "logging-dev");
-
+    this._username = username;
+    this._dbs.set("pages-dev", this.setupLocalAndRemoteDb("pages-dev"));
+    this._dbs.set("events-dev", this.setupLocalAndRemoteDb("events-dev"));
+    this._dbs.set("logging-dev", this.setupLocalAndRemoteDb("logging-dev"));
     this._setUpLoggingDb();
   }
 
   public onLogout() {
-    // TODO: Is this enough? What if someone already subscribed for some events from
-    // existing databases.
-    this.pagesDb = null;
-    this.eventsDb = null;
-    this.loggingDb = null;
+    this._username = null;
+    this._dbs.forEach((dbAndSync, name) => dbAndSync.sync.cancel());
+    this._dbs.clear();
   }
 
-  private setupLocalAndRemoteDb(username: string, dbName: string): PouchDB.Database<{}> {
-    // TODO: remove slice hack when we switch to proper usernames
-    const localDbName = `${username.slice(0, 5)}_${dbName}`;
-    let db = new PouchDB(localDbName);
+  public forceSync() {
+    this._dbs.forEach((dbAndSync, name) => {
+      dbAndSync.sync.cancel();
+      dbAndSync.sync = this.setUpSyncFor(dbAndSync.db, name);
+    });
+  }
 
+  private setupLocalAndRemoteDb(dbName: string): DbAndSync {
+    const localDbName = `${this._username.replace("@", "")}_${dbName}`;
+    let db = new PouchDB(localDbName);
+    return { db: db, sync: this.setUpSyncFor(db, dbName) };
+  }
+
+  private setUpSyncFor(db: PouchDB.Database<{}>,
+    dbName: string): PouchDB.Replication.Sync<{}> {
     // TODO: provide proper credentials
     const removeDbName = `http://dev.alice.digital:5984/${dbName}`;
     let replicationOptions = {
@@ -39,14 +55,13 @@ export class DbConnectionService {
       retry: true,
       continuous: true,
       filter: 'character/by_name',
-      query_params: { "character": username }
+      query_params: { "character": this._username }
     };
-    db.sync(removeDbName, replicationOptions);
-    return db;
+    return db.sync(removeDbName, replicationOptions);
   }
 
   private _setUpLoggingDb() {
-    upsert(this.loggingDb, {
+    upsert(this.getLoggingDb(), {
       _id: "_design/mobile",
       views: {
         debug: {

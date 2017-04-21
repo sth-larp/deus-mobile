@@ -1,4 +1,5 @@
-import { Component, Input } from '@angular/core';
+import { DbConnectionService } from '../services/db-connection.service';
+import { Component } from '@angular/core';
 import { DetailsData, DetailsPage } from "../pages/details";
 import { ModalController } from "ionic-angular";
 import { ViewQrCodePage } from "../pages/view-qrcode";
@@ -12,14 +13,15 @@ import { DataService } from "../services/data.service";
 export class QuickActions {
   constructor(private _modalController: ModalController,
     private _qrCodeScanService: QrCodeScanService,
-    private _dataService: DataService) { }
+    private _dataService: DataService,
+    private _dbConnectionService: DbConnectionService) { }
 
   public onBarcode() {
     this._qrCodeScanService.scanQRCode();
   }
 
   public onRefresh() {
-
+    this._dbConnectionService.forceSync();
   }
 
   public onId() {
