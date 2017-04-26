@@ -31,8 +31,8 @@ export class ViewQrCodePage {
       this._canvasRef.nativeElement.getContext('2d');
 
     // TODO: device-dependent size? Or how properly adjust it?
-    let cellSize = 10;
-    let margin = cellSize * 4
+    let cellSize = 20;
+    let margin = cellSize * 1;
 
     var size = qr.getModuleCount() * cellSize + margin * 2;
     this._canvasRef.nativeElement.width = size;
