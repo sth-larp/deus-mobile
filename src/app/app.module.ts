@@ -29,6 +29,8 @@ import { CharacterPage } from "../pages/character";
 import { TechnicalInfoPage } from "../pages/technical-info";
 import { DetailsPage } from "../pages/details";
 import { QuickActions } from "../elements/quick-actions";
+import { ServerTimeService } from "../services/server-time.service";
+import { LocalTimeService } from "../services/local-time.service";
 
 @NgModule({
   declarations: [
@@ -76,6 +78,8 @@ import { QuickActions } from "../elements/quick-actions";
     Firebase,
     FirebaseService,
     BarcodeScanner,
+    LocalTimeService,
+    ServerTimeService
   ]
 })
 export class AppModule {}
