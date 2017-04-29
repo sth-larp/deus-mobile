@@ -20,7 +20,8 @@ describe('MonotonicTimeService', () => {
   let makeTestMonotonicTimeService = () => new MonotonicTimeService(fakeNativeStorage, mockLocalTimeService.object, mockServerTimeService.object);
 
   it('Createable', () => {
-    expect(makeTestMonotonicTimeService).not.toBeNull();
+    mockServerTimeService.setup(x => x.getUnixTimeMs()).returns(() => Observable.empty());
+    expect(makeTestMonotonicTimeService()).not.toBeNull();
   });
 
   it('Returns estimated server time after sync', fakeAsync(() => {
