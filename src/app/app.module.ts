@@ -31,6 +31,8 @@ import { DetailsPage } from "../pages/details";
 import { QuickActions } from "../elements/quick-actions";
 import { ServerTimeService } from "../services/server-time.service";
 import { LocalTimeService } from "../services/local-time.service";
+import { NativeStorageService } from "../services/native-storage.service";
+import { MonotonicTimeService } from "../services/monotonic-time.service";
 
 @NgModule({
   declarations: [
@@ -70,6 +72,7 @@ import { LocalTimeService } from "../services/local-time.service";
     DetailsPage
   ],
   providers: [
+    NativeStorageService,
     DbConnectionService,
     DataService,
     BackendService,
@@ -79,7 +82,8 @@ import { LocalTimeService } from "../services/local-time.service";
     FirebaseService,
     BarcodeScanner,
     LocalTimeService,
-    ServerTimeService
+    ServerTimeService,
+    MonotonicTimeService
   ]
 })
 export class AppModule {}
