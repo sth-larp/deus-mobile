@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavParams, Content, Segment } from "ionic-angular";
+import { NavParams, Content, Segment, NavController } from "ionic-angular";
 import { ListItemData } from '../elements/list-item';
 import { UpdatablePage } from "./updatable";
 import { DataService } from "../services/data.service";
@@ -22,8 +22,8 @@ export class ListPage extends UpdatablePage {
   public currentFilter = "";
   public filters: Array<string> = [];
 
-  constructor(dataService: DataService, navParams: NavParams) {
-    super(navParams.data.id, dataService);
+  constructor(dataService: DataService, navCtrl: NavController, navParams: NavParams) {
+    super(navParams.data.id, dataService, navCtrl);
   }
 
   protected setBody(body: any) {

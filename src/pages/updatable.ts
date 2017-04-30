@@ -1,5 +1,7 @@
 import { DataService } from "../services/data.service";
 import { Subscription } from "rxjs/Rx";
+import { NavController } from "ionic-angular";
+import { PlaygroundPage } from "./playground";
 
 // Needs to be in sync with json, which uses snake case.
 // tslint:disable:variable-name
@@ -13,7 +15,8 @@ export class UpdatablePageData {
 export abstract class UpdatablePage {
   private _subscription: Subscription = null;
   constructor(private _title: string,
-              private _dataService: DataService) {
+              private _dataService: DataService,
+              private _navCtrl: NavController) {
   }
 
   protected abstract setBody(body: any);
@@ -25,6 +28,9 @@ export abstract class UpdatablePage {
       const thisPageData = pagesTyped.find((p: UpdatablePageData) => p.menu_title == this._title);
       if (thisPageData)
         this.setBody(thisPageData.body);
+      else {
+        this._navCtrl.setRoot(PlaygroundPage)
+      }
     });
   }
 

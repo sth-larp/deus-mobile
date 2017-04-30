@@ -19,6 +19,7 @@ describe('Access Page', () => {
   }
 
   beforeEach(async(() => {
+    mockDataService.reset();
     TestBed.configureTestingModule({
       declarations: [AccessPage, MyApp],
       providers: [

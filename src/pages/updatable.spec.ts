@@ -4,10 +4,12 @@ import { UpdatablePage, UpdatablePageData } from "./updatable";
 import { DataService } from "../services/data.service";
 import { Observable } from "rxjs/Rx";
 import { tick } from "@angular/core/testing";
+import { NavController } from "ionic-angular";
+import { PlaygroundPage } from "./playground";
 
 class TestUpdatablePage extends UpdatablePage {
-  constructor(dataService: DataService) {
-    super("Test Title", dataService);
+  constructor(dataService: DataService, navCtrl: NavController) {
+    super("Test Title", dataService, navCtrl);
   }
   public body: any = null;
   public setBody(body: any) { this.body = body; }
@@ -15,6 +17,7 @@ class TestUpdatablePage extends UpdatablePage {
 
 describe('Updatable Page', () => {
   let mockDataService: TypeMoq.IMock<DataService> = TypeMoq.Mock.ofType(DataService);
+  let mockNavCtrl: TypeMoq.IMock<NavController> = TypeMoq.Mock.ofType<NavController>();
 
   const myPageData1: UpdatablePageData = {
     page_type: "Test",
@@ -36,27 +39,32 @@ describe('Updatable Page', () => {
 
   const someOtherPageData2: UpdatablePageData = {
     page_type: "Other2",
-    menu_title: "Other2 title",
+    menu_title: "Other2 title dafuw",
     body: {}
   };
 
-  const state1 = {pages: [myPageData1, someOtherPageData1] };
-  const state2 = {pages: [myPageData1, someOtherPageData2] };
+  const state1 = { pages: [myPageData1, someOtherPageData1] };
+  const state2 = { pages: [myPageData1, someOtherPageData2] };
   // Here TestUpdatablePage body should change
-  const state3 = {pages: [myPageData2, someOtherPageData2] };
-  const state4 = {pages: [myPageData2] };
+  const state3 = { pages: [myPageData2, someOtherPageData2] };
+  const state4 = { pages: [myPageData2] };
 
   const states: Array<any> = [state1, state2, state3, state4];
 
-  const statePageDeleted = {pages: someOtherPageData2};
+  const statePageDeleted = { pages: [someOtherPageData2] };
   const statesDeletion: Array<any> = [state1, statePageDeleted];
 
+  beforeEach(() => {
+    mockDataService.reset();
+    mockNavCtrl.reset();
+  });
+
   it('Createable', () => {
-    let page = new TestUpdatablePage(mockDataService.object);
+    let page = new TestUpdatablePage(mockDataService.object, mockNavCtrl.object);
   });
 
   it("Reacts on updates after ionViewWillEnter and ionViewDidLeave", fakeAsync(() => {
-    let page = new TestUpdatablePage(mockDataService.object);
+    let page = new TestUpdatablePage(mockDataService.object, mockNavCtrl.object);
     let observable = Observable.interval(1).take(4).map(i => states[i]);
     mockDataService.setup(x => x.getData()).returns(() => observable);
     expect(page.body).toBeNull();
@@ -73,7 +81,7 @@ describe('Updatable Page', () => {
   }));
 
   it("Does not react before ionViewWillEnter", fakeAsync(() => {
-    let page = new TestUpdatablePage(mockDataService.object);
+    let page = new TestUpdatablePage(mockDataService.object, mockNavCtrl.object);
     let observable = Observable.interval(1).take(4).map(i => states[i]);
     mockDataService.setup(x => x.getData()).returns(() => observable);
     expect(page.body).toBeNull();
@@ -88,7 +96,7 @@ describe('Updatable Page', () => {
   }));
 
   it("Does not react after ionViewDidLeave", fakeAsync(() => {
-    let page = new TestUpdatablePage(mockDataService.object);
+    let page = new TestUpdatablePage(mockDataService.object, mockNavCtrl.object);
     let observable = Observable.interval(1).take(2).map(i => states[i]);
     mockDataService.setup(x => x.getData()).returns(() => observable);
     expect(page.body).toBeNull();
@@ -104,17 +112,16 @@ describe('Updatable Page', () => {
     expect(page.body).toEqual("body1");
   }));
 
-  // TODO: fix it, probably by redirecting to home page
-  it("Has same body after being deleted", fakeAsync(() => {
-    let page = new TestUpdatablePage(mockDataService.object);
-    let observable = Observable.interval(1).take(2).map(i => statePageDeleted[i]);
+  it("Redirectes to start page if current page is deleted", fakeAsync(() => {
+    let page = new TestUpdatablePage(mockDataService.object, mockNavCtrl.object);
+    let observable = Observable.interval(1).take(2).map(i => statesDeletion[i]);
     mockDataService.setup(x => x.getData()).returns(() => observable);
     expect(page.body).toBeNull();
     page.ionViewWillEnter();
     tick(1); // went to state 1
     expect(page.body).toEqual("body1");
-    tick(1); // went to state 2, page actually deleted
-    expect(page.body).toEqual("body1");
+    tick(1); // went to state 2, page deleted, expected to go to start page
+    mockNavCtrl.verify(x => x.setRoot(PlaygroundPage), TypeMoq.Times.once());
     page.ionViewDidLeave();
   }));
 });
