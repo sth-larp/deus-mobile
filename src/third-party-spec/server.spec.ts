@@ -4,7 +4,7 @@ import {
   CookieXSRFStrategy, Http, XHRBackend, ConnectionBackend, BrowserXhr, XSRFStrategy, BaseResponseOptions,
   RequestOptions, BaseRequestOptions, ResponseOptions, RequestOptionsArgs, Headers
 } from '@angular/http';
-
+/*
 describe('Server API', () => {
   let http = ReflectiveInjector.resolveAndCreate([
     Http, BrowserXhr,
@@ -62,3 +62,4 @@ describe('Server API', () => {
     );
   });
 });
+*/
