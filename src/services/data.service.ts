@@ -36,7 +36,7 @@ export class DataService {
     });
     // It's possible that we don't have proper data on device yet (first login),
     // so we need to skip an error and wait until synchronization.
-    return dummyData.concat(existingData.onErrorResumeNext(futureUpdates));
+    return existingData.catch(() => dummyData).concat(futureUpdates);
   }
 
   public pushEvent(eventType: string, data: any) {
