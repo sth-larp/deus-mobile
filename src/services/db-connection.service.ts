@@ -15,9 +15,10 @@ export class DbConnectionService {
   private _dbs = new Map<string, DbAndSync>();
   private _username: string = null;
 
-  public getLoggingDb(): PouchDB.Database<{}> { return this._dbs.get("logging-dev").db; }
+  // TODO: Declare database element types as stand-alone classes.
+  public getLoggingDb(): PouchDB.Database<{ character: any; level: string; msg: string; timestamp: number; }> { return this._dbs.get("logging-dev").db; }
   public getViewModelDb(): PouchDB.Database<{}> { return this._dbs.get("pages-dev").db; }
-  public getEventsDb(): PouchDB.Database<{}> { return this._dbs.get("events-dev").db; }
+  public getEventsDb(): PouchDB.Database<{ character: string; timestamp: number; eventType: string; data: any; }> { return this._dbs.get("events-dev").db; }
 
   public onLogin(username: string) {
     this._username = username;
