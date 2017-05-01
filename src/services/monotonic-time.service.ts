@@ -1,7 +1,4 @@
 import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Rx";
-import { Http } from "@angular/http";
-import { NativeStorage } from "ionic-native/dist/es5";
 import { ServerTimeService } from "./server-time.service";
 import { LocalTimeService } from "./local-time.service";
 import { NativeStorageService } from "./native-storage.service";

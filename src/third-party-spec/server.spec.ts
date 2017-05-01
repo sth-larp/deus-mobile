@@ -1,10 +1,10 @@
 ﻿/// <reference path="../../node_modules/@types/jasmine/index.d.ts" />
+/*
 import { ReflectiveInjector } from '@angular/core';
 import {
   CookieXSRFStrategy, Http, XHRBackend, ConnectionBackend, BrowserXhr, XSRFStrategy, BaseResponseOptions,
   RequestOptions, BaseRequestOptions, ResponseOptions, RequestOptionsArgs, Headers
 } from '@angular/http';
-/*
 describe('Server API', () => {
   let http = ReflectiveInjector.resolveAndCreate([
     Http, BrowserXhr,

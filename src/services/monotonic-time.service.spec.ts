@@ -1,9 +1,9 @@
-import { TestBed, inject, async, fakeAsync, tick } from '@angular/core/testing'
+import { fakeAsync, tick } from '@angular/core/testing'
 import * as TypeMoq from "typemoq";
 import { ServerTimeService } from "./server-time.service";
 import { LocalTimeService } from "./local-time.service";
 import { MonotonicTimeService } from "./monotonic-time.service";
-import { InMemoryNativeStorageService, NativeStorageService } from "./native-storage.service";
+import { InMemoryNativeStorageService } from "./native-storage.service";
 import { Observable } from "rxjs/Rx";
 
 describe('MonotonicTimeService', () => {

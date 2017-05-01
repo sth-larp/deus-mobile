@@ -4,7 +4,6 @@ import { TestBed, async } from "@angular/core/testing";
 import * as TypeMoq from "typemoq";
 import { ComponentFixture, fakeAsync, tick } from "@angular/core/testing";
 import { IonicModule, NavParams, NavController } from "ionic-angular";
-import { Observable } from "rxjs/Rx";
 import { MyApp } from "../app/app.component";
 import { By } from "@angular/platform-browser";
 

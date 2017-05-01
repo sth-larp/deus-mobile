@@ -61,6 +61,7 @@ describe('Updatable Page', () => {
 
   it('Createable', () => {
     let page = new TestUpdatablePage(mockDataService.object, mockNavCtrl.object);
+    expect(page).not.toBeNull();
   });
 
   it("Reacts on updates after ionViewWillEnter and ionViewDidLeave", fakeAsync(() => {
