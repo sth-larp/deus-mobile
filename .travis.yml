@@ -18,6 +18,8 @@ matrix:
 cache:
   directories:
   - node_modules
+git:
+  depth: 1000000
 before_install:
 - rvm use system
 - export LANG=en_US.UTF-8
