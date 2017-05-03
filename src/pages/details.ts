@@ -39,7 +39,7 @@ export class DetailsPage {
           role: 'cancel'
         })
     let actionSheet = this._actionSheetCtrl.create({
-      title: 'Actions',
+      title: '',
       buttons: buttons
     });
     actionSheet.present();
