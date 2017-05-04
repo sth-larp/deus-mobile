@@ -6,7 +6,7 @@
     <ion-title>{{body.title}}</ion-title>
   </ion-navbar>
   <ion-toolbar *ngIf="body.filters" no-border-top>
-    <ion-segment [ngModel]="currentFilter">
+    <ion-segment color="standard" [ngModel]="currentFilter">
       <ion-segment-button value="" (ionSelect)="onFilter('')">
         all
       </ion-segment-button>

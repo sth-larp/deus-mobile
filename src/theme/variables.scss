@@ -12,6 +12,7 @@
 // The "primary" color is the only required color in the map.
 
 $colors: (
+  standard:   #F3F5F8,
   primary:    #4990E2,
   //secondary:  ...,
   danger:     #FF373F
@@ -27,7 +28,7 @@ $colors: (
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-$text-color:          #F3F5F8;
+$text-color:          color($colors, standard);
 $background-color:    #4A5760;
 $toolbar-background:  #32383D;
 
@@ -36,7 +37,7 @@ $toolbar-background:  #32383D;
 // --------------------------------------------------
 // Material Design only Sass variables can go here
 
-$item-md-paragraph-text-color:  #A7AEB4;
+$item-md-paragraph-text-color:  #AFB6BB;
 $list-md-border-color: #8494A1;
 
 // TODO: Side menu colors
