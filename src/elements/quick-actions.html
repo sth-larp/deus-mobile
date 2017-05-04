@@ -14,7 +14,11 @@
         </ion-col>
         <ion-col>
           <button ion-button block icon-only clear (click)="onRefresh()">
-            <h3><img style='height: 1.6em' src="assets/icon/sync_green.png"/></h3>
+            <h3 [ngSwitch]="updateStatus">
+              <img *ngSwitchCase="'Green'" style='height: 1.6em' src="assets/icon/sync_green.png"/>
+              <img *ngSwitchCase="'Yellow'" style='height: 1.6em' src="assets/icon/sync_yellow.png"/>
+              <img *ngSwitchCase="'Red'" style='height: 1.6em' src="assets/icon/sync_red.png"/>
+            </h3>
           </button>
         </ion-col>
       </ion-row>

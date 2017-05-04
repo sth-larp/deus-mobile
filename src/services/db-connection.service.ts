@@ -1,5 +1,6 @@
 import * as PouchDB from 'pouchdb';
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs/Rx";
 import { upsert } from "../utils/pouchdb-utils";
 
 // Manages to connection to local and remote databases,
@@ -10,21 +11,58 @@ class DbAndSync {
   public sync: PouchDB.Replication.Sync<{}>;
 }
 
+export enum UpdateStatus {
+  Green,
+  Yellow,
+  Red
+}
+
 @Injectable()
 export class DbConnectionService {
   private _dbs = new Map<string, DbAndSync>();
   private _username: string = null;
+  private _lastUpdateTime: number;
+  private _updateStatus: Observable<any>;
+
+  constructor() {
+    this._updateStatus = Observable.timer(100, 100).map(() => {
+      // TODO: consider relying on replicated paused/resumed events instead
+      let timeElapsedSec = (performance.now() - this._lastUpdateTime) / 1000;
+      if (timeElapsedSec < 5)
+        return UpdateStatus.Green;
+      else if (timeElapsedSec < 30)  // TODO: increase
+        return UpdateStatus.Yellow;
+      else
+        return UpdateStatus.Red;
+    });
+  }
 
   // TODO: Declare database element types as stand-alone classes.
   public getLoggingDb(): PouchDB.Database<{ character: any; level: string; msg: string; timestamp: number; }> { return this._dbs.get("logging-dev").db; }
   public getViewModelDb(): PouchDB.Database<{}> { return this._dbs.get("pages-dev").db; }
   public getEventsDb(): PouchDB.Database<{ character: string; timestamp: number; eventType: string; data: any; }> { return this._dbs.get("events-dev").db; }
 
+  public getUpdateStatus(): Observable<any> { return this._updateStatus; }
+
   public onLogin(username: string) {
     this._username = username;
     this._dbs.set("pages-dev", this.setupLocalAndRemoteDb("pages-dev"));
     this._dbs.set("events-dev", this.setupLocalAndRemoteDb("events-dev"));
     this._dbs.set("logging-dev", this.setupLocalAndRemoteDb("logging-dev"));
+
+    // TODO: fix
+    this._dbs.get("pages-dev").sync
+      .on('complete', (info) => {
+        this._lastUpdateTime = performance.now();
+      }).on('change', (change) => {
+        // yo, something changed!
+        this._lastUpdateTime = performance.now();
+      }).on('paused', (info) => {
+        // replication was paused, usually because of a lost connection
+      }).on('error', (err) => {
+        // totally unhandled error (shouldn't happen)
+      });
+
     this._setUpLoggingDb();
   }
 
