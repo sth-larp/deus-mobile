@@ -1,8 +1,8 @@
 ﻿import { Component, ViewChild } from '@angular/core';
-
-import { DataService } from '../services/data.service';
 import { NavController, Nav } from "ionic-angular";
 import { Subscription } from "rxjs/Subscription";
+
+import { DataService } from '../services/data.service';
 import { TechnicalInfoPage } from "./technical-info";
 import { ListPage } from "./list";
 import { PlainTextPage } from "./plain-text";
