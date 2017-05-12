@@ -2,11 +2,11 @@
 set -e
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then  
-  ionic platform add ios
-  ionic build ios --device --buildConfig ./cordovaBuildConfig.json
+  ionic cordova platform add ios
+  ionic cordova build ios --device --buildConfig ./cordovaBuildConfig.json
 fi
 
 if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then  
-  ionic platform add android
-  ionic build android --device
+  ionic cordova platform add android
+  ionic cordova build android --device
 fi
