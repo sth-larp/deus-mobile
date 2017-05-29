@@ -19,6 +19,14 @@
           </button>
         </ion-col>
         <ion-col>
+          <button ion-button block icon-only clear>
+            <h3 [ngSwitch]="1">
+              <img *ngSwitchCase="0" style='height: 1.6em' src="assets/icon/virtual-reality-off.svg"/>
+              <img *ngSwitchCase="1" style='height: 1.6em' src="assets/icon/virtual-reality-on.svg"/>
+            </h3>
+          </button>
+        </ion-col>
+        <ion-col>
           <button ion-button block icon-only clear (click)="onRefresh()">
             <h3 [ngSwitch]="updateStatus">
               <img *ngSwitchCase="'Green'" style='height: 1.6em' src="assets/icon/sync_green.png"/>
