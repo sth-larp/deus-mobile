@@ -6,6 +6,7 @@ import { DataService } from '../services/data.service';
 import { TechnicalInfoPage } from "./technical-info";
 import { ListPage } from "./list";
 import { PlainTextPage } from "./plain-text";
+import { EconomyPage } from "./economy";
 import { PlaygroundPage } from "./playground";
 import { LoggingService } from "../services/logging.service";
 import { LoginPage } from "./login";
@@ -33,6 +34,7 @@ export class MenuPage {
     private _logging: LoggingService) {
     this._pageTypeToPage.set('list', ListPage);
     this._pageTypeToPage.set('plain_text', PlainTextPage);
+    this._pageTypeToPage.set('economy', EconomyPage);
     this._pageTypeToPage.set('technical_info', TechnicalInfoPage);
   }
 

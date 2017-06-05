@@ -9,6 +9,7 @@ import { MyApp } from './app.component';
 import { ListPage } from '../pages/list';
 import { LoginPage } from '../pages/login';
 import { PlainTextPage } from '../pages/plain-text';
+import { EconomyPage } from '../pages/economy';
 import { PlaygroundPage } from '../pages/playground';
 import { MenuPage } from '../pages/menu';
 
@@ -42,6 +43,7 @@ import { MonotonicTimeService } from "../services/monotonic-time.service";
     LoginPage,
     LogoutButton,
     PlainTextPage,
+    EconomyPage,
     PlaygroundPage,
     MenuPage,
     AccessPage,
@@ -63,6 +65,7 @@ import { MonotonicTimeService } from "../services/monotonic-time.service";
     ListPage,
     LoginPage,
     PlainTextPage,
+    EconomyPage,
     PlaygroundPage,
     MenuPage,
     AccessPage,
