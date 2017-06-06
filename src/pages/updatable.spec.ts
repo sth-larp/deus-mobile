@@ -20,26 +20,26 @@ describe('Updatable Page', () => {
   let mockNavCtrl: TypeMoq.IMock<NavController> = TypeMoq.Mock.ofType<NavController>();
 
   const myPageData1: UpdatablePageData = {
-    page_type: "Test",
-    menu_title: "Test Title",
+    pageType: "Test",
+    menuTitle: "Test Title",
     body: "body1"
   };
 
   const myPageData2: UpdatablePageData = {
-    page_type: "Test",
-    menu_title: "Test Title",
+    pageType: "Test",
+    menuTitle: "Test Title",
     body: "body2"
   };
 
   const someOtherPageData1: UpdatablePageData = {
-    page_type: "Other1",
-    menu_title: "Other1 title",
+    pageType: "Other1",
+    menuTitle: "Other1 title",
     body: {}
   };
 
   const someOtherPageData2: UpdatablePageData = {
-    page_type: "Other2",
-    menu_title: "Other2 title dafuw",
+    pageType: "Other2",
+    menuTitle: "Other2 title dafuw",
     body: {}
   };
 

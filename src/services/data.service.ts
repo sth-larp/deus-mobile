@@ -20,7 +20,7 @@ export class DataService {
   }
 
   public getData(): Observable<any> {
-    let dummyData: Observable<any> = Observable.of({pages : [{page_type: "plain_test", menu_title: ""}]});
+    let dummyData: Observable<any> = Observable.of({pages : [{pageType: "plain_test", menuTitle: ""}]});
 
     let existingData: Observable<any> = Observable.fromPromise(
       this._dbConnectionService.getViewModelDb().get(this._username))

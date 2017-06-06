@@ -6,8 +6,8 @@ import { PlaygroundPage } from "./playground";
 // Needs to be in sync with json, which uses snake case.
 // tslint:disable:variable-name
 export class UpdatablePageData {
-  public page_type: string;
-  public menu_title: string;
+  public pageType: string;
+  public menuTitle: string;
   public body: any;
 }
 // tslint:enable:variable-name
@@ -25,7 +25,7 @@ export abstract class UpdatablePage {
   public ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe(json => {
       const pagesTyped: Array<UpdatablePageData> = json.pages;
-      const thisPageData = pagesTyped.find((p: UpdatablePageData) => p.menu_title == this._title);
+      const thisPageData = pagesTyped.find((p: UpdatablePageData) => p.menuTitle == this._title);
       if (thisPageData)
         this.setBody(thisPageData.body);
       else {

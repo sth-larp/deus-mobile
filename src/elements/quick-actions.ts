@@ -29,7 +29,7 @@ export class QuickActions {
   private ngOnInit() {
     // TODO: Do we need to unsubscribe?
     this._dataService.getData().subscribe(
-      json => { this.hitPoints = json.toolbar.hit_points;  this._logging.debug('HIT POINTS: ' + this.hitPoints); },
+      json => { this.hitPoints = json.toolbar.hitPoints;  this._logging.debug('HIT POINTS: ' + this.hitPoints); },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
   }

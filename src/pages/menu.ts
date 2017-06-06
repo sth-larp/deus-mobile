@@ -14,7 +14,7 @@ import { LoginPage } from "./login";
 class PageData {
   public root: any;
   // tslint:disable-next-line:variable-name
-  public menu_title: string;
+  public menuTitle: string;
 }
 
 
@@ -24,7 +24,7 @@ class PageData {
 export class MenuPage {
   @ViewChild(Nav) private _nav: Nav;
 
-  public pages: Array<PageData> = [{ root: PlaygroundPage, menu_title: "Playground" }];
+  public pages: Array<PageData> = [{ root: PlaygroundPage, menuTitle: "Playground" }];
 
   private _pageTypeToPage = new Map<string, any>();
   private _subscription: Subscription = null;
@@ -42,9 +42,9 @@ export class MenuPage {
   private ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe(
       json => {
-        this.pages = [{ root: PlaygroundPage, menu_title: "Playground" }];
+        this.pages = [{ root: PlaygroundPage, menuTitle: "Playground" }];
         for (let p of json.pages)
-          this.pages.push({ root: this._pageTypeToPage.get(p.page_type), menu_title: p.menu_title });
+          this.pages.push({ root: this._pageTypeToPage.get(p.pageType), menuTitle: p.menuTitle });
       },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
@@ -59,7 +59,7 @@ export class MenuPage {
   }
 
   public openPage(page: PageData) {
-    this._nav.setRoot(page.root, { id: page.menu_title })
+    this._nav.setRoot(page.root, { id: page.menuTitle })
       .catch(err => this._logging.error(JSON.stringify(err)));
   }
 
