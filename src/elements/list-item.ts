@@ -30,6 +30,16 @@ export class ListItem {
 
   constructor(private _modalCtrl: ModalController) { }
 
+  public getValueColor(): string {
+    // TODO: Get color from variables.scss instead
+    return this.data.valueColor ? this.data.valueColor : "#F3F5F8";
+  }
+
+  public getProgressBarColor(): string {
+    // TODO: Add color to variables.scss instead
+    return this.data.progressBarColor ? this.data.progressBarColor : "#6987A4";
+  }
+
   public openDetails(details: DetailsData) {
     let accessModal = this._modalCtrl.create(DetailsPage, { value: details });
     accessModal.present();

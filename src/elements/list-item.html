@@ -3,16 +3,16 @@
   <ion-icon *ngIf="data.hasIcon" [name]='data.icon' item-left></ion-icon>
   <h2>{{data.text}}</h2>
   <p>{{data.subtext}}</p>
-  <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': data.progressBarColor}">
+  <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': getProgressBarColor()}">
   </div>
-  <ion-note item-right [ngStyle]="{'color': data.valueColor}">{{data.value}}</ion-note>
+  <ion-note item-right [ngStyle]="{'color': getValueColor()}"><b>{{data.value}}</b></ion-note>
 </button >
 <ion-item *ngIf="!data.details" mode="ios" >
   <ion-icon *ngIf="data.hasIcon" [name]='data.icon' item-left></ion-icon>
   <h2>{{data.text}}</h2>
   <p>{{data.subtext}}</p>
-  <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': data.progressBarColor}">
+  <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': getProgressBarColor()}">
   </div>
-  <ion-note item-right [ngStyle]="{'color': data.valueColor}">{{data.value}}</ion-note>
+  <ion-note item-right [ngStyle]="{'color': getValueColor()}"><b>{{data.value}}</b></ion-note>
 </ion-item >
 </div>
