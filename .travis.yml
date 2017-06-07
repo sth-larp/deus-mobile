@@ -25,7 +25,7 @@ before_install:
 - export LANG=en_US.UTF-8
 - if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then brew update; fi
 - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then ./scripts/install-jdk.sh; fi
-- if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then nvm install --lts; nvm use --lts; fi
+- if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then nvm install v6.11.0; nvm use v6.11.0; fi
 - npm -v
 - node -v
 - npm install -g cordova ionic
