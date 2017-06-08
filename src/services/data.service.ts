@@ -20,7 +20,7 @@ export class DataService {
   }
 
   public getData(): Observable<any> {
-    let dummyData: Observable<any> = Observable.of({pages : [{pageType: "plain_test", menuTitle: ""}]});
+    let dummyData: Observable<any> = Observable.of({ pages: [{ pageType: "plain_test", menuTitle: "" }] });
 
     let existingData: Observable<any> = Observable.fromPromise(
       this._dbConnectionService.getViewModelDb().get(this._username))
@@ -47,6 +47,15 @@ export class DataService {
       eventType: eventType,
       data: data
     })
+      .then(response => {
+        this._logging.debug(JSON.stringify(response));
+        return this._dbConnectionService.getEventsDb().post({
+          characterId: this._username,
+          timestamp: currentTimestamp + 1,
+          eventType: '_RefreshModel',
+          data: {}
+        });
+      })
       .then(response => this._logging.debug(JSON.stringify(response)))
       .catch(err => this._logging.debug(JSON.stringify(err)))
   }
