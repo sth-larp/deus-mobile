@@ -34,6 +34,7 @@ import { ServerTimeService } from "../services/server-time.service";
 import { LocalTimeService } from "../services/local-time.service";
 import { NativeStorageService } from "../services/native-storage.service";
 import { MonotonicTimeService } from "../services/monotonic-time.service";
+import { GeneralQRCodePage } from "../pages/general-qrcode";
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { MonotonicTimeService } from "../services/monotonic-time.service";
     PlaygroundPage,
     MenuPage,
     AccessPage,
+    GeneralQRCodePage,
     ViewQrCodePage,
     CharacterPage,
     TechnicalInfoPage,
@@ -69,6 +71,7 @@ import { MonotonicTimeService } from "../services/monotonic-time.service";
     PlaygroundPage,
     MenuPage,
     AccessPage,
+    GeneralQRCodePage,
     ViewQrCodePage,
     CharacterPage,
     TechnicalInfoPage,

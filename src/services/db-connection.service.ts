@@ -8,7 +8,7 @@ import { upsert } from "../utils/pouchdb-utils";
 
 class DbAndSync {
   public db: PouchDB.Database<{}>;
-  public sync: PouchDB.Replication.Sync<{}>;
+  public replication: PouchDB.Replication.Replication<{}>;
 }
 
 export enum UpdateStatus {
@@ -40,7 +40,7 @@ export class DbConnectionService {
   // TODO: Declare database element types as stand-alone classes.
   public getLoggingDb(): PouchDB.Database<{ character: any; level: string; msg: string; timestamp: number; }> { return this._dbs.get("logging-dev").db; }
   public getViewModelDb(): PouchDB.Database<{}> { return this._dbs.get("pages-dev").db; }
-  public getEventsDb(): PouchDB.Database<{ character: string; timestamp: number; eventType: string; data: any; }> { return this._dbs.get("events-dev").db; }
+  public getEventsDb(): PouchDB.Database<{ characterId: string; timestamp: number; eventType: string; data: any; }> { return this._dbs.get("events-dev").db; }
 
   public getUpdateStatus(): Observable<any> { return this._updateStatus; }
 
@@ -51,7 +51,7 @@ export class DbConnectionService {
     this._dbs.set("logging-dev", this.setupLocalAndRemoteDb("logging-dev"));
 
     // TODO: fix
-    this._dbs.get("pages-dev").sync
+    this._dbs.get("pages-dev").replication
       .on('complete', (info) => {
         this._lastUpdateTime = performance.now();
       }).on('change', (change) => {
@@ -68,35 +68,40 @@ export class DbConnectionService {
 
   public onLogout() {
     this._username = null;
-    this._dbs.forEach((dbAndSync, name) => dbAndSync.sync.cancel());
+    this._dbs.forEach((dbAndSync, name) => dbAndSync.replication.cancel());
     this._dbs.clear();
   }
 
   public forceSync() {
     this._dbs.forEach((dbAndSync, name) => {
-      dbAndSync.sync.cancel();
-      dbAndSync.sync = this.setUpSyncFor(dbAndSync.db, name);
+      dbAndSync.replication.cancel();
+      dbAndSync.replication = this.setUpSyncFor(dbAndSync.db, name);
     });
   }
 
   private setupLocalAndRemoteDb(dbName: string): DbAndSync {
     const localDbName = `${this._username.replace("@", "")}_${dbName}`;
     let db = new PouchDB(localDbName);
-    return { db: db, sync: this.setUpSyncFor(db, dbName) };
+    return { db: db, replication: this.setUpSyncFor(db, dbName) };
   }
 
   private setUpSyncFor(db: PouchDB.Database<{}>,
-    dbName: string): PouchDB.Replication.Sync<{}> {
+    dbName: string): PouchDB.Replication.Replication<{}> {
     // TODO: provide proper credentials
-    const removeDbName = `http://dev.alice.digital:5984/${dbName}`;
-    let replicationOptions = {
+    const remoteDbName = `http://dev.alice.digital:5984/${dbName}`;
+    const serverToClient = dbName.includes('pages') || dbName.includes('viewmodel');
+    let replicationOptions: any = {
       live: true,
       retry: true,
       continuous: true,
-      filter: 'character/by_name',
-      query_params: { "character": this._username }
     };
-    return db.sync(removeDbName, replicationOptions);
+    if (serverToClient) {
+      replicationOptions.filter = 'character/by_name';
+      replicationOptions.query_params = { "character": this._username }
+      return db.replicate.from(remoteDbName, replicationOptions);
+    } else {
+      return db.replicate.to(remoteDbName, replicationOptions);
+    }
   }
 
   private _setUpLoggingDb() {

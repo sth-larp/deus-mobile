@@ -42,7 +42,7 @@ export class DataService {
   public pushEvent(eventType: string, data: any) {
     const currentTimestamp = new Date().valueOf();
     this._dbConnectionService.getEventsDb().post({
-      character: this._username,
+      characterId: this._username,
       timestamp: currentTimestamp,
       eventType: eventType,
       data: data

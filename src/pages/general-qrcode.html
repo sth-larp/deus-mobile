@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-navbar>
+	<ion-buttons left>
+		<button ion-button navPop icon-only>
+			<ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+		</button>
+	</ion-buttons>
+    <ion-title>Вы просканировали QR-код</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding>
+  <ion-list>
+    <ion-item >
+      <h2>Тип события</h2>
+      <ion-note item-right>Таблетка</ion-note>
+    </ion-item >
+    <ion-item >
+      <h2>Параметр</h2>
+      <ion-note item-right>{{id}}</ion-note>
+    </ion-item >
+  </ion-list>  
+</ion-content>
