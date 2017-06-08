@@ -31,6 +31,10 @@ $text-color:          color($colors, standard);
 $background-color:    #4A5760;
 $toolbar-background:  #32383D;
 
+// The doc says: "Color of the image when it hasn't fully loaded yet".
+// In fact it was image backgroud even when loading has finished.
+$img-placeholder-background: transparent;
+
 
 // App Material Design Variables
 // --------------------------------------------------

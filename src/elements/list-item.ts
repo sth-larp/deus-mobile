@@ -40,6 +40,10 @@ export class ListItem {
     return this.data.progressBarColor ? this.data.progressBarColor : "#6987A4";
   }
 
+  public getIcon(): string {
+    return "assets/icon/" + this.data.icon + ".svg";
+  }
+
   public openDetails(details: DetailsData) {
     let accessModal = this._modalCtrl.create(DetailsPage, { value: details });
     accessModal.present();
