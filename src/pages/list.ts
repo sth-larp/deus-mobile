@@ -30,7 +30,7 @@ export class ListPage extends UpdatablePage {
     // If any of items has icon, we want to shift all of them
     // by setting hasIcon to every one of them.
     this.body = body;
-    const hasIcon = this.body.items.some(item => { return item.icon.length > 0; });
+    const hasIcon = this.body.items.some(item => { return item.icon && item.icon.length > 0; });
     this.body.items.forEach(item => item.hasIcon = hasIcon);
 
     // Dark magic to fix dynamic header height.
