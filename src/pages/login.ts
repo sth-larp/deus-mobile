@@ -20,8 +20,8 @@ export class LoginPage {
     private _logging: LoggingService) {
     this.loginForm = this._formBuilder.group({
       // TODO: remove credentials before public testing
-      username: ['petya@gmail.com', Validators.required],
-      password: ['petya', Validators.required],
+      username: ['vasya@gmail.com', Validators.required],
+      password: ['vasya', Validators.required],
     });
   }
 
