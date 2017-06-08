@@ -1,6 +1,6 @@
 <div *ngIf="!filter || filter == data.tag">
 <button ion-item *ngIf="data.details" (click)="openDetails(data.details)"  mode="ios" >
-  <ion-img *ngIf="data.hasIcon" [src]='getIcon()' item-left></ion-img>
+  <ion-img style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' item-left></ion-img>
   <h2>{{data.text}}</h2>
   <p>{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': getProgressBarColor()}">
@@ -8,7 +8,7 @@
   <ion-note item-right [ngStyle]="{'color': getValueColor()}"><b>{{data.value}}</b></ion-note>
 </button >
 <ion-item *ngIf="!data.details" mode="ios" >
-  <ion-img *ngIf="data.hasIcon" [src]='getIcon()' item-left></ion-img>
+  <ion-img style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' item-left></ion-img>
   <h2>{{data.text}}</h2>
   <p>{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': getProgressBarColor()}">
