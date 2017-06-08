@@ -39,19 +39,19 @@ export class DbConnectionService {
 
   // TODO: Declare database element types as stand-alone classes.
   public getLoggingDb(): PouchDB.Database<{ character: any; level: string; msg: string; timestamp: number; }> { return this._dbs.get("logging-dev").db; }
-  public getViewModelDb(): PouchDB.Database<{}> { return this._dbs.get("pages-dev").db; }
-  public getEventsDb(): PouchDB.Database<{ characterId: string; timestamp: number; eventType: string; data: any; }> { return this._dbs.get("events-dev").db; }
+  public getViewModelDb(): PouchDB.Database<{}> { return this._dbs.get("view-models-dev2").db; }
+  public getEventsDb(): PouchDB.Database<{ characterId: string; timestamp: number; eventType: string; data: any; }> { return this._dbs.get("events-dev2").db; }
 
   public getUpdateStatus(): Observable<any> { return this._updateStatus; }
 
   public onLogin(username: string) {
     this._username = username;
-    this._dbs.set("pages-dev", this.setupLocalAndRemoteDb("pages-dev"));
-    this._dbs.set("events-dev", this.setupLocalAndRemoteDb("events-dev"));
+    this._dbs.set("view-models-dev2", this.setupLocalAndRemoteDb("view-models-dev2"));
+    this._dbs.set("events-dev2", this.setupLocalAndRemoteDb("events-dev2"));
     this._dbs.set("logging-dev", this.setupLocalAndRemoteDb("logging-dev"));
 
     // TODO: fix
-    this._dbs.get("pages-dev").replication
+    this._dbs.get("view-models-dev2").replication
       .on('complete', (info) => {
         this._lastUpdateTime = performance.now();
       }).on('change', (change) => {
@@ -89,7 +89,7 @@ export class DbConnectionService {
     dbName: string): PouchDB.Replication.Replication<{}> {
     // TODO: provide proper credentials
     const remoteDbName = `http://dev.alice.digital:5984/${dbName}`;
-    const serverToClient = dbName.includes('pages') || dbName.includes('viewmodel');
+    const serverToClient = dbName.includes('pages') || dbName.includes('view-model');
     let replicationOptions: any = {
       live: true,
       retry: true,
