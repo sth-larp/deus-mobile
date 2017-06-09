@@ -39,7 +39,9 @@ export class QuickActions {
   }
 
   public onRefresh() {
-    this._dbConnectionService.forceSync();
+    this._dataService.pushRefreshModelEvent().then(() => {
+      this._dbConnectionService.forceSync();
+    });
   }
 
   public onId() {

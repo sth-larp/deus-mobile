@@ -21,47 +21,43 @@ export enum UpdateStatus {
 export class DbConnectionService {
   private _dbs = new Map<string, DbAndSync>();
   private _username: string = null;
-  private _lastUpdateTime: number;
-  private _updateStatus: Observable<any>;
-
-  constructor() {
-    this._updateStatus = Observable.timer(100, 100).map(() => {
-      // TODO: consider relying on replicated paused/resumed events instead
-      let timeElapsedSec = (performance.now() - this._lastUpdateTime) / 1000;
-      if (timeElapsedSec < 5)
-        return UpdateStatus.Green;
-      else if (timeElapsedSec < 30)  // TODO: increase
-        return UpdateStatus.Yellow;
-      else
-        return UpdateStatus.Red;
-    });
-  }
 
   // TODO: Declare database element types as stand-alone classes.
   public getLoggingDb(): PouchDB.Database<{ character: any; level: string; msg: string; timestamp: number; }> { return this._dbs.get("logging-dev").db; }
-  public getViewModelDb(): PouchDB.Database<{}> { return this._dbs.get("view-models-dev2").db; }
+  public getViewModelDb(): PouchDB.Database<{ timestamp: number }> { return this._dbs.get("view-models-dev2").db; }
   public getEventsDb(): PouchDB.Database<{ characterId: string; timestamp: number; eventType: string; data: any; }> { return this._dbs.get("events-dev2").db; }
 
-  public getUpdateStatus(): Observable<any> { return this._updateStatus; }
+  public getUpdateStatus(): Observable<UpdateStatus> {
+    return Observable.create(observer => {
+      let changesStream = this.getViewModelDb().changes(
+        { live: true, since: 'now', include_docs: true, doc_ids: [this._username] });
+      let lastUpdateTime = 0;
+      changesStream.on('change', change => lastUpdateTime = change.doc.timestamp);
+
+      let subscription = Observable.timer(0, 1000).map(() => {
+        // TODO: use monothonic timer
+        const currentTimestamp = new Date().valueOf();
+        const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
+        if (timeElapsedSec < 15)
+          observer.next(UpdateStatus.Green);
+        else if (timeElapsedSec < 60)
+          observer.next(UpdateStatus.Yellow);
+        else
+          observer.next(UpdateStatus.Red);
+      }).subscribe();
+
+      return () => {
+        changesStream.cancel();
+        subscription.unsubscribe();
+      }
+    });
+  }
 
   public onLogin(username: string) {
     this._username = username;
     this._dbs.set("view-models-dev2", this.setupLocalAndRemoteDb("view-models-dev2"));
     this._dbs.set("events-dev2", this.setupLocalAndRemoteDb("events-dev2"));
     this._dbs.set("logging-dev", this.setupLocalAndRemoteDb("logging-dev"));
-
-    // TODO: fix
-    this._dbs.get("view-models-dev2").replication
-      .on('complete', (info) => {
-        this._lastUpdateTime = performance.now();
-      }).on('change', (change) => {
-        // yo, something changed!
-        this._lastUpdateTime = performance.now();
-      }).on('paused', (info) => {
-        // replication was paused, usually because of a lost connection
-      }).on('error', (err) => {
-        // totally unhandled error (shouldn't happen)
-      });
 
     this._setUpLoggingDb();
   }

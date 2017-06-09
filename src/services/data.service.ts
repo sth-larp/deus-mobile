@@ -19,7 +19,7 @@ export class DataService {
     private _logging: LoggingService) {
 
     // TODO: adjust event frequency
-    setInterval(() => this.pushRefreshModelEvent(), 5000);
+    setInterval(() => this.pushRefreshModelEvent(), 10000);
   }
 
   public getData(): Observable<any> {
@@ -55,7 +55,7 @@ export class DataService {
       .catch(err => this._logging.debug(JSON.stringify(err)))
   }
 
-  private pushRefreshModelEvent():  Promise<PouchDB.Core.Response> {
+  public pushRefreshModelEvent():  Promise<PouchDB.Core.Response> {
     return this._dbConnectionService.getEventsDb().post({
       characterId: this._username,
       // TODO: use monothonic clock
