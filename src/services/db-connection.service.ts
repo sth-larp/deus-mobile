@@ -31,24 +31,28 @@ export class DbConnectionService {
     return Observable.create(observer => {
       let changesStream = this.getViewModelDb().changes(
         { live: true, since: 'now', include_docs: true, doc_ids: [this._username] });
-      let lastUpdateTime = 0;
-      changesStream.on('change', change => lastUpdateTime = change.doc.timestamp);
 
-      let subscription = Observable.timer(0, 1000).map(() => {
-        // TODO: use monothonic timer
-        const currentTimestamp = new Date().valueOf();
-        const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
-        if (timeElapsedSec < 15)
-          observer.next(UpdateStatus.Green);
-        else if (timeElapsedSec < 60)
-          observer.next(UpdateStatus.Yellow);
-        else
-          observer.next(UpdateStatus.Red);
-      }).subscribe();
+      let subscription = null;
+      this.getViewModelDb().get(this._username).then(doc => {
+        let lastUpdateTime = doc.timestamp;
+        changesStream.on('change', change => lastUpdateTime = change.doc.timestamp);
+
+        subscription = Observable.timer(0, 1000).map(() => {
+          // TODO: use monothonic timer
+          const currentTimestamp = new Date().valueOf();
+          const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
+          if (timeElapsedSec < 15)
+            observer.next(UpdateStatus.Green);
+          else if (timeElapsedSec < 60)
+            observer.next(UpdateStatus.Yellow);
+          else
+            observer.next(UpdateStatus.Red);
+        }).subscribe();
+      });
 
       return () => {
         changesStream.cancel();
-        subscription.unsubscribe();
+        if (subscription) subscription.unsubscribe();
       }
     });
   }
