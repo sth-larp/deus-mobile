@@ -20,4 +20,5 @@
   </ion-footer>
 </ion-menu>
 
-<ion-nav [root]="pages[0].root" #content swipeBackEnabled="false"></ion-nav>
+<!-- TODO: Switch to using some kind of id instead of title -->
+<ion-nav [root]="pages[0].root" [rootParams]="{id: 'Общая информация'}" #content swipeBackEnabled="false"></ion-nav>

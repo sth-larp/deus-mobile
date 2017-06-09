@@ -10,7 +10,6 @@ import { ListPage } from '../pages/list';
 import { LoginPage } from '../pages/login';
 import { PlainTextPage } from '../pages/plain-text';
 import { EconomyPage } from '../pages/economy';
-import { PlaygroundPage } from '../pages/playground';
 import { MenuPage } from '../pages/menu';
 
 import { ListItem } from '../elements/list-item';
@@ -45,7 +44,6 @@ import { GeneralQRCodePage } from "../pages/general-qrcode";
     LogoutButton,
     PlainTextPage,
     EconomyPage,
-    PlaygroundPage,
     MenuPage,
     AccessPage,
     GeneralQRCodePage,
@@ -68,7 +66,6 @@ import { GeneralQRCodePage } from "../pages/general-qrcode";
     LoginPage,
     PlainTextPage,
     EconomyPage,
-    PlaygroundPage,
     MenuPage,
     AccessPage,
     GeneralQRCodePage,

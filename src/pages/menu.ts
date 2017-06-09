@@ -7,7 +7,6 @@ import { TechnicalInfoPage } from "./technical-info";
 import { ListPage } from "./list";
 import { PlainTextPage } from "./plain-text";
 import { EconomyPage } from "./economy";
-import { PlaygroundPage } from "./playground";
 import { LoggingService } from "../services/logging.service";
 import { LoginPage } from "./login";
 
@@ -24,7 +23,7 @@ class PageData {
 export class MenuPage {
   @ViewChild(Nav) private _nav: Nav;
 
-  public pages: Array<PageData> = [{ root: PlaygroundPage, menuTitle: "Playground" }];
+  public pages: Array<PageData> = [{root: ListPage, menuTitle: ''}];
 
   private _pageTypeToPage = new Map<string, any>();
   private _subscription: Subscription = null;
@@ -42,7 +41,7 @@ export class MenuPage {
   private ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe(
       json => {
-        this.pages = [{ root: PlaygroundPage, menuTitle: "Playground" }];
+        this.pages = [];
         for (let p of json.pages)
           this.pages.push({ root: this._pageTypeToPage.get(p.pageType), menuTitle: p.menuTitle });
       },

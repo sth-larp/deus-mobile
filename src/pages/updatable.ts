@@ -1,7 +1,6 @@
-import { DataService } from "../services/data.service";
 import { Subscription } from "rxjs/Rx";
 import { NavController } from "ionic-angular";
-import { PlaygroundPage } from "./playground";
+import { DataService } from "../services/data.service";
 
 // Needs to be in sync with json, which uses snake case.
 // tslint:disable:variable-name
@@ -29,7 +28,7 @@ export abstract class UpdatablePage {
       if (thisPageData)
         this.setBody(thisPageData.body);
       else {
-        this._navCtrl.setRoot(PlaygroundPage)
+        // this._navCtrl.setRoot(ListPage);
       }
     });
   }
