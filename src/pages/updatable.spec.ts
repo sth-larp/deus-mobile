@@ -16,7 +16,7 @@ class TestUpdatablePage extends UpdatablePage {
 }
 
 describe('Updatable Page', () => {
-  let mockDataService: TypeMoq.IMock<DataService> = TypeMoq.Mock.ofType(DataService);
+  let mockDataService: TypeMoq.IMock<DataService> = TypeMoq.Mock.ofType<DataService>();
   let mockNavCtrl: TypeMoq.IMock<NavController> = TypeMoq.Mock.ofType<NavController>();
 
   const myPageData1: UpdatablePageData = {

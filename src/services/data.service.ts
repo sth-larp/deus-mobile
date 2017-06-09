@@ -17,6 +17,9 @@ export class DataService {
     private _backendService: BackendService,
     private _dbConnectionService: DbConnectionService,
     private _logging: LoggingService) {
+
+    // TODO: adjust event frequency
+    setInterval(() => this.pushRefreshModelEvent(), 5000);
   }
 
   public getData(): Observable<any> {
@@ -47,17 +50,19 @@ export class DataService {
       eventType: eventType,
       data: data
     })
-      .then(response => {
-        this._logging.debug(JSON.stringify(response));
-        return this._dbConnectionService.getEventsDb().post({
-          characterId: this._username,
-          timestamp: currentTimestamp + 1,
-          eventType: '_RefreshModel',
-          data: {}
-        });
-      })
+      .then(response => this.pushRefreshModelEvent())
       .then(response => this._logging.debug(JSON.stringify(response)))
       .catch(err => this._logging.debug(JSON.stringify(err)))
+  }
+
+  private pushRefreshModelEvent():  Promise<PouchDB.Core.Response> {
+    return this._dbConnectionService.getEventsDb().post({
+      characterId: this._username,
+      // TODO: use monothonic clock
+      timestamp: new Date().valueOf() + 1,
+      eventType: '_RefreshModel',
+      data: {}
+    });
   }
 
   public checkAccessRights(areaId: string): Promise<boolean> {
