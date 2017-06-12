@@ -2,7 +2,6 @@ import { Injectable } from "@angular/core";
 import { AlertController, ModalController } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
-import { AccessPage } from '../pages/access'
 import { LoggingService } from "./logging.service";
 import { CharacterPage } from "../pages/character";
 import { GeneralQRCodePage } from "../pages/general-qrcode";
@@ -33,7 +32,6 @@ export class QrCodeScanService {
       // For some incredibly stupid reason it's the only way
       // to populate map in our case. Because JavaScript.
       this._prefixToPage.set('0', GeneralQRCodePage);
-      this._prefixToPage.set('access', AccessPage);
       this._prefixToPage.set('character', CharacterPage);
   }
 

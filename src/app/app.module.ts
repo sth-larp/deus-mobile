@@ -19,7 +19,6 @@ import { DataService } from '../services/data.service';
 import { BackendService } from '../services/backend.service';
 import { FirebaseService } from '../services/firebase.service';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
-import { AccessPage } from "../pages/access";
 import { DbConnectionService } from "../services/db-connection.service";
 import { LoggingService } from "../services/logging.service";
 import { ViewQrCodePage } from "../pages/view-qrcode";
@@ -45,7 +44,6 @@ import { GeneralQRCodePage } from "../pages/general-qrcode";
     PlainTextPage,
     EconomyPage,
     MenuPage,
-    AccessPage,
     GeneralQRCodePage,
     ViewQrCodePage,
     CharacterPage,
@@ -67,7 +65,6 @@ import { GeneralQRCodePage } from "../pages/general-qrcode";
     PlainTextPage,
     EconomyPage,
     MenuPage,
-    AccessPage,
     GeneralQRCodePage,
     ViewQrCodePage,
     CharacterPage,

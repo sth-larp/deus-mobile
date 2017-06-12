@@ -65,11 +65,6 @@ export class DataService {
     });
   }
 
-  public checkAccessRights(areaId: string): Promise<boolean> {
-    // TODO: query server
-    return new Promise((resolve) => setTimeout(() => resolve(areaId != "SuperPrivate"), 3000));
-  }
-
   public getUsername(): string {
     return this._username;
   }
