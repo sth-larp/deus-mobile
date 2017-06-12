@@ -32,6 +32,7 @@ import { LocalTimeService } from "../services/local-time.service";
 import { NativeStorageService } from "../services/native-storage.service";
 import { MonotonicTimeService } from "../services/monotonic-time.service";
 import { GeneralQRCodePage } from "../pages/general-qrcode";
+import { AuthService } from "../services/auth.service";
 
 @NgModule({
   declarations: [
@@ -70,6 +71,7 @@ import { GeneralQRCodePage } from "../pages/general-qrcode";
     DetailsPage
   ],
   providers: [
+    AuthService,
     NativeStorageService,
     DbConnectionService,
     DataService,

@@ -7,18 +7,17 @@ import { DbConnectionService } from "./db-connection.service";
 import { Observable } from "rxjs/Rx";
 import { LoggingService } from "./logging.service";
 import { MonotonicTimeService } from "./monotonic-time.service";
+import { AuthService } from "./auth.service";
 
 @Injectable()
 export class DataService {
-  private _username: string = null;
-  private _sid: string = null;
-
   // TODO: Can we force FirebaseService instantiation without that hack?
   constructor(private _firebaseService: FirebaseService,
     private _backendService: BackendService,
     private _dbConnectionService: DbConnectionService,
     private _logging: LoggingService,
-    private _time: MonotonicTimeService) {
+    private _time: MonotonicTimeService,
+    private _authService: AuthService) {
 
     // TODO: adjust event frequency
     setInterval(() => this.pushRefreshModelEvent(), 10000);
@@ -28,11 +27,11 @@ export class DataService {
     let dummyData: Observable<any> = Observable.of({ pages: [{ pageType: "plain_test", menuTitle: "" }] });
 
     let existingData: Observable<any> = Observable.fromPromise(
-      this._dbConnectionService.getViewModelDb().get(this._username))
+      this._dbConnectionService.getViewModelDb().get(this._authService.getUsername()))
 
     let futureUpdates: Observable<any> = Observable.create(observer => {
       let changesStream = this._dbConnectionService.getViewModelDb().changes(
-        { live: true, since: 'now', include_docs: true, doc_ids: [this._username] });
+        { live: true, since: 'now', include_docs: true, doc_ids: [this._authService.getUsername()] });
       changesStream.on('change', change => {
         this._logging.debug("Received page update: " + JSON.stringify(change));
         observer.next(change.doc);
@@ -47,7 +46,7 @@ export class DataService {
   public pushEvent(eventType: string, data: any) {
     const currentTimestamp = this._time.getUnixTimeMs();
     this._dbConnectionService.getEventsDb().post({
-      characterId: this._username,
+      characterId: this._authService.getUsername(),
       timestamp: currentTimestamp,
       eventType: eventType,
       data: data
@@ -59,50 +58,10 @@ export class DataService {
 
   public pushRefreshModelEvent():  Promise<PouchDB.Core.Response> {
     return this._dbConnectionService.getEventsDb().post({
-      characterId: this._username,
+      characterId: this._authService.getUsername(),
       timestamp: this._time.getUnixTimeMs(),
       eventType: '_RefreshModel',
       data: {}
     });
-}
-
-  public getUsername(): string {
-    return this._username;
-  }
-
-  public login(username: string, password: string): Promise<void> {
-    return this._backendService.auth(username, password)
-      .then((sid: string) => {
-        this._saveCredentials(sid, username);
-        return;
-      });
-  }
-
-  public checkAuthentication(): Promise<void> {
-    return NativeStorage.getItem('sid')
-      .then((sid: string) => {
-        this._sid = sid;
-        return NativeStorage.getItem('username');
-      }).then((username: string) => {
-        this._username = username;
-        this._dbConnectionService.onLogin(username);
-      });
-  }
-
-  private _saveCredentials(sid: string, username: string) {
-    this._username = username;
-    this._backendService.setSid(sid);
-    this._dbConnectionService.onLogin(username);
-    NativeStorage.setItem('sid', sid);
-    NativeStorage.setItem('username', username);
-  }
-
-  public logout() {
-    NativeStorage.remove('sid');
-    NativeStorage.remove('username');
-    this._backendService.setSid(null);
-    this._dbConnectionService.onLogout();
-    this._username = null;
-    this._sid = null;
   }
 }

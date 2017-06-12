@@ -9,6 +9,7 @@ import { PlainTextPage } from "./plain-text";
 import { EconomyPage } from "./economy";
 import { LoggingService } from "../services/logging.service";
 import { LoginPage } from "./login";
+import { AuthService } from "../services/auth.service";
 
 class PageData {
   public root: any;
@@ -28,6 +29,7 @@ export class MenuPage {
   private _subscription: Subscription = null;
 
   constructor(private _dataService: DataService,
+    private _authService: AuthService,
     private _navCtrl: NavController,
     private _logging: LoggingService) {
     this._pageTypeToPage.set('list', ListPage);
@@ -62,11 +64,11 @@ export class MenuPage {
   }
 
   public getCharacterName() {
-    return this._dataService.getUsername();
+    return this._authService.getUsername();
   }
 
   public logout() {
-    this._dataService.logout();
+    this._authService.logout();
     this._navCtrl.setRoot(LoginPage);
   }
 }

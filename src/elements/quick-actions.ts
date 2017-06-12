@@ -7,6 +7,7 @@ import { ViewQrCodePage } from "../pages/view-qrcode";
 import { QrCodeScanService } from "../services/qrcode-scan.service";
 import { DataService } from "../services/data.service";
 import { LoggingService } from "../services/logging.service";
+import { AuthService } from "../services/auth.service";
 
 @Component({
   selector: 'quick-actions',
@@ -21,6 +22,7 @@ export class QuickActions {
   constructor(private _modalController: ModalController,
     private _qrCodeScanService: QrCodeScanService,
     private _dataService: DataService,
+    private _authService: AuthService,
     private _dbConnectionService: DbConnectionService,
     private _logging: LoggingService) {
     _dbConnectionService.getUpdateStatus().subscribe(
@@ -56,7 +58,7 @@ export class QuickActions {
 
   public onId() {
     let accessModal = this._modalController.create(ViewQrCodePage,
-      { value: `character:${this._dataService.getUsername()}` });
+      { value: `character:${this._authService.getUsername()}` });
     accessModal.present();
   }
 }

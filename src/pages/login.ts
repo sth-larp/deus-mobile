@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController, LoadingController, Loading } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { DataService } from "../services/data.service";
+import { AuthService } from "../services/auth.service";
 import { MenuPage } from "./menu";
 import { LoggingService } from "../services/logging.service";
 
@@ -16,7 +16,7 @@ export class LoginPage {
   constructor(private _navCtrl: NavController,
     private _loadingCtrl: LoadingController,
     private _formBuilder: FormBuilder,
-    private _dataService: DataService,
+    private _authService: AuthService,
     private _logging: LoggingService) {
     this.loginForm = this._formBuilder.group({
       // TODO: remove credentials before public testing
@@ -27,7 +27,7 @@ export class LoginPage {
 
   public login() {
     this._showLoader();
-    this._dataService.login(
+    this._authService.login(
       this.loginForm.value['username'],
       this.loginForm.value['password']).then(
       () => { this._hideLoader(); this._goToLoggedInArea() },
@@ -40,7 +40,7 @@ export class LoginPage {
 
   private _checkIfAlreadyAuthentificated() {
     this._showLoader();
-    this._dataService.checkAuthentication().then(() => {
+    this._authService.checkAuthentication().then(() => {
       this._logging.info("Found saved token and username, skipping authentification");
       this._hideLoader();
       this._goToLoggedInArea();
