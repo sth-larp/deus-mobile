@@ -13,7 +13,6 @@ import { EconomyPage } from '../pages/economy';
 import { MenuPage } from '../pages/menu';
 
 import { ListItem } from '../elements/list-item';
-import { LogoutButton } from "../elements/logout-button";
 
 import { DataService } from '../services/data.service';
 import { BackendService } from '../services/backend.service';
@@ -40,7 +39,6 @@ import { GeneralQRCodePage } from "../pages/general-qrcode";
     ListPage,
     ListItem,
     LoginPage,
-    LogoutButton,
     PlainTextPage,
     EconomyPage,
     MenuPage,
