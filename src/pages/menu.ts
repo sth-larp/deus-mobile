@@ -12,7 +12,6 @@ import { LoginPage } from "./login";
 
 class PageData {
   public root: any;
-  // tslint:disable-next-line:variable-name
   public menuTitle: string;
 }
 
