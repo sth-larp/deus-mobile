@@ -1,15 +1,20 @@
 import { Injectable } from "@angular/core";
 import { BackendService } from "./backend.service";
 import { NativeStorage } from 'ionic-native';
-import { DbConnectionService } from "./db-connection.service";
+import { LoginListener } from "./login-listener";
 
 @Injectable()
 export class AuthService {
   private _username: string = null;
-  private _sid: string = null;
+  private _listeners = new Array<LoginListener>();
 
-  constructor(private _backendService: BackendService,
-              private _dbConnectionService: DbConnectionService) {}
+  constructor(private _backendService: BackendService) {}
+
+  public addListener(listener: LoginListener) {
+    this._listeners.push(listener);
+    if (this._username)
+      listener.onSuccessfulLogin(this._username);
+  }
 
   public getUsername(): string {
     return this._username;
@@ -26,17 +31,16 @@ export class AuthService {
   public checkAuthentication(): Promise<void> {
     return NativeStorage.getItem('sid')
       .then((sid: string) => {
-        this._sid = sid;
         return NativeStorage.getItem('username');
       }).then((username: string) => {
         this._username = username;
-        this._dbConnectionService.onSuccessfulLogin(username, this._sid);
+        this.notifyListenersOnLogin();
       });
   }
 
   private _saveCredentials(sid: string, username: string) {
     this._username = username;
-    this._dbConnectionService.onSuccessfulLogin(username, sid);
+    this.notifyListenersOnLogin();
     NativeStorage.setItem('sid', sid);
     NativeStorage.setItem('username', username);
   }
@@ -44,8 +48,13 @@ export class AuthService {
   public logout() {
     NativeStorage.remove('sid');
     NativeStorage.remove('username');
-    this._dbConnectionService.onLogout();
+    for (let listener of this._listeners)
+      listener.onLogout();
     this._username = null;
-    this._sid = null;
+  }
+
+  private notifyListenersOnLogin() {
+    for (let listener of this._listeners)
+      listener.onSuccessfulLogin(this._username);
   }
 }

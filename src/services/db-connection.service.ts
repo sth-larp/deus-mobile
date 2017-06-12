@@ -4,6 +4,7 @@ import { Observable } from "rxjs/Rx";
 import { upsert } from "../utils/pouchdb-utils";
 import { MonotonicTimeService } from "./monotonic-time.service";
 import { LoginListener } from "./login-listener";
+import { AuthService } from "./auth.service";
 
 // Manages to connection to local and remote databases,
 // creates per-user databases if needed.
@@ -24,7 +25,10 @@ export class DbConnectionService implements LoginListener {
   private _dbs = new Map<string, DbAndSync>();
   private _username: string = null;
 
-  constructor(private _time: MonotonicTimeService) {}
+  constructor(private _time: MonotonicTimeService,
+    authService: AuthService) {
+    authService.addListener(this);
+  }
 
   // TODO: Declare database element types as stand-alone classes.
   public getLoggingDb(): PouchDB.Database<{ character: any; level: string; msg: string; timestamp: number; }> { return this._dbs.get("logging-dev").db; }
@@ -60,7 +64,7 @@ export class DbConnectionService implements LoginListener {
     });
   }
 
-  public onSuccessfulLogin(username: string, sid: string) {
+  public onSuccessfulLogin(username: string) {
     this._username = username;
     this._dbs.set("view-models-dev2", this.setupLocalAndRemoteDb("view-models-dev2"));
     this._dbs.set("events-dev2", this.setupLocalAndRemoteDb("events-dev2"));

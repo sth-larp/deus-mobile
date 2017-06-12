@@ -15,8 +15,7 @@ export class BackendService {
     })()
   };
 
-  constructor(private _http: Http,
-              private _logging: LoggingService) { }
+  constructor(private _http: Http) { }
 
   // Returns sid in case of successful authentification
   public auth(username: string, password: string): Promise<string> {
@@ -25,7 +24,6 @@ export class BackendService {
       .map((response: Response) => {
         if (response && response.json() && response.json()['sid']) {
           let sid: string = response.json()['sid'];
-          this._logging.debug(`Successful login, get sid=${sid}`);
           return sid
         }
         throw "Get OK response, but no sid provided. Indicates server issue";

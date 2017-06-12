@@ -1,5 +1,4 @@
 ﻿import { Injectable } from '@angular/core'
-import { NativeStorage } from 'ionic-native';
 import { FirebaseService } from './firebase.service';
 import { BackendService } from "./backend.service";
 
@@ -8,9 +7,13 @@ import { Observable } from "rxjs/Rx";
 import { LoggingService } from "./logging.service";
 import { MonotonicTimeService } from "./monotonic-time.service";
 import { AuthService } from "./auth.service";
+import { LoginListener } from "./login-listener";
+import { Subscription } from "rxjs/Subscription";
 
 @Injectable()
-export class DataService {
+export class DataService implements LoginListener {
+  private _refreshModelUpdateSubscription: Subscription = null;
+
   // TODO: Can we force FirebaseService instantiation without that hack?
   constructor(private _firebaseService: FirebaseService,
     private _backendService: BackendService,
@@ -19,8 +22,18 @@ export class DataService {
     private _time: MonotonicTimeService,
     private _authService: AuthService) {
 
+    this._authService.addListener(this);
+  }
+
+  public onSuccessfulLogin(username: string) {
     // TODO: adjust event frequency
-    setInterval(() => this.pushRefreshModelEvent(), 10000);
+    this._refreshModelUpdateSubscription = Observable.timer(0, 10000).subscribe(() => this.pushRefreshModelEvent());
+  }
+  public onLogout() {
+    if (this._refreshModelUpdateSubscription) {
+      this._refreshModelUpdateSubscription.unsubscribe();
+      this._refreshModelUpdateSubscription = null;
+    }
   }
 
   public getData(): Observable<any> {
