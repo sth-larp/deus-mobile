@@ -2,6 +2,7 @@ import * as PouchDB from 'pouchdb';
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { upsert } from "../utils/pouchdb-utils";
+import { MonotonicTimeService } from "./monotonic-time.service";
 
 // Manages to connection to local and remote databases,
 // creates per-user databases if needed.
@@ -22,6 +23,8 @@ export class DbConnectionService {
   private _dbs = new Map<string, DbAndSync>();
   private _username: string = null;
 
+  constructor(private _time: MonotonicTimeService) {}
+
   // TODO: Declare database element types as stand-alone classes.
   public getLoggingDb(): PouchDB.Database<{ character: any; level: string; msg: string; timestamp: number; }> { return this._dbs.get("logging-dev").db; }
   public getViewModelDb(): PouchDB.Database<{ timestamp: number }> { return this._dbs.get("view-models-dev2").db; }
@@ -38,8 +41,7 @@ export class DbConnectionService {
         changesStream.on('change', change => lastUpdateTime = change.doc.timestamp);
 
         subscription = Observable.timer(0, 1000).map(() => {
-          // TODO: use monothonic timer
-          const currentTimestamp = new Date().valueOf();
+          const currentTimestamp = this._time.getUnixTimeMs();
           const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
           if (timeElapsedSec < 15)
             observer.next(UpdateStatus.Green);

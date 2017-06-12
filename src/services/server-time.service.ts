@@ -4,17 +4,14 @@ import { Http } from "@angular/http";
 
 @Injectable()
 export class ServerTimeService {
-  private _fetchTimeEveryMs = 5000;
-  // TODO: Switch to remote server
-  private _url = "http://localhost:3000";
+  private _fetchTimeEveryMs = 60000;
+  private _url = "http://dev.alice.digital:8157/time";
   constructor(private _http: Http) { }
   public getUnixTimeMs(): Observable<number> {
     return Observable.timer(0, this._fetchTimeEveryMs).flatMap(() => {
       return this._http.get(this._url)
-        .map(response => {
-          return response.json()["time"];
-        })
-        .catch(err => { return Observable.empty(); })
+        .map(response => response.json().serverTime)
+        .catch(err => Observable.empty());
     });
   }
 

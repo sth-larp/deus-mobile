@@ -33,7 +33,7 @@ describe('ServerTimeService', () => {
         let currentTime = 0;
         mockBackend.connections.subscribe((connection: MockConnection) => {
           connection.mockRespond(new Response(new ResponseOptions({
-            body: { time: currentTime++ }
+            body: { serverTime: currentTime++ }
           })))
         });
 
@@ -52,7 +52,7 @@ describe('ServerTimeService', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           if (currentTime % 2 == 0) {
             connection.mockRespond(new Response(new ResponseOptions({
-              body: { time: currentTime }
+              body: { serverTime: currentTime }
             })));
           } else {
             connection.mockError();

@@ -6,6 +6,7 @@ import { BackendService } from "./backend.service";
 import { DbConnectionService } from "./db-connection.service";
 import { Observable } from "rxjs/Rx";
 import { LoggingService } from "./logging.service";
+import { MonotonicTimeService } from "./monotonic-time.service";
 
 @Injectable()
 export class DataService {
@@ -16,7 +17,8 @@ export class DataService {
   constructor(private _firebaseService: FirebaseService,
     private _backendService: BackendService,
     private _dbConnectionService: DbConnectionService,
-    private _logging: LoggingService) {
+    private _logging: LoggingService,
+    private _time: MonotonicTimeService) {
 
     // TODO: adjust event frequency
     setInterval(() => this.pushRefreshModelEvent(), 10000);
@@ -43,7 +45,7 @@ export class DataService {
   }
 
   public pushEvent(eventType: string, data: any) {
-    const currentTimestamp = new Date().valueOf();
+    const currentTimestamp = this._time.getUnixTimeMs();
     this._dbConnectionService.getEventsDb().post({
       characterId: this._username,
       timestamp: currentTimestamp,
@@ -58,12 +60,11 @@ export class DataService {
   public pushRefreshModelEvent():  Promise<PouchDB.Core.Response> {
     return this._dbConnectionService.getEventsDb().post({
       characterId: this._username,
-      // TODO: use monothonic clock
-      timestamp: new Date().valueOf() + 1,
+      timestamp: this._time.getUnixTimeMs(),
       eventType: '_RefreshModel',
       data: {}
     });
-  }
+}
 
   public getUsername(): string {
     return this._username;
