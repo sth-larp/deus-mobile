@@ -3,6 +3,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Rx";
 import { upsert } from "../utils/pouchdb-utils";
 import { MonotonicTimeService } from "./monotonic-time.service";
+import { LoginListener } from "./login-listener";
 
 // Manages to connection to local and remote databases,
 // creates per-user databases if needed.
@@ -19,7 +20,7 @@ export enum UpdateStatus {
 }
 
 @Injectable()
-export class DbConnectionService {
+export class DbConnectionService implements LoginListener {
   private _dbs = new Map<string, DbAndSync>();
   private _username: string = null;
 
@@ -59,12 +60,11 @@ export class DbConnectionService {
     });
   }
 
-  public onLogin(username: string) {
+  public onSuccessfulLogin(username: string, sid: string) {
     this._username = username;
     this._dbs.set("view-models-dev2", this.setupLocalAndRemoteDb("view-models-dev2"));
     this._dbs.set("events-dev2", this.setupLocalAndRemoteDb("events-dev2"));
     this._dbs.set("logging-dev", this.setupLocalAndRemoteDb("logging-dev"));
-
     this._setUpLoggingDb();
   }
 

@@ -30,14 +30,13 @@ export class AuthService {
         return NativeStorage.getItem('username');
       }).then((username: string) => {
         this._username = username;
-        this._dbConnectionService.onLogin(username);
+        this._dbConnectionService.onSuccessfulLogin(username, this._sid);
       });
   }
 
   private _saveCredentials(sid: string, username: string) {
     this._username = username;
-    this._backendService.setSid(sid);
-    this._dbConnectionService.onLogin(username);
+    this._dbConnectionService.onSuccessfulLogin(username, sid);
     NativeStorage.setItem('sid', sid);
     NativeStorage.setItem('username', username);
   }
@@ -45,7 +44,6 @@ export class AuthService {
   public logout() {
     NativeStorage.remove('sid');
     NativeStorage.remove('username');
-    this._backendService.setSid(null);
     this._dbConnectionService.onLogout();
     this._username = null;
     this._sid = null;

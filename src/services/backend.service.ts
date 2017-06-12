@@ -15,7 +15,6 @@ export class BackendService {
     })()
   };
 
-  private _sid: string = null;
   constructor(private _http: Http,
               private _logging: LoggingService) { }
 
@@ -31,16 +30,5 @@ export class BackendService {
         }
         throw "Get OK response, but no sid provided. Indicates server issue";
       }).toPromise();
-  }
-
-  public setSid(sid: string) { this._sid = sid; }
-
-  // Returns if access to area is allowed for currently logged user
-  public access(areaName: string): Observable<boolean> {
-    let accessPayload = JSON.stringify({ area_name: areaName, sid: this._sid });
-    return this._http.post(this._rootUrl + '/access', accessPayload, this._jsonRequestOpts)
-      .map((response: Response) => {
-        return (response && response.json() && response.json()['granted'])
-      });
   }
 }
