@@ -15,6 +15,8 @@ import { LoggingService } from "../services/logging.service";
 export class QuickActions {
   public updateStatus: string = "Red";
   public hitPoints: number = 0;
+  
+  private _subscription: Subscription = null;
 
   constructor(private _modalController: ModalController,
     private _qrCodeScanService: QrCodeScanService,
@@ -27,11 +29,19 @@ export class QuickActions {
   }
 
   private ngOnInit() {
-    // TODO: Do we need to unsubscribe?
-    this._dataService.getData().subscribe(
-      json => { this.hitPoints = json.toolbar.hitPoints;  this._logging.debug('HIT POINTS: ' + this.hitPoints); },
+    this._subscription = this._dataService.getData().subscribe(
+      // TODO(Andrei): Rework hitpoints indicator and remove Math.min
+      // (or make sure that it's NEVER possible to get > 5 hp).
+      json => { this.hitPoints = Math.min(5, json.toolbar.hitPoints);  this._logging.debug('HIT POINTS: ' + this.hitPoints); },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
+  }
+
+  private ngOnDestroy() {
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+      this._subscription = null;
+    }
   }
 
   public onBarcode() {
