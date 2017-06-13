@@ -167,7 +167,7 @@ export class DataService implements LoginListener {
         await this._viewModelDb.put(updatedViewModel);
       }
       else if (response.status == 202) {
-        console.debug("Managed to submit events, but no viewmodel :(");
+        console.warn("Managed to submit events, but no viewmodel :(");
         await this.deleteEventsBefore(response.json().timestamp);
       } else
         throw response.toString();
