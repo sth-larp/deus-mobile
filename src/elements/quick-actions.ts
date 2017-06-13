@@ -2,10 +2,9 @@ import { Component } from '@angular/core';
 import { ModalController } from "ionic-angular";
 import { Subscription } from "rxjs";
 
-import { DbConnectionService, UpdateStatus } from '../services/db-connection.service';
 import { ViewQrCodePage } from "../pages/view-qrcode";
 import { QrCodeScanService } from "../services/qrcode-scan.service";
-import { DataService } from "../services/data.service";
+import { DataService, UpdateStatus } from "../services/data.service";
 import { LoggingService } from "../services/logging.service";
 import { AuthService } from "../services/auth.service";
 
@@ -23,9 +22,8 @@ export class QuickActions {
     private _qrCodeScanService: QrCodeScanService,
     private _dataService: DataService,
     private _authService: AuthService,
-    private _dbConnectionService: DbConnectionService,
     private _logging: LoggingService) {
-    _dbConnectionService.getUpdateStatus().subscribe(
+    _dataService.getUpdateStatus().subscribe(
       status => { this.updateStatus = UpdateStatus[status]; },
       error => console.error('Cannot get update status: ' + error))
   }
@@ -51,9 +49,7 @@ export class QuickActions {
   }
 
   public onRefresh() {
-    this._dataService.pushRefreshModelEvent().then(() => {
-      this._dbConnectionService.forceSync();
-    });
+    this._dataService.trySendEvents();
   }
 
   public onId() {

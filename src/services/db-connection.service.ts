@@ -14,12 +14,6 @@ class DbAndSync {
   public replication: PouchDB.Replication.Replication<{}>;
 }
 
-export enum UpdateStatus {
-  Green,
-  Yellow,
-  Red
-}
-
 @Injectable()
 export class DbConnectionService implements LoginListener {
   private _dbs = new Map<string, DbAndSync>();
@@ -32,42 +26,9 @@ export class DbConnectionService implements LoginListener {
 
   // TODO: Declare database element types as stand-alone classes.
   public getLoggingDb(): PouchDB.Database<{ character: any; level: string; msg: string; timestamp: number; }> { return this._dbs.get("logging-dev").db; }
-  public getViewModelDb(): PouchDB.Database<{ timestamp: number }> { return this._dbs.get("view-models-dev2").db; }
-  public getEventsDb(): PouchDB.Database<{ characterId: string; timestamp: number; eventType: string; data: any; }> { return this._dbs.get("events-dev2").db; }
-
-  public getUpdateStatus(): Observable<UpdateStatus> {
-    return Observable.create(observer => {
-      let changesStream = this.getViewModelDb().changes(
-        { live: true, since: 'now', include_docs: true, doc_ids: [this._username] });
-
-      let subscription = null;
-      this.getViewModelDb().get(this._username).then(doc => {
-        let lastUpdateTime = doc.timestamp;
-        changesStream.on('change', change => lastUpdateTime = change.doc.timestamp);
-
-        subscription = Observable.timer(0, 1000).map(() => {
-          const currentTimestamp = this._time.getUnixTimeMs();
-          const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
-          if (timeElapsedSec < 15)
-            observer.next(UpdateStatus.Green);
-          else if (timeElapsedSec < 60)
-            observer.next(UpdateStatus.Yellow);
-          else
-            observer.next(UpdateStatus.Red);
-        }).subscribe();
-      });
-
-      return () => {
-        changesStream.cancel();
-        if (subscription) subscription.unsubscribe();
-      }
-    });
-  }
 
   public onSuccessfulLogin(username: string) {
     this._username = username;
-    this._dbs.set("view-models-dev2", this.setupLocalAndRemoteDb("view-models-dev2"));
-    this._dbs.set("events-dev2", this.setupLocalAndRemoteDb("events-dev2"));
     this._dbs.set("logging-dev", this.setupLocalAndRemoteDb("logging-dev"));
     this._setUpLoggingDb();
   }
@@ -95,19 +56,12 @@ export class DbConnectionService implements LoginListener {
     dbName: string): PouchDB.Replication.Replication<{}> {
     // TODO: provide proper credentials
     const remoteDbName = `http://dev.alice.digital:5984/${dbName}`;
-    const serverToClient = dbName.includes('pages') || dbName.includes('view-model');
     let replicationOptions: any = {
       live: true,
       retry: true,
       continuous: true,
     };
-    if (serverToClient) {
-      replicationOptions.filter = 'character/by_name';
-      replicationOptions.query_params = { "character": this._username }
-      return db.replicate.from(remoteDbName, replicationOptions);
-    } else {
-      return db.replicate.to(remoteDbName, replicationOptions);
-    }
+    return db.replicate.to(remoteDbName, replicationOptions);
   }
 
   private _setUpLoggingDb() {

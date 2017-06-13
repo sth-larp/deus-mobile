@@ -1,35 +1,60 @@
-﻿import { Injectable } from '@angular/core'
-import { FirebaseService } from './firebase.service';
-import { BackendService } from "./backend.service";
+﻿import * as PouchDB from 'pouchdb';
 
-import { DbConnectionService } from "./db-connection.service";
+import { Injectable } from '@angular/core'
+
 import { Observable } from "rxjs/Rx";
 import { LoggingService } from "./logging.service";
 import { MonotonicTimeService } from "./monotonic-time.service";
 import { AuthService } from "./auth.service";
 import { LoginListener } from "./login-listener";
 import { Subscription } from "rxjs/Subscription";
+import { Headers, RequestOptionsArgs, Response, Http } from "@angular/http";
+
+export enum UpdateStatus {
+  Green,
+  Yellow,
+  Red
+}
 
 @Injectable()
 export class DataService implements LoginListener {
   private _refreshModelUpdateSubscription: Subscription = null;
+  private _eventsDb: PouchDB.Database<{ eventType: string; data: any; }> = null;
+  private _viewModelDb: PouchDB.Database<{ timestamp: number }> = null;
 
-  // TODO: Can we force FirebaseService instantiation without that hack?
-  constructor(private _firebaseService: FirebaseService,
-    private _backendService: BackendService,
-    private _dbConnectionService: DbConnectionService,
-    private _logging: LoggingService,
+  private _jsonRequestOpts: RequestOptionsArgs = {
+    headers: new Headers({
+      'Content-Type': 'application/json',
+      'Accept': 'application/json'
+    })
+  };
+
+  private _url = 'http://dev.alice.digital:8157/events';
+
+  constructor(private _logging: LoggingService,
     private _time: MonotonicTimeService,
-    private _authService: AuthService) {
+    private _authService: AuthService,
+    private _http: Http) {
 
     this._authService.addListener(this);
   }
-
   public onSuccessfulLogin(username: string) {
     // TODO: adjust event frequency
-    this._refreshModelUpdateSubscription = Observable.timer(0, 10000).subscribe(() => this.pushRefreshModelEvent());
+    this._refreshModelUpdateSubscription = Observable.timer(0, 10000).subscribe(() => this.trySendEvents());
+    const usernamePrefix = `${username.replace("@", "")}_`;
+    this._eventsDb = new PouchDB(usernamePrefix + 'events');
+    this._viewModelDb = new PouchDB(usernamePrefix + 'viewmodel');
   }
+
   public onLogout() {
+    if (this._eventsDb) {
+      this._eventsDb.close();
+      this._eventsDb = null;
+    }
+    if (this._viewModelDb) {
+      this._viewModelDb.close();
+      this._viewModelDb = null;
+    }
     if (this._refreshModelUpdateSubscription) {
       this._refreshModelUpdateSubscription.unsubscribe();
       this._refreshModelUpdateSubscription = null;
@@ -37,13 +62,13 @@ export class DataService implements LoginListener {
   }
 
   public getData(): Observable<any> {
-    let dummyData: Observable<any> = Observable.of({ pages: [{ pageType: "plain_test", menuTitle: "" }] });
+    let dummyData: Observable<any> = Observable.of({ toolbar: { hitPoints: 1 }, pages: [{ pageType: "plain_test", menuTitle: "" }] });
 
     let existingData: Observable<any> = Observable.fromPromise(
-      this._dbConnectionService.getViewModelDb().get(this._authService.getUsername()))
+      this._viewModelDb.get(this._authService.getUsername()))
 
     let futureUpdates: Observable<any> = Observable.create(observer => {
-      let changesStream = this._dbConnectionService.getViewModelDb().changes(
+      let changesStream = this._viewModelDb.changes(
         { live: true, since: 'now', include_docs: true, doc_ids: [this._authService.getUsername()] });
       changesStream.on('change', change => {
         this._logging.debug("Received page update: " + JSON.stringify(change));
@@ -56,25 +81,110 @@ export class DataService implements LoginListener {
     return existingData.catch(() => dummyData).concat(futureUpdates);
   }
 
+  public getUpdateStatus(): Observable<UpdateStatus> {
+    return Observable.create(observer => {
+      let changesStream = this._viewModelDb.changes(
+        { live: true, since: 'now', include_docs: true, doc_ids: [this._authService.getUsername()] });
+
+      let subscription = null;
+      this._viewModelDb.get(this._authService.getUsername()).then(doc => {
+        let lastUpdateTime = doc.timestamp;
+        changesStream.on('change', change => lastUpdateTime = change.doc.timestamp);
+
+        subscription = Observable.timer(0, 1000).map(() => {
+          const currentTimestamp = this._time.getUnixTimeMs();
+          const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
+          if (timeElapsedSec < 15)
+            observer.next(UpdateStatus.Green);
+          else if (timeElapsedSec < 60)
+            observer.next(UpdateStatus.Yellow);
+          else
+            observer.next(UpdateStatus.Red);
+        }).subscribe();
+      }).catch(e => console.warn(e));
+
+      return () => {
+        changesStream.cancel();
+        if (subscription) subscription.unsubscribe();
+      }
+    });
+  }
+
   public pushEvent(eventType: string, data: any) {
-    const currentTimestamp = this._time.getUnixTimeMs();
-    this._dbConnectionService.getEventsDb().post({
-      characterId: this._authService.getUsername(),
-      timestamp: currentTimestamp,
+    this._eventsDb.put({
+      _id: this._time.getUnixTimeMs().toString(),
       eventType: eventType,
       data: data
     })
-      .then(response => this.pushRefreshModelEvent())
+      .then(response => this.trySendEvents())
       .then(response => this._logging.debug(JSON.stringify(response)))
       .catch(err => this._logging.debug(JSON.stringify(err)))
   }
 
-  public pushRefreshModelEvent():  Promise<PouchDB.Core.Response> {
-    return this._dbConnectionService.getEventsDb().post({
+  private pushRefreshModelEvent(): Promise<PouchDB.Core.Response> {
+    return this._eventsDb.put(this.makeRefreshModelEvent());
+  }
+
+  private makeRefreshModelEvent() {
+    return {
+      _id: this._time.getUnixTimeMs().toString(),
       characterId: this._authService.getUsername(),
-      timestamp: this._time.getUnixTimeMs(),
       eventType: '_RefreshModel',
       data: {}
+    }
+  }
+
+  public async trySendEvents() {
+    console.debug("Trying to send events to server");
+    await this.pushRefreshModelEvent();
+    const alldocsResponse = await this._eventsDb.allDocs({ include_docs: true });
+    const events = alldocsResponse.rows.map(row => {
+      return {
+        timestamp: Number(row.doc._id),
+        characterId: this._authService.getUsername(),
+        eventType: row.doc.eventType,
+        data: row.doc.data
+      }
     });
+    console.info(`Sending ${events.length} events to server`);
+    console.debug(JSON.stringify(events));
+    const requestBody = JSON.stringify({ events: events });
+    const fullUrl = this._url + '/' + this._authService.getUsername();
+    try {
+      const response = await this._http.post(fullUrl, requestBody, this._jsonRequestOpts).toPromise();
+      if (response.status == 200) {
+        console.debug("Get updated viewmodel! :)");
+        let updatedViewModel = response.json().viewModel;
+        updatedViewModel._id = this._authService.getUsername();
+        await this.deleteEventsBefore(updatedViewModel.timestamp);
+        try {
+          const currentViewModel = await this._viewModelDb.get(this._authService.getUsername());
+          updatedViewModel._rev = currentViewModel._rev;
+        } catch (e) {
+          if (!(e.status && e.status == 404 && e.reason && e.reason == 'missing'))
+            throw (e);
+        }
+        await this._viewModelDb.put(updatedViewModel);
+      }
+      else if (response.status == 202) {
+        console.debug("Managed to submit events, but no viewmodel :(");
+        await this.deleteEventsBefore(response.json().timestamp);
+      } else
+        throw response.toString();
+    }
+    catch (e) {
+      console.error(e);
+    }
+  }
+
+  private async deleteEventsBefore(timestamp: number) {
+    console.info(`deleting events before ${timestamp}`);
+    const alldocsBeforeResponse = await this._eventsDb.allDocs({
+      include_docs: true,
+      startkey: "0",
+      endkey: timestamp.toString()
+    });
+
+    await Promise.all(alldocsBeforeResponse.rows.map(row => this._eventsDb.remove(row.doc._id, row.value.rev)));
   }
 }
