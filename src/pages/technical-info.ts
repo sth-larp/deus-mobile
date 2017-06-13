@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { DbConnectionService } from "../services/db-connection.service";
 import { Refresher, InfiniteScroll } from "ionic-angular";
+import { LoggingService } from "../services/logging.service";
 
 class LogEntry {
   public text: string;
@@ -16,7 +16,7 @@ export class TechnicalInfoPage {
   public level: string = "info";
   private _numEntries = 20;
 
-  constructor(private _dbConnectionService: DbConnectionService) { }
+  constructor(private _loggingService: LoggingService) { }
 
   // tslint:disable-next-line:no-unused-variable
   private ionViewWillEnter() {
@@ -25,7 +25,7 @@ export class TechnicalInfoPage {
   }
 
   private _queryLogs(): Promise<void> {
-    return this._dbConnectionService.getLoggingDb()
+    return this._loggingService.getLoggingDb()
       .query(`mobile/${this.level}`, { include_docs: true, limit: this._numEntries, descending: true })
       .then(res => this.logEntries = res.rows.map(row => this._rowToLogEntry(row)))
       .catch(err => console.log(JSON.stringify(err)));

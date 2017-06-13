@@ -18,7 +18,6 @@ import { DataService } from '../services/data.service';
 import { BackendService } from '../services/backend.service';
 import { FirebaseService } from '../services/firebase.service';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
-import { DbConnectionService } from "../services/db-connection.service";
 import { LoggingService } from "../services/logging.service";
 import { ViewQrCodePage } from "../pages/view-qrcode";
 import { BrowserModule } from "@angular/platform-browser";
@@ -73,7 +72,6 @@ import { AuthService } from "../services/auth.service";
   providers: [
     AuthService,
     NativeStorageService,
-    DbConnectionService,
     DataService,
     BackendService,
     QrCodeScanService,
