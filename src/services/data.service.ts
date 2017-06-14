@@ -62,8 +62,6 @@ export class DataService implements LoginListener {
   }
 
   public getData(): Observable<any> {
-    let dummyData: Observable<any> = Observable.of({ toolbar: { hitPoints: 1 }, pages: [{ pageType: "plain_test", menuTitle: "" }] });
-
     let existingData: Observable<any> = Observable.fromPromise(
       this._viewModelDb.get(this._authService.getUsername()))
 
@@ -78,30 +76,26 @@ export class DataService implements LoginListener {
     });
     // It's possible that we don't have proper data on device yet (first login),
     // so we need to skip an error and wait until synchronization.
-    return existingData.catch(() => dummyData).concat(futureUpdates);
+    return existingData.onErrorResumeNext(futureUpdates);
   }
 
   public getUpdateStatus(): Observable<UpdateStatus> {
     return Observable.create(observer => {
+      let lastUpdateTime = 0;
       let changesStream = this._viewModelDb.changes(
         { live: true, since: 'now', include_docs: true, doc_ids: [this._authService.getUsername()] });
+      changesStream.on('change', change => lastUpdateTime = change.doc.timestamp);
 
-      let subscription = null;
-      this._viewModelDb.get(this._authService.getUsername()).then(doc => {
-        let lastUpdateTime = doc.timestamp;
-        changesStream.on('change', change => lastUpdateTime = change.doc.timestamp);
-
-        subscription = Observable.timer(0, 1000).map(() => {
-          const currentTimestamp = this._time.getUnixTimeMs();
-          const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
-          if (timeElapsedSec < 15)
-            observer.next(UpdateStatus.Green);
-          else if (timeElapsedSec < 60)
-            observer.next(UpdateStatus.Yellow);
-          else
-            observer.next(UpdateStatus.Red);
-        }).subscribe();
-      }).catch(e => console.warn(e));
+      let subscription = Observable.timer(0, 1000).map(() => {
+        const currentTimestamp = this._time.getUnixTimeMs();
+        const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
+        if (timeElapsedSec < 15)
+          observer.next(UpdateStatus.Green);
+        else if (timeElapsedSec < 60)
+          observer.next(UpdateStatus.Yellow);
+        else
+          observer.next(UpdateStatus.Red);
+      }).subscribe();
 
       return () => {
         changesStream.cancel();
