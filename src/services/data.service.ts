@@ -40,7 +40,7 @@ export class DataService implements LoginListener {
   }
   public onSuccessfulLogin(username: string) {
     // TODO: adjust event frequency
-    this._refreshModelUpdateSubscription = Observable.timer(0, 10000).subscribe(() => this.trySendEvents());
+    this._refreshModelUpdateSubscription = Observable.timer(0, 20000).subscribe(() => this.trySendEvents());
     const usernamePrefix = `${username.replace("@", "")}_`;
     this._eventsDb = new PouchDB(usernamePrefix + 'events');
     this._viewModelDb = new PouchDB(usernamePrefix + 'viewmodel');
@@ -89,7 +89,7 @@ export class DataService implements LoginListener {
       let subscription = Observable.timer(0, 1000).map(() => {
         const currentTimestamp = this._time.getUnixTimeMs();
         const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
-        if (timeElapsedSec < 15)
+        if (timeElapsedSec < 30)
           observer.next(UpdateStatus.Green);
         else if (timeElapsedSec < 60)
           observer.next(UpdateStatus.Yellow);
