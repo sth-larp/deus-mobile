@@ -8,7 +8,7 @@ import { MonotonicTimeService } from "./monotonic-time.service";
 import { AuthService } from "./auth.service";
 import { LoginListener } from "./login-listener";
 import { Subscription } from "rxjs/Subscription";
-import { Headers, RequestOptionsArgs, Response, Http } from "@angular/http";
+import { Headers, RequestOptionsArgs, Http } from "@angular/http";
 
 export enum UpdateStatus {
   Green,
