@@ -13,9 +13,9 @@ export class UpdatablePageData {
 
 export abstract class UpdatablePage {
   private _subscription: Subscription = null;
-  constructor(private _title: string,
-              private _dataService: DataService,
-              private _navCtrl: NavController) {
+  constructor(protected _title: string,
+              protected _dataService: DataService,
+              protected _navCtrl: NavController) {
   }
 
   protected abstract setBody(body: any);

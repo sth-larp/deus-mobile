@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { NavParams, Content, Segment, NavController } from "ionic-angular";
+import { NavParams, Content, Segment, NavController, Refresher } from "ionic-angular";
 import { ListItemData } from '../elements/list-item';
 import { UpdatablePage } from "./updatable";
 import { DataService } from "../services/data.service";
@@ -44,6 +44,13 @@ export class ListPage extends UpdatablePage {
         this._segment.ngAfterViewInit();
       }
     });
+  }
+
+  public doRefresh(refresher: Refresher) {
+    // TODO: error indication?
+    this._dataService.trySendEvents()
+    .then(() => refresher.complete())
+    .catch(() => refresher.complete());
   }
 
   public onFilter(filter: string) {

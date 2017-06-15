@@ -17,6 +17,9 @@
   </ion-toolbar>  
 </ion-header>
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>  
   <ion-list>
     <list-item *ngFor="let item of body.items" [data]="item" [filter]="currentFilter"></list-item>
   </ion-list>
