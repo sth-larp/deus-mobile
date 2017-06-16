@@ -4,6 +4,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from "../services/auth.service";
 import { MenuPage } from "./menu";
 import { LoggingService } from "../services/logging.service";
+import { FirebaseService } from "../services/firebase.service";
 
 @Component({
   selector: 'page-login',
@@ -17,6 +18,8 @@ export class LoginPage {
     private _loadingCtrl: LoadingController,
     private _formBuilder: FormBuilder,
     private _authService: AuthService,
+    // Hack to instantiate it)
+    private _firebaseService: FirebaseService,
     private _logging: LoggingService) {
     this.loginForm = this._formBuilder.group({
       // TODO: remove credentials before public testing

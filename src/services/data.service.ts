@@ -9,7 +9,6 @@ import { AuthService } from "./auth.service";
 import { LoginListener } from "./login-listener";
 import { Subscription } from "rxjs/Subscription";
 import { Headers, RequestOptionsArgs, Http } from "@angular/http";
-import { FirebaseService } from "./firebase.service";
 
 export enum UpdateStatus {
   Green,
@@ -35,14 +34,13 @@ export class DataService implements LoginListener {
   constructor(private _logging: LoggingService,
     private _time: MonotonicTimeService,
     private _authService: AuthService,
-    private _firebaseService: FirebaseService, // Hack to instantiate it
     private _http: Http) {
 
     this._authService.addListener(this);
   }
   public onSuccessfulLogin(username: string) {
     // TODO: adjust event frequency
-    this._refreshModelUpdateSubscription = Observable.timer(0, 20000).subscribe(() => this.trySendEvents());
+    // this._refreshModelUpdateSubscription = Observable.timer(0, 20000).subscribe(() => this.trySendEvents());
     const usernamePrefix = `${username.replace("@", "")}_`;
     this._eventsDb = new PouchDB(usernamePrefix + 'events');
     this._viewModelDb = new PouchDB(usernamePrefix + 'viewmodel');
