@@ -35,7 +35,6 @@
     "sw-toolbox": "3.6.0",
     "typescript": "2.3.4",
     "zone.js": "0.8.5",
-    "com.instabug.cordova.plugin": "https://github.com/Instabug/instabug-cordova",
     "cordova-plugin-console": "~1.0.6",
     "cordova-plugin-device": "~1.1.5",
     "cordova-plugin-firebase": "~0.1.19",
