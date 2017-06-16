@@ -25,7 +25,6 @@
         <param name="ios-package" onload="true" value="CDVStatusBar" />
     </feature>
     <allow-navigation href="http://192.168.178.29:8100" />
-    <plugin name="com.instabug.cordova.plugin" spec="https://github.com/Instabug/instabug-cordova" />
     <plugin name="cordova-plugin-console" spec="~1.0.6" />
     <plugin name="cordova-plugin-device" spec="~1.1.5" />
     <plugin name="cordova-plugin-firebase" spec="~0.1.19" />
