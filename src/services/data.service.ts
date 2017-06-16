@@ -9,6 +9,7 @@ import { AuthService } from "./auth.service";
 import { LoginListener } from "./login-listener";
 import { Subscription } from "rxjs/Subscription";
 import { Headers, RequestOptionsArgs, Http } from "@angular/http";
+import { FirebaseService } from "./firebase.service";
 
 export enum UpdateStatus {
   Green,
@@ -34,6 +35,7 @@ export class DataService implements LoginListener {
   constructor(private _logging: LoggingService,
     private _time: MonotonicTimeService,
     private _authService: AuthService,
+    private _firebaseService: FirebaseService, // Hack to instantiate it
     private _http: Http) {
 
     this._authService.addListener(this);
