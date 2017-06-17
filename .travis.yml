@@ -15,9 +15,6 @@ matrix:
       language: objective-c
       addons:
         firefox: latest
-cache:
-  directories:
-  - node_modules
 git:
   depth: 100000
 before_install:
