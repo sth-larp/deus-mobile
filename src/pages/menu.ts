@@ -10,6 +10,7 @@ import { EconomyPage } from "./economy";
 import { LoggingService } from "../services/logging.service";
 import { LoginPage } from "./login";
 import { AuthService } from "../services/auth.service";
+import { FirebaseService } from "../services/firebase.service";
 
 class PageData {
   public root: any;
@@ -31,7 +32,9 @@ export class MenuPage {
   constructor(private _dataService: DataService,
     private _authService: AuthService,
     private _navCtrl: NavController,
-    private _logging: LoggingService) {
+    private _logging: LoggingService,
+    // Hack to instantiate it)
+    private _firebaseService: FirebaseService) {
     this._pageTypeToPage.set('list', ListPage);
     this._pageTypeToPage.set('plain_text', PlainTextPage);
     this._pageTypeToPage.set('economy', EconomyPage);
