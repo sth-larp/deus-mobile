@@ -1,5 +1,6 @@
 {
   "name": "deus-mobile",
   "app_id": "c8ba929f",
-  "type": "ionic-angular"
+  "v2": true,
+  "typescript": true
 }
