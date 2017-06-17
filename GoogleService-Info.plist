@@ -36,5 +36,9 @@
 	<string>1:786784916655:ios:3221f1d942e744f8</string>
 	<key>DATABASE_URL</key>
 	<string>https://deus-larp.firebaseio.com</string>
+    <key>UIBackgroundModes</key>
+    <array>
+      <string>remote-notification</string>
+    </array>    
 </dict>
 </plist>
