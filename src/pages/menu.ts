@@ -74,4 +74,8 @@ export class MenuPage {
     this._authService.logout();
     this._navCtrl.setRoot(LoginPage);
   }
+
+  public initFirebase() {
+    this._firebaseService.init();
+  }
 }

@@ -16,7 +16,15 @@ export class FirebaseService implements LoginListener {
     private _authService: AuthService) {
     _authService.addListener(this);
     this._logging.debug("FirebaseService constructor run");
+  }
 
+  private _subscribeToTokenChange(): Observable<string> {
+    return Observable.fromPromise(this._firebase.getToken()).
+      concat(this._firebase.onTokenRefresh());
+  }
+
+  public init() {
+    this._logging.info('Subscribing to Firebase');
     this._subscribeToTokenChange().subscribe(
       token => {
         this._logging.debug(`The token is ${token}`);
@@ -45,13 +53,11 @@ export class FirebaseService implements LoginListener {
     );
   }
 
-  private _subscribeToTokenChange(): Observable<string> {
-    return Observable.fromPromise(this._firebase.getToken()).
-      concat(this._firebase.onTokenRefresh());
+  public onSuccessfulLogin(username: string) {
+
   }
 
-  public onSuccessfulLogin(username: string) {
-  }
   public onLogout() {
+
   }
 }
