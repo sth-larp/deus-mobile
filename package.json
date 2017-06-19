@@ -79,7 +79,6 @@
   "description": "deus-mobile: An Ionic project",
   "cordova": {
     "plugins": {
-      "com.instabug.cordova.plugin": {},
       "cordova-plugin-console": {},
       "cordova-plugin-device": {},
       "cordova-plugin-firebase": {},
