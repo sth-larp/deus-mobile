@@ -33,12 +33,13 @@ export class FirebaseService implements LoginListener {
       error => console.error('Error getting token', error)
     );
 
-    this._firebase.hasPermission().then()
-      .then(() => this._logging.debug('Have push permission!'))
-      .catch(() => this._firebase.grantPermission()
-        .then(() => this._logging.debug('Got push permission!'))
-        .catch(() => this._logging.warning('Did NOT get push permission!'))
-      );
+    this._firebase.hasPermission()
+      .then((data) => {
+        this._logging.debug('Has permission? Data: ' + JSON.stringify(data));
+        return (data.isEnabled) ? Promise.resolve({}) : this._firebase.grantPermission();
+      })
+      .then(() => this._logging.debug('Got push permission!'))
+      .catch(() => this._logging.warning('Did NOT get push permission!'));
 
     this._firebase.subscribe("all")
       .then(() => this._logging.debug('Subscribed to "all" topic'))
