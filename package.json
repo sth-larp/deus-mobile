@@ -27,6 +27,7 @@
     "@ionic/storage": "2.0.1",
     "@types/pouchdb": "5.4.28",
     "cordova-android": "^6.2.3",
+    "cordova-browser": "^4.1.0",
     "cordova-custom-config": "^4.0.2",
     "cordova-plugin-compat": "^1.0.0",
     "cordova-plugin-console": "^1.0.7",
