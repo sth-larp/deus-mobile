@@ -1,4 +1,5 @@
-import { Firebase } from '@ionic-native/firebase';
+declare var FCMPlugin: any;
+//import { Firebase } from '@ionic-native/firebase';
 import { Injectable } from "@angular/core";
 import { Observable } from "rxjs/Observable";
 import { LoggingService } from "./logging.service";
@@ -10,7 +11,7 @@ import { AuthService } from "./auth.service";
 export class FirebaseService implements LoginListener {
   public token: string = null;
 
-  constructor(private _firebase: Firebase,
+  constructor(//private _firebase: Firebase,
     private _logging: LoggingService,
     private _dataService: DataService,
     private _authService: AuthService) {
@@ -18,39 +19,23 @@ export class FirebaseService implements LoginListener {
     this._logging.debug("FirebaseService constructor run");
   }
 
-  private _subscribeToTokenChange(): Observable<string> {
-    return Observable.fromPromise(this._firebase.getToken()).
-      concat(this._firebase.onTokenRefresh());
-  }
-
   public init() {
     this._logging.info('Subscribing to Firebase');
-    this._subscribeToTokenChange().subscribe(
-      token => {
+    FCMPlugin.onTokenRefresh((token) => {
         this._logging.debug(`The token is ${token}`);
         this.token = token;
-      },
-      error => console.error('Error getting token', error)
-    );
+    });
 
-    this._firebase.hasPermission().then()
-      .then(() => this._logging.debug('Have push permission!'))
-      .catch(() => this._firebase.grantPermission()
-        .then(() => this._logging.debug('Got push permission!'))
-        .catch(() => this._logging.warning('Did NOT get push permission!'))
-      );
-
-    this._firebase.subscribe("all")
-      .then(() => this._logging.debug('Subscribed to "all" topic'))
-      .catch(err => console.error('Error subscribing to "all" topic: ', err));
-
-    this._firebase.onNotificationOpen().subscribe(
-      notification => {
-        this._logging.debug('Got notification: ' + JSON.stringify(notification));
-        if (notification.refresh) this._dataService.trySendEvents();
-      },
-      err => this._logging.error('Error getting notification: ' + err)
-    );
+    FCMPlugin.subscribeToTopic('all');
+    FCMPlugin.onNotification((data) => {
+    if(data.wasTapped){
+      //Notification was received on device tray and tapped by the user. 
+      this._logging.debug( 'tapped' + JSON.stringify(data) );
+    }else{
+      //Notification was received in foreground. Maybe the user needs to be notified. 
+      this._logging.debug( 'not tapped' + JSON.stringify(data) );
+    }
+    });
   }
 
   public onSuccessfulLogin(username: string) {
