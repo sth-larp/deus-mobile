@@ -93,6 +93,10 @@
       "ionic-plugin-keyboard": {},
       "phonegap-plugin-barcodescanner": {},
       "cordova-custom-config": {}
-    }
+    },
+    "platforms": [
+      "android",
+      "browser"
+    ]
   }
 }
