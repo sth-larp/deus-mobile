@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ActionSheetController, NavController } from "ionic-angular";
+import { NavParams, ActionSheetController, NavController, Platform } from "ionic-angular";
 import { DataService } from "../services/data.service";
 
 export class ActionData {
@@ -23,7 +23,8 @@ export class DetailsPage {
   constructor(navParams: NavParams,
     private _navCtrl: NavController,
     private _actionSheetCtrl: ActionSheetController,
-    private _dataService: DataService) {
+    private _dataService: DataService,
+    private _platform: Platform) {
     this.data = navParams.data.value;
   }
 
@@ -46,6 +47,11 @@ export class DetailsPage {
       title: '',
       buttons: buttons
     });
-    actionSheet.present();
+
+    let unregisterFn = this._platform.registerBackButtonAction(() => {
+      actionSheet.dismiss();
+    }, 0);
+    actionSheet.onWillDismiss(unregisterFn);
+    actionSheet.present()
   }
 }
