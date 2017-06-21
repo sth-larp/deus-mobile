@@ -5,10 +5,13 @@ import { LoggingService } from "./logging.service";
 import { DataService } from "./data.service";
 import { LoginListener } from "./login-listener";
 import { AuthService } from "./auth.service";
+import { Subscription } from "rxjs/Rx";
 
 @Injectable()
 export class FirebaseService implements LoginListener {
-  public token: string = null;
+  private token: string = null;
+  private tokenSubscription: Subscription = null;
+  private notificationSubscription: Subscription = null;
 
   constructor(private _firebase: Firebase,
     private _logging: LoggingService,
@@ -23,14 +26,15 @@ export class FirebaseService implements LoginListener {
       concat(this._firebase.onTokenRefresh());
   }
 
-  public init() {
+  public onSuccessfulLogin(username: string) {
     this._logging.info('Subscribing to Firebase');
-    this._subscribeToTokenChange().subscribe(
+    this.tokenSubscription = this._subscribeToTokenChange().subscribe(
       token => {
         this._logging.debug(`The token is ${token}`);
         this.token = token;
+        this._dataService.pushEvent('tokenUpdated', { token: token });
       },
-      error => console.error('Error getting token', error)
+      error => this._logging.error('Error getting token: ' + error)
     );
 
     this._firebase.hasPermission()
@@ -45,20 +49,25 @@ export class FirebaseService implements LoginListener {
       .then(() => this._logging.debug('Subscribed to "all" topic'))
       .catch(err => console.error('Error subscribing to "all" topic: ', err));
 
-    this._firebase.onNotificationOpen().subscribe(
+    this.notificationSubscription = this._firebase.onNotificationOpen().subscribe(
       notification => {
         this._logging.debug('Got notification: ' + JSON.stringify(notification));
-        if (notification.refresh) this._dataService.trySendEvents();
+        if (notification.refresh)
+          this._dataService.pushEvent('pushReceived', { notification: notification });
       },
       err => this._logging.error('Error getting notification: ' + err)
     );
   }
 
-  public onSuccessfulLogin(username: string) {
-
-  }
-
   public onLogout() {
-
+    this._firebase.unsubscribe('all');
+    if (this.tokenSubscription) {
+      this.tokenSubscription.unsubscribe();
+      this.tokenSubscription = null;
+    }
+    if (this.notificationSubscription) {
+      this.notificationSubscription.unsubscribe();
+      this.notificationSubscription = null;
+    }
   }
 }
