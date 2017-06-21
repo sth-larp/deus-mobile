@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavParams, ActionSheetController } from "ionic-angular";
+import { NavParams, ActionSheetController, NavController } from "ionic-angular";
 import { DataService } from "../services/data.service";
 
 export class ActionData {
@@ -21,6 +21,7 @@ export class DetailsData {
 export class DetailsPage {
   public data: DetailsData;
   constructor(navParams: NavParams,
+    private _navCtrl: NavController,
     private _actionSheetCtrl: ActionSheetController,
     private _dataService: DataService) {
     this.data = navParams.data.value;
@@ -31,7 +32,10 @@ export class DetailsPage {
     for (let action of this.data.actions) {
       buttons.push({
         text: action.text,
-        handler: () => this._dataService.pushEvent(action.eventType, action.data)
+        handler: () => {
+          this._dataService.pushEvent(action.eventType, action.data);
+          this._navCtrl.pop();
+        }
       });
     }
     buttons.push({
