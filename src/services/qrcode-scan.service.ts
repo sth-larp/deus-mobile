@@ -5,34 +5,16 @@ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { LoggingService } from "./logging.service";
 import { CharacterPage } from "../pages/character";
 import { GeneralQRCodePage } from "../pages/general-qrcode";
-
-
-class SplitQrCodeContent {
-  public codeClass: string;
-  public type: string;
-  public id: string;
-}
-
-export function splitQrContent(content: string): SplitQrCodeContent {
-  const tokens = content.split(',');
-  if (tokens.length == 3)
-    return {codeClass: tokens[0], type: tokens[1], id: tokens[2] }
-  else
-    return { codeClass: '-1', type: '', id: '' };
-}
+import { decode, QrData } from "deus-qr-lib"
+import { MonotonicTimeService } from "./monotonic-time.service";
 
 @Injectable()
 export class QrCodeScanService {
-  private _prefixToPage = new  Map<string, any>();
-
   constructor(private _barcodeScanner: BarcodeScanner,
     private _alertController: AlertController,
     private _modalController: ModalController,
-    private _logging: LoggingService) {
-      // For some incredibly stupid reason it's the only way
-      // to populate map in our case. Because JavaScript.
-      this._prefixToPage.set('0', GeneralQRCodePage);
-      this._prefixToPage.set('character', CharacterPage);
+    private _logging: LoggingService,
+    private _monotonicClock: MonotonicTimeService) {
   }
 
   private _qrScanningOptions = {
@@ -61,21 +43,26 @@ export class QrCodeScanService {
   }
 
   private onQRScanned(qr: string) {
-    let split: SplitQrCodeContent = splitQrContent(qr);
-
-    console.log(this._prefixToPage.keys());
-    if (this._prefixToPage.has(split.codeClass)) {
-      this._logging.info(`Scanner QR with class "${split.codeClass}" corresponds to page, redirecting`);
-      let modal = this._modalController.create(this._prefixToPage.get(split.codeClass), { value: split.id });
+    try {
+      let data: QrData = decode(qr);
+      console.log(JSON.stringify(data));
+      this._logging.info('Decoded QR code: ' + JSON.stringify(data));
+      if (data.validUntil < this._monotonicClock.getUnixTimeMs() / 1000)
+        throw Error('QR code expired');
+      let modal = this._modalController.create(GeneralQRCodePage, { value: data });
       modal.present();
-    } else {
-      this._alertController.create({
-        title: 'Неподдерживаемый QR-код',
-        message: 'Приложение не может распознать QR-код. Если вы уверены, что это допустимый код ' +
-        'и вам точно необходимо его использовать сфотографируйте код и отправьте эту фотографию с описанием ситуации на адрес support@alice.digital.',
-        buttons: ['Окай :(']
-      }).present();
-      this._logging.warning('Unsupported QR code scanned');
+    } catch (e) {
+      this._logging.warning('Unsupported QR code scanned, error: ' + e);
+      this.showInvalidQrWarning(qr);
     }
+  }
+
+  private showInvalidQrWarning(qr: string) {
+    this._alertController.create({
+      title: 'Неподдерживаемый QR-код',
+      message: 'Приложение не может распознать QR-код. Если вы уверены, что это допустимый код ' +
+      'и вам точно необходимо его использовать, сфотографируйте код и отправьте эту фотографию с описанием ситуации на адрес support@alice.digital.',
+      buttons: ['Ок']
+    }).present();
   }
 }

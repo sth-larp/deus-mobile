@@ -37,6 +37,7 @@
     "cordova-plugin-splashscreen": "^4.0.3",
     "cordova-plugin-statusbar": "^2.2.3",
     "cordova-plugin-whitelist": "^1.3.2",
+    "deus-qr-lib": "git+https://github.com/sth-larp/deus-qr-lib.git",
     "ionic-angular": "3.0.1",
     "ionic-native": "2.9.0",
     "ionic-plugin-keyboard": "^2.2.1",

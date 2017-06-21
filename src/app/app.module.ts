@@ -22,7 +22,6 @@ import { LoggingService } from "../services/logging.service";
 import { ViewQrCodePage } from "../pages/view-qrcode";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
-import { CharacterPage } from "../pages/character";
 import { TechnicalInfoPage } from "../pages/technical-info";
 import { DetailsPage } from "../pages/details";
 import { QuickActions } from "../elements/quick-actions";
@@ -44,7 +43,6 @@ import { AuthService } from "../services/auth.service";
     MenuPage,
     GeneralQRCodePage,
     ViewQrCodePage,
-    CharacterPage,
     TechnicalInfoPage,
     DetailsPage,
     QuickActions
@@ -65,7 +63,6 @@ import { AuthService } from "../services/auth.service";
     MenuPage,
     GeneralQRCodePage,
     ViewQrCodePage,
-    CharacterPage,
     TechnicalInfoPage,
     DetailsPage
   ],
