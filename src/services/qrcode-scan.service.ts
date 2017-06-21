@@ -37,15 +37,14 @@ export class QrCodeScanService {
       else
         this._logging.info('QR code scanning was canncelled by user');
     }, (err) => {
-      // TODO: show some error page?
       this._logging.warning('Error reading QR code: ' + err);
+      this.showInvalidQrWarning()
     });
   }
 
   private onQRScanned(qr: string) {
     try {
       let data: QrData = decode(qr);
-      console.log(JSON.stringify(data));
       this._logging.info('Decoded QR code: ' + JSON.stringify(data));
       if (data.validUntil < this._monotonicClock.getUnixTimeMs() / 1000)
         throw Error('QR code expired');
@@ -53,11 +52,11 @@ export class QrCodeScanService {
       modal.present();
     } catch (e) {
       this._logging.warning('Unsupported QR code scanned, error: ' + e);
-      this.showInvalidQrWarning(qr);
+      this.showInvalidQrWarning();
     }
   }
 
-  private showInvalidQrWarning(qr: string) {
+  private showInvalidQrWarning() {
     this._alertController.create({
       title: 'Неподдерживаемый QR-код',
       message: 'Приложение не может распознать QR-код. Если вы уверены, что это допустимый код ' +
