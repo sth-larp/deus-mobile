@@ -65,6 +65,7 @@ export class LoggingService implements LoggingService, LoginListener {
 
   public onSuccessfulLogin(username: string) {
     this._username = username;
+    // TODO: rename test accounts to not have @ in them and remove replace.
     const localDbName = `${this._username.replace("@", "")}_logging-dev`;
     this._loggingDb = new PouchDB(localDbName);
     this._setUpLoggingDb();
