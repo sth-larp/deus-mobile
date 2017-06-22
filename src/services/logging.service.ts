@@ -16,7 +16,7 @@ export class NoOpLoggingService {
 
 @Injectable()
 export class LoggingService implements LoggingService, LoginListener {
-  private _loggingDb: PouchDB.Database<{character: string, level: string, msg: string, timestamp: number}> = null;
+  private _loggingDb: PouchDB.Database<{ character: string, level: string, msg: string, timestamp: number }> = null;
   private _loggingDbReplication: PouchDB.Replication.Replication<{}> = null;
   private _username: string = null;
 

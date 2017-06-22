@@ -15,7 +15,7 @@ import { AuthService } from "../services/auth.service";
 export class QuickActions {
   public updateStatus: string = "Red";
   public hitPoints: number = 0;
-  
+
   private _subscription: Subscription = null;
 
   constructor(private _modalController: ModalController,
