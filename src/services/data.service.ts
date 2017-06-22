@@ -9,6 +9,7 @@ import { AuthService } from "./auth.service";
 import { LoginListener } from "./login-listener";
 import { Subscription } from "rxjs/Subscription";
 import { Headers, RequestOptionsArgs, Http } from "@angular/http";
+import { GlobalConfig } from "../config";
 
 export enum UpdateStatus {
   Green,
@@ -28,8 +29,6 @@ export class DataService implements LoginListener {
       'Accept': 'application/json'
     })
   };
-
-  private _url = 'http://dev.alice.digital:8157/events';
 
   constructor(private _logging: LoggingService,
     private _time: MonotonicTimeService,
@@ -143,7 +142,7 @@ export class DataService implements LoginListener {
     console.info(`Sending ${events.length} events to server`);
     console.debug(JSON.stringify(events));
     const requestBody = JSON.stringify({ events: events });
-    const fullUrl = this._url + '/' + this._authService.getUsername();
+    const fullUrl = GlobalConfig.sendEventsBaseUrl + '/' + this._authService.getUsername();
     try {
       const response = await this._http.post(fullUrl, requestBody, this._jsonRequestOpts).toPromise();
       if (response.status == 200) {
