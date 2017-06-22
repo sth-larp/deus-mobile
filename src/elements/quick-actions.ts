@@ -32,7 +32,7 @@ export class QuickActions {
     this._subscription = this._dataService.getData().subscribe(
       // TODO(Andrei): Rework hitpoints indicator and remove Math.min
       // (or make sure that it's NEVER possible to get > 5 hp).
-      json => { this.hitPoints = Math.min(5, json.toolbar.hitPoints);  this._logging.debug('HIT POINTS: ' + this.hitPoints); },
+      json => { this.hitPoints = Math.min(5, json.toolbar.hitPoints) },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
   }
