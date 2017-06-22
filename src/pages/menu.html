@@ -7,7 +7,6 @@
         </h1>
       </ion-avatar>
       <h2>{{getCharacterName()}}</h2>
-      <p>Anonymous Player</p>
     </ion-item>
     <ion-list [ngStyle]="{'position': 'relative'}">
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">{{p.menuTitle}}</button>
@@ -15,7 +14,7 @@
   </ion-content>
   <ion-footer>
     <ion-list>
-      <button menuClose ion-item detail-none (click)="logout()">Logout</button>
+      <button menuClose ion-item detail-none (click)="logout()">Выход</button>
     </ion-list>
   </ion-footer>
 </ion-menu>

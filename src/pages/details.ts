@@ -40,7 +40,7 @@ export class DetailsPage {
       });
     }
     buttons.push({
-          text: 'Cancel',
+          text: 'Отмена',
           role: 'cancel'
         })
     let actionSheet = this._actionSheetCtrl.create({

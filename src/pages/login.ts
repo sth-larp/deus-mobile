@@ -56,7 +56,7 @@ export class LoginPage {
 
   private _showLoader() {
     this._loading = this._loadingCtrl.create({
-      content: 'Authenticating...'
+      content: 'Авторизация...'
     });
     this._loading.present();
   }
