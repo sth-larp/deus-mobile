@@ -4,6 +4,7 @@ import { NativeStorage } from "ionic-native/dist/es5";
 import { LoginListener } from "./login-listener";
 import { AuthService } from "./auth.service";
 import { upsert } from "../utils/pouchdb-utils";
+import { GlobalConfig } from "../config";
 
 export class NoOpLoggingService {
   public debug(msg: string) { };
@@ -67,14 +68,13 @@ export class LoggingService implements LoggingService, LoginListener {
     const localDbName = `${this._username.replace("@", "")}_logging-dev`;
     this._loggingDb = new PouchDB(localDbName);
     this._setUpLoggingDb();
-
-    const remoteDbName = `http://dev.alice.digital:5984/logging-dev`;
     const replicationOptions: any = {
       live: true,
       retry: true,
       continuous: true,
     };
-    this._loggingDbReplication = this._loggingDb.replicate.to(remoteDbName, replicationOptions);
+    this._loggingDbReplication = this._loggingDb.replicate.to(
+      GlobalConfig.remoteLoggingDbUrl, replicationOptions);
   }
 
   public onLogout() {

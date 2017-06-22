@@ -85,16 +85,17 @@ export class DataService implements LoginListener {
         { live: true, since: 'now', include_docs: true, doc_ids: [this._authService.getUsername()] });
       changesStream.on('change', change => lastUpdateTime = change.doc.timestamp);
 
-      let subscription = Observable.timer(0, 1000).map(() => {
-        const currentTimestamp = this._time.getUnixTimeMs();
-        const timeElapsedSec = (currentTimestamp - lastUpdateTime) / 1000;
-        if (timeElapsedSec < 30)
-          observer.next(UpdateStatus.Green);
-        else if (timeElapsedSec < 60)
-          observer.next(UpdateStatus.Yellow);
-        else
-          observer.next(UpdateStatus.Red);
-      }).subscribe();
+      let subscription = Observable.timer(0, GlobalConfig.recalculateUpdateStatusEveryMs)
+        .map(() => {
+          const currentTimestamp = this._time.getUnixTimeMs();
+          const viewModelLagTimeMs = currentTimestamp - lastUpdateTime;
+          if (viewModelLagTimeMs < GlobalConfig.viewModelLagTimeMsYellowStatus)
+            observer.next(UpdateStatus.Green);
+          else if (viewModelLagTimeMs < GlobalConfig.viewModelLagTimeMsRedStatus)
+            observer.next(UpdateStatus.Yellow);
+          else
+            observer.next(UpdateStatus.Red);
+        }).subscribe();
 
       return () => {
         changesStream.cancel();
