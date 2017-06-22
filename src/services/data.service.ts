@@ -73,8 +73,6 @@ export class DataService implements LoginListener {
       });
       return () => { changesStream.cancel(); }
     });
-    // It's possible that we don't have proper data on device yet (first login),
-    // so we need to skip an error and wait until synchronization.
     return existingData.onErrorResumeNext(futureUpdates);
   }
 
