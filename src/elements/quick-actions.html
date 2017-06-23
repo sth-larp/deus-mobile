@@ -19,10 +19,10 @@
           </button>
         </ion-col>
         <ion-col>
-          <button ion-button block icon-only clear>
-            <h3 [ngSwitch]="1">
-              <img *ngSwitchCase="0" style='height: 1.6em' src="assets/icon/virtual-reality-off.svg"/>
-              <img *ngSwitchCase="1" style='height: 1.6em' src="assets/icon/virtual-reality-on.svg"/>
+          <button ion-button block icon-only clear (click)="onToggleVr()">
+            <h3 [ngSwitch]="inVr">
+              <img *ngSwitchCase="false" style='height: 1.6em' src="assets/icon/virtual-reality-off.svg"/>
+              <img *ngSwitchCase="true" style='height: 1.6em' src="assets/icon/virtual-reality-on.svg"/>
             </h3>
           </button>
         </ion-col>

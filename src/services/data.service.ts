@@ -1,8 +1,8 @@
 ﻿import * as PouchDB from 'pouchdb';
 
 import { Injectable } from '@angular/core'
-
 import { Observable } from "rxjs/Rx";
+
 import { LoggingService } from "./logging.service";
 import { MonotonicTimeService } from "./monotonic-time.service";
 import { AuthService } from "./auth.service";

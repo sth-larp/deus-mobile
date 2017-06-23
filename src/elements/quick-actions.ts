@@ -1,10 +1,12 @@
 import { Component } from '@angular/core';
 import { ModalController } from "ionic-angular";
 import { Subscription } from "rxjs";
+import { Observable } from "rxjs/Rx";
 
 import { ViewQrCodePage } from "../pages/view-qrcode";
 import { QrCodeScanService } from "../services/qrcode-scan.service";
 import { DataService, UpdateStatus } from "../services/data.service";
+import { LocalDataService } from "../services/local-data.service";
 import { LoggingService } from "../services/logging.service";
 import { AuthService } from "../services/auth.service";
 
@@ -15,12 +17,15 @@ import { AuthService } from "../services/auth.service";
 export class QuickActions {
   public updateStatus: string = "Red";
   public hitPoints: number = 0;
+  public inVr: boolean = false;
 
   private _subscription: Subscription = null;
+  private _vrSubscription: Subscription = null;
 
   constructor(private _modalController: ModalController,
     private _qrCodeScanService: QrCodeScanService,
     private _dataService: DataService,
+    private _localDataService: LocalDataService,
     private _authService: AuthService,
     private _logging: LoggingService) {
     _dataService.getUpdateStatus().subscribe(
@@ -35,6 +40,9 @@ export class QuickActions {
       json => { this.hitPoints = Math.min(5, json.toolbar.hitPoints) },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
+    this._vrSubscription = Observable.timer(0, 1000).subscribe(() => {
+      this.updateVrStatus();
+    });
   }
 
   private ngOnDestroy() {
@@ -44,17 +52,28 @@ export class QuickActions {
     }
   }
 
-  public onBarcode() {
-    this._qrCodeScanService.scanQRCode();
+  private updateVrStatus() {
+    // TODO: Show time left instead
+    this.inVr = this._localDataService.vrEnterTime() != null;
   }
 
-  public onRefresh() {
-    this._dataService.trySendEvents();
+  public onBarcode() {
+    this._qrCodeScanService.scanQRCode();
   }
 
   public onId() {
     let accessModal = this._modalController.create(ViewQrCodePage,
       { value: `character:${this._authService.getUsername()}` });
     accessModal.present();
+  }
+
+  public onToggleVr() {
+    // TODO: Send event to server
+    this._localDataService.toggleVr();
+    this.updateVrStatus();
+  }
+
+  public onRefresh() {
+    this._dataService.trySendEvents();
   }
 }
