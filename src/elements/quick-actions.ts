@@ -17,6 +17,7 @@ import { AuthService } from "../services/auth.service";
 export class QuickActions {
   public updateStatusIcon: string = null;
   public hitPoints: number = 0;
+  public hitPointsText: string = null;
   public hitPointsIcon: string = null;
   public vrIcon: string = null;
 
@@ -42,6 +43,8 @@ export class QuickActions {
         this.hitPointsIcon = this.hitPoints == 0
                                  ? 'hit-points-0.svg'
                                  : 'hit-points-full.svg';
+        // TODO(Andrei): Show mapHP
+        this.hitPointsText = this.hitPoints + '/?'
       },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );

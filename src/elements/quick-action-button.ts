@@ -7,6 +7,8 @@ import { Component, Input, Output, EventEmitter } from '@angular/core';
 export class QuickActionButton {
   @Input()
   public icon: string;
+  @Input()
+  public text: string;
   // Output: inherits "click" event from ionic button
 
   constructor() {
