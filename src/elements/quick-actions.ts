@@ -15,9 +15,10 @@ import { AuthService } from "../services/auth.service";
   templateUrl: 'quick-actions.html'
 })
 export class QuickActions {
-  public updateStatus: string = "Red";
+  public updateStatusIcon: string = null;
   public hitPoints: number = 0;
-  public inVr: boolean = false;
+  public hitPointsIcon: string = null;
+  public vrIcon: string = null;
 
   private _subscription: Subscription = null;
   private _vrSubscription: Subscription = null;
@@ -29,7 +30,7 @@ export class QuickActions {
     private _authService: AuthService,
     private _logging: LoggingService) {
     _dataService.getUpdateStatus().subscribe(
-      status => { this.updateStatus = UpdateStatus[status]; },
+      status => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
       error => console.error('Cannot get update status: ' + error))
   }
 
@@ -37,7 +38,10 @@ export class QuickActions {
     this._subscription = this._dataService.getData().subscribe(
       // TODO(Andrei): Rework hitpoints indicator and remove Math.min
       // (or make sure that it's NEVER possible to get > 5 hp).
-      json => { this.hitPoints = Math.min(5, json.toolbar.hitPoints) },
+      json => {
+        this.hitPoints = json.toolbar.hitPoints;
+        this.hitPointsIcon = 'hit-points_' + Math.min(5, json.toolbar.hitPoints) + '.png';
+      },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
     this._vrSubscription = Observable.timer(0, 1000).subscribe(() => {
@@ -52,9 +56,20 @@ export class QuickActions {
     }
   }
 
+  private getUpdateStatusIcon(status: UpdateStatus) : string {
+    switch (status) {
+      case UpdateStatus.Green: return 'sync-green.svg';
+      case UpdateStatus.Yellow: return 'sync-green.svg';
+      case UpdateStatus.Red: return 'sync-green.svg';
+    }
+    return null;
+  }
+
   private updateVrStatus() {
     // TODO: Show time left instead
-    this.inVr = this._localDataService.vrEnterTime() != null;
+    this.vrIcon = this._localDataService.vrEnterTime() == null
+                      ? "virtual-reality-off.svg"
+                      : "virtual-reality-on.svg";
   }
 
   public onBarcode() {

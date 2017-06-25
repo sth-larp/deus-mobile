@@ -24,6 +24,7 @@ import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { TechnicalInfoPage } from "../pages/technical-info";
 import { DetailsPage } from "../pages/details";
+import { QuickActionButton } from "../elements/quick-action-button";
 import { QuickActions } from "../elements/quick-actions";
 import { ServerTimeService } from "../services/server-time.service";
 import { LocalTimeService } from "../services/local-time.service";
@@ -45,6 +46,7 @@ import { AuthService } from "../services/auth.service";
     ViewQrCodePage,
     TechnicalInfoPage,
     DetailsPage,
+    QuickActionButton,
     QuickActions
   ],
   imports: [

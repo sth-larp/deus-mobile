@@ -4,36 +4,19 @@
     <ion-grid no-padding class="button-group">
       <ion-row>
         <ion-col>
-          <button ion-button block icon-only clear (click)="onBarcode()">
-             <h3><img style='height: 1.6em' src="assets/icon/scan-qr-code.svg"/></h3>
-          </button>
+          <quick-action-button icon="scan-qr-code.svg" (click)="onBarcode()"></quick-action-button>
         </ion-col>
         <ion-col>
-          <button ion-button block icon-only clear (click)="onId()">
-            <h3><img style='height: 1.6em' src="assets/icon/generate-id-qr-code.svg"/></h3>
-          </button>
+          <quick-action-button icon="generate-id-qr-code.svg" (click)="onId()"></quick-action-button>
         </ion-col>
         <ion-col>
-          <button ion-button block icon-only clear>
-            <h3><img style='height: 1.6em' src="assets/icon/hit-points_{{hitPoints}}.png"/></h3>
-          </button>
+          <quick-action-button [icon]="hitPointsIcon"></quick-action-button>
         </ion-col>
         <ion-col>
-          <button ion-button block icon-only clear (click)="onToggleVr()">
-            <h3 [ngSwitch]="inVr">
-              <img *ngSwitchCase="false" style='height: 1.6em' src="assets/icon/virtual-reality-off.svg"/>
-              <img *ngSwitchCase="true" style='height: 1.6em' src="assets/icon/virtual-reality-on.svg"/>
-            </h3>
-          </button>
+          <quick-action-button [icon]="vrIcon" (click)="onToggleVr()"></quick-action-button>
         </ion-col>
         <ion-col>
-          <button ion-button block icon-only clear (click)="onRefresh()">
-            <h3 [ngSwitch]="updateStatus">
-              <img *ngSwitchCase="'Green'" style='height: 1.6em' src="assets/icon/sync-green.svg"/>
-              <img *ngSwitchCase="'Yellow'" style='height: 1.6em' src="assets/icon/sync-yellow.svg"/>
-              <img *ngSwitchCase="'Red'" style='height: 1.6em' src="assets/icon/sync-red.svg"/>
-            </h3>
-          </button>
+          <quick-action-button [icon]="updateStatusIcon" (click)="onRefresh()"></quick-action-button>
         </ion-col>
       </ion-row>
     </ion-grid>
