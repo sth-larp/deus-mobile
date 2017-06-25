@@ -67,13 +67,44 @@ export class QuickActions {
     return null;
   }
 
+  // TODO: Add tests
+  private formatInteger(value: number, padding: number) : string {
+    var str = value.toFixed(0);
+    return (str.length >= padding) ? str : ('0000000000000000' + str).slice(-padding);
+  }
+
+  // TODO: Add tests
+  // Prints "H:MM" is valud is minutes of "M:SS" if values is seconds.
+  private formatTime(value: number, separator: string) : string {
+    var value = Math.floor(value);
+    var high = Math.floor(value / 60);
+    var low = value % 60;
+    return this.formatInteger(high, 1) + separator + this.formatInteger(low, 2);
+  }
+
+  // TODO: Add tests
+  private getVrTimer(secondsLeft: number) : string {
+    if (secondsLeft < 0) {
+      var separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
+      return this.formatTime(0, separator);
+    }
+    else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
+      return this.formatTime(secondsLeft, '.');
+    else
+      return this.formatTime(secondsLeft / 60, ':');
+  }
+
   private updateVrStatus() {
+    // TODO(Andrei): Read maxSecondsInVr from ViewModel
+    var maxSecondsInVr = 60 * 20;
     this.vrIcon = this._localDataService.vrEnterTime() == null
-                      ? "virtual-reality-off.svg"
-                      : "virtual-reality-on.svg";
-    // TODO(Andrei): Show h:mm left instead
+                      ? 'virtual-reality-off.svg'
+                      : 'virtual-reality-on.svg';
+    // TODO(Andrei): Change text color
     var secondsInVr = this._localDataService.secondsInVr();
-    this.vrTimer = (secondsInVr == null) ? "" : secondsInVr.toFixed(0);
+    this.vrTimer = (secondsInVr == null)
+                       ? ''
+                       : this.getVrTimer(maxSecondsInVr - secondsInVr);
   }
 
   public onBarcode() {

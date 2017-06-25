@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core'
 
 import { MonotonicTimeService } from "./monotonic-time.service";
 
+// TODO: Store this data while one user stays logged in. No more, no less.
 @Injectable()
 export class LocalDataService {
   private _vrEnterTime : number = null;  // null if not in VR

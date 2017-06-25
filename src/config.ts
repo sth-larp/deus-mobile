@@ -2,7 +2,9 @@ export const GlobalConfig = {
   getViewmodelBaseUrl: 'http://dev.alice.digital:8157/viewmodel',
   sendEventsBaseUrl: 'http://dev.alice.digital:8157/events',
 
-  recalculateVrTimerEveryMs: 1000,
+  // TODO: Use seconds instead of milliseconds
+  recalculateVrTimerEveryMs: 500,
+  vrTimerYellowThresholdMs: 600000,
   recalculateUpdateStatusEveryMs: 1000,
   viewModelLagTimeMsYellowStatus: 30000,
   viewModelLagTimeMsRedStatus: 30000,
