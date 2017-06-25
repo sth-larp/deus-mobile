@@ -33,10 +33,8 @@ export class DataService implements LoginListener {
   public onSuccessfulLogin(username: string) {
     // TODO: adjust event frequency
     // this._refreshModelUpdateSubscription = Observable.timer(0, 20000).subscribe(() => this.trySendEvents());
-    // TODO: rename test accounts to not have @ in them and remove replace.
-    const usernamePrefix = `${username.replace("@", "")}_`;
-    this._eventsDb = new PouchDB(usernamePrefix + 'events');
-    this._viewModelDb = new PouchDB(usernamePrefix + 'viewmodel');
+    this._eventsDb = new PouchDB(username + '_events');
+    this._viewModelDb = new PouchDB(username + '_viewmodel');
   }
 
   public onLogout() {
