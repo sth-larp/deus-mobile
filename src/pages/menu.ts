@@ -11,6 +11,7 @@ import { LoggingService } from "../services/logging.service";
 import { LoginPage } from "./login";
 import { AuthService } from "../services/auth.service";
 import { FirebaseService } from "../services/firebase.service";
+import { LoginListener } from "../services/login-listener";
 
 class PageData {
   public root: any;
@@ -21,7 +22,7 @@ class PageData {
 @Component({
   templateUrl: 'menu.html'
 })
-export class MenuPage {
+export class MenuPage implements LoginListener {
   @ViewChild(Nav) private _nav: Nav;
 
   public pages: Array<PageData> = [{root: ListPage, menuTitle: ''}];
@@ -36,6 +37,7 @@ export class MenuPage {
     // Hack to instantiate it)
     private _firebaseService: FirebaseService,
     navParams: NavParams) {
+    this._authService.addListener(this);
     this._pageTypeToPage.set('list', ListPage);
     this._pageTypeToPage.set('plain_text', PlainTextPage);
     this._pageTypeToPage.set('economy', EconomyPage);
@@ -75,8 +77,13 @@ export class MenuPage {
     return this._authService.getUsername();
   }
 
+  public onSuccessfulLogin(username: string) { }
+
+  public onLogout() {
+    this._navCtrl.setRoot(LoginPage);
+  }
+
   public logout() {
     this._authService.logout();
-    this._navCtrl.setRoot(LoginPage);
   }
 }

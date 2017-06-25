@@ -152,7 +152,8 @@ export class DataService implements LoginListener {
         throw response.toString();
     }
     catch (e) {
-      console.error(e);
+      if (e.status && (e.status == 401 || e.status == 404))
+        await this._authService.logout();
     }
   }
 
