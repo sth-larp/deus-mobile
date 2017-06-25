@@ -11,15 +11,15 @@ export class LocalDataService {
 
   public toggleVr() {
     if (this._vrEnterTime == null) {
-      console.error("### VR: in");
+      console.debug("### VR: in");
       this._vrEnterTime = this._time.getUnixTimeMs();
     } else {
-      console.error("### VR: out");
+      console.debug("### VR: out");
       this._vrEnterTime = null;
     }
   }
   public vrEnterTime() : number {
-    console.error("### get VR");
+    console.debug("### get VR");
     return this._vrEnterTime;
   }
 }
