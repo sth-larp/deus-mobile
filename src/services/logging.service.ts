@@ -1,6 +1,5 @@
 import * as PouchDB from 'pouchdb'
 import { Injectable } from '@angular/core'
-import { NativeStorage } from "ionic-native/dist/es5";
 import { LoginListener } from "./login-listener";
 import { AuthService } from "./auth.service";
 import { upsert } from "../utils/pouchdb-utils";
@@ -48,19 +47,19 @@ export class LoggingService implements LoggingService, LoginListener {
 
   private _log(msg: string, level: string) {
     const currentDate = new Date();
-    NativeStorage.getItem('username')
-      .then(username => {
-        return this._loggingDb.post(
-          { character: username, level: level, msg: msg, timestamp: currentDate.valueOf() }
-        );
-      })
-      .then(resp => {
-        if (!resp.ok)
-          console.debug("Error placing logging record to db: " + JSON.stringify(resp))
-      })
-      .catch(err =>
-        console.log("Error placing logging record to db, maybe due to not being logged yet? ", JSON.stringify(err)));
-
+    if (this._username) {
+      this._loggingDb.post(
+        { character: this._username, level: level, msg: msg, timestamp: currentDate.valueOf() }
+      )
+        .then(resp => {
+          if (!resp.ok)
+            console.error("Error placing logging record to db: " + JSON.stringify(resp))
+        })
+        .catch(err =>
+          console.error("Error placing logging record to db ", JSON.stringify(err)));
+    } else {
+      console.warn("Can't log into DB, not logged in yet");
+    }
   }
 
   public onSuccessfulLogin(username: string) {
