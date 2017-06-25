@@ -10,6 +10,7 @@ import { LoginListener } from "./login-listener";
 import { Subscription } from "rxjs/Subscription";
 import { Http } from "@angular/http";
 import { GlobalConfig } from "../config";
+import { upsert } from "../utils/pouchdb-utils";
 
 export enum UpdateStatus {
   Green,
@@ -157,14 +158,7 @@ export class DataService implements LoginListener {
 
   public async setViewModel(viewModel: any) {
     viewModel._id = this._authService.getUsername();
-    try {
-      const currentViewModel = await this._viewModelDb.get(this._authService.getUsername());
-      viewModel._rev = currentViewModel._rev;
-    } catch (e) {
-      if (!(e.status && e.status == 404 && e.reason && e.reason == 'missing'))
-        throw (e);
-    }
-    await this._viewModelDb.put(viewModel);
+    upsert(this._viewModelDb, viewModel);
   }
 
   private async deleteEventsBefore(timestamp: number) {
