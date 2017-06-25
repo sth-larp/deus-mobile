@@ -16,7 +16,6 @@ import { ListItem } from '../elements/list-item';
 
 import { DataService } from '../services/data.service';
 import { LocalDataService } from '../services/local-data.service';
-import { BackendService } from '../services/backend.service';
 import { FirebaseService } from '../services/firebase.service';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
 import { LoggingService } from "../services/logging.service";
@@ -72,7 +71,6 @@ import { AuthService } from "../services/auth.service";
     NativeStorageService,
     DataService,
     LocalDataService,
-    BackendService,
     QrCodeScanService,
     LoggingService,
     Firebase,

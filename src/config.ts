@@ -1,5 +1,5 @@
 export const GlobalConfig = {
-  authentificationUrl: 'http://dev.alice.digital/api-mock/master/auth',
+  getViewmodelBaseUrl: 'http://dev.alice.digital:8157/viewmodel',
   sendEventsBaseUrl: 'http://dev.alice.digital:8157/events',
 
   recalculateUpdateStatusEveryMs: 1000,

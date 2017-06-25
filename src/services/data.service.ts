@@ -8,7 +8,7 @@ import { MonotonicTimeService } from "./monotonic-time.service";
 import { AuthService } from "./auth.service";
 import { LoginListener } from "./login-listener";
 import { Subscription } from "rxjs/Subscription";
-import { Headers, RequestOptionsArgs, Http } from "@angular/http";
+import { Http } from "@angular/http";
 import { GlobalConfig } from "../config";
 
 export enum UpdateStatus {
@@ -22,13 +22,6 @@ export class DataService implements LoginListener {
   private _refreshModelUpdateSubscription: Subscription = null;
   private _eventsDb: PouchDB.Database<{ eventType: string; data: any; }> = null;
   private _viewModelDb: PouchDB.Database<{ timestamp: number }> = null;
-
-  private _jsonRequestOpts: RequestOptionsArgs = {
-    headers: new Headers({
-      'Content-Type': 'application/json',
-      'Accept': 'application/json'
-    })
-  };
 
   constructor(private _logging: LoggingService,
     private _time: MonotonicTimeService,
@@ -144,20 +137,13 @@ export class DataService implements LoginListener {
     const requestBody = JSON.stringify({ events: events });
     const fullUrl = GlobalConfig.sendEventsBaseUrl + '/' + this._authService.getUsername();
     try {
-      const response = await this._http.post(fullUrl, requestBody, this._jsonRequestOpts).toPromise();
+      const response = await this._http.post(fullUrl, requestBody,
+        this._authService.getRequestOptionsWithSavedCredentials()).toPromise();
       if (response.status == 200) {
         console.debug("Get updated viewmodel! :)");
         let updatedViewModel = response.json().viewModel;
-        updatedViewModel._id = this._authService.getUsername();
         await this.deleteEventsBefore(updatedViewModel.timestamp);
-        try {
-          const currentViewModel = await this._viewModelDb.get(this._authService.getUsername());
-          updatedViewModel._rev = currentViewModel._rev;
-        } catch (e) {
-          if (!(e.status && e.status == 404 && e.reason && e.reason == 'missing'))
-            throw (e);
-        }
-        await this._viewModelDb.put(updatedViewModel);
+        await this.setViewModel(updatedViewModel);
       }
       else if (response.status == 202) {
         console.warn("Managed to submit events, but no viewmodel :(");
@@ -168,6 +154,18 @@ export class DataService implements LoginListener {
     catch (e) {
       console.error(e);
     }
+  }
+
+  public async setViewModel(viewModel: any) {
+    viewModel._id = this._authService.getUsername();
+    try {
+      const currentViewModel = await this._viewModelDb.get(this._authService.getUsername());
+      viewModel._rev = currentViewModel._rev;
+    } catch (e) {
+      if (!(e.status && e.status == 404 && e.reason && e.reason == 'missing'))
+        throw (e);
+    }
+    await this._viewModelDb.put(viewModel);
   }
 
   private async deleteEventsBefore(timestamp: number) {

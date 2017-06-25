@@ -1,5 +1,5 @@
 ﻿import { Component, ViewChild } from '@angular/core';
-import { NavController, Nav } from "ionic-angular";
+import { NavController, Nav, NavParams } from "ionic-angular";
 import { Subscription } from "rxjs/Subscription";
 
 import { DataService } from '../services/data.service';
@@ -34,11 +34,16 @@ export class MenuPage {
     private _navCtrl: NavController,
     private _logging: LoggingService,
     // Hack to instantiate it)
-    private _firebaseService: FirebaseService) {
+    private _firebaseService: FirebaseService,
+    navParams: NavParams) {
     this._pageTypeToPage.set('list', ListPage);
     this._pageTypeToPage.set('plain_text', PlainTextPage);
     this._pageTypeToPage.set('economy', EconomyPage);
     this._pageTypeToPage.set('technical_info', TechnicalInfoPage);
+    if (navParams.data.viewModel) {
+      console.warn(JSON.stringify(navParams.data.viewModel));
+      this._dataService.setViewModel(navParams.data.viewModel);
+    }
   }
 
   // tslint:disable-next-line:no-unused-variable

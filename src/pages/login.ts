@@ -20,18 +20,25 @@ export class LoginPage {
     private _logging: LoggingService) {
     this.loginForm = this._formBuilder.group({
       // TODO: remove credentials before public testing
-      username: ['vasya@gmail.com', Validators.required],
+      username: ['vasya', Validators.required],
       password: ['vasya', Validators.required],
     });
   }
 
   public login() {
     this._showLoader();
-    this._authService.login(
+    this._authService.tryLoginAndGetViewmodel(
       this.loginForm.value['username'],
       this.loginForm.value['password']).then(
-      () => { this._hideLoader(); this._goToLoggedInArea() },
-      err => { this._hideLoader(); console.warn(err) });
+      viewModel => {
+        this._hideLoader();
+        this._navCtrl.setRoot(MenuPage, { viewModel });
+      },
+      err => {
+        this._hideLoader();
+        // TODO: show some warning/error message to user
+        console.warn(err)
+      });
   }
 
   public ionViewDidLoad() {
@@ -40,7 +47,7 @@ export class LoginPage {
 
   private _checkIfAlreadyAuthentificated() {
     this._showLoader();
-    this._authService.checkAuthentication().then(() => {
+    this._authService.checkExistingCredentials().then(() => {
       this._logging.info("Found saved token and username, skipping authentification");
       this._hideLoader();
       this._goToLoggedInArea();

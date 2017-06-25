@@ -26,6 +26,7 @@
         "@ionic-native/native-storage": "3.4.4",
         "@ionic/storage": "2.0.1",
         "@types/pouchdb": "5.4.28",
+        "basic-authorization-header": "^0.2.7",
         "cordova-android": "^6.2.3",
         "cordova-browser": "^4.1.0",
         "cordova-custom-config": "^4.0.2",
