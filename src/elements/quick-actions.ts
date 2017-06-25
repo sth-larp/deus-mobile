@@ -17,7 +17,6 @@ import { AuthService } from "../services/auth.service";
 })
 export class QuickActions {
   public updateStatusIcon: string = null;
-  public hitPoints: number = 0;
   public hitPointsText: string = null;
   public hitPointsIcon: string = null;
   public vrIcon: string = null;
@@ -39,13 +38,13 @@ export class QuickActions {
   private ngOnInit() {
     this._subscription = this._dataService.getData().subscribe(
       json => {
-        this.hitPoints = json.toolbar.hitPoints;
+        var hitPoints = json.toolbar.hitPoints;
+        var maxHitPoints = json.toolbar.maxHitPoints;
         // TODO(Andrei): Add more icon gradations
-        this.hitPointsIcon = this.hitPoints == 0
+        this.hitPointsIcon = hitPoints == 0
                                  ? 'hit-points-0.svg'
                                  : 'hit-points-full.svg';
-        // TODO(Andrei): Show mapHP
-        this.hitPointsText = this.hitPoints + '/?'
+        this.hitPointsText = hitPoints + '/' + maxHitPoints;
       },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
