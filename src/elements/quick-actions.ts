@@ -36,11 +36,12 @@ export class QuickActions {
 
   private ngOnInit() {
     this._subscription = this._dataService.getData().subscribe(
-      // TODO(Andrei): Rework hitpoints indicator and remove Math.min
-      // (or make sure that it's NEVER possible to get > 5 hp).
       json => {
         this.hitPoints = json.toolbar.hitPoints;
-        this.hitPointsIcon = 'hit-points_' + Math.min(5, json.toolbar.hitPoints) + '.png';
+        // TODO(Andrei): Add more icon gradations
+        this.hitPointsIcon = this.hitPoints == 0
+                                 ? 'hit-points-0.svg'
+                                 : 'hit-points-full.svg';
       },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
