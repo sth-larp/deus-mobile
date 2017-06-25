@@ -25,7 +25,7 @@ export class AuthService {
   }
 
   public async tryLoginAndGetViewmodel(username: string, password: string): Promise<any> {
-    const fullUrl = GlobalConfig.getViewmodelBaseUrl + '/' + username;
+    const fullUrl = GlobalConfig.getViewmodelBaseUrl + '/' + username + '?type=mobile';
     const response = await this._http.get(fullUrl,
       this.getRequestOptionsWithCredentials(username, password)).toPromise();
     this._saveCredentials(username, password);
