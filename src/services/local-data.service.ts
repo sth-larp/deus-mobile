@@ -19,4 +19,11 @@ export class LocalDataService {
   public vrEnterTime() : number {
     return this._vrEnterTime;
   }
+  public secondsInVr() : number {
+    if (this._vrEnterTime == null) {
+      return null;
+    } else {
+      return (this._time.getUnixTimeMs() - this._vrEnterTime) / 1000.;
+    }
+  }
 }

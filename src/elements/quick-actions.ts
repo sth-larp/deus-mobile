@@ -20,9 +20,9 @@ export class QuickActions {
   public hitPointsText: string = null;
   public hitPointsIcon: string = null;
   public vrIcon: string = null;
+  public vrTimer: string = null;
 
   private _subscription: Subscription = null;
-  private _vrSubscription: Subscription = null;
 
   constructor(private _modalController: ModalController,
     private _qrCodeScanService: QrCodeScanService,
@@ -48,9 +48,7 @@ export class QuickActions {
       },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
-    this._vrSubscription = Observable.timer(0, 1000).subscribe(() => {
-      this.updateVrStatus();
-    });
+    setInterval(() => { this.updateVrStatus(); }, 1000);
   }
 
   private ngOnDestroy() {
@@ -70,10 +68,12 @@ export class QuickActions {
   }
 
   private updateVrStatus() {
-    // TODO: Show time left instead
     this.vrIcon = this._localDataService.vrEnterTime() == null
                       ? "virtual-reality-off.svg"
                       : "virtual-reality-on.svg";
+    // TODO(Andrei): Show h:mm left instead
+    var secondsInVr = this._localDataService.secondsInVr();
+    this.vrTimer = (secondsInVr == null) ? "" : secondsInVr.toFixed(0);
   }
 
   public onBarcode() {
