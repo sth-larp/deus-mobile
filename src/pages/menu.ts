@@ -43,7 +43,6 @@ export class MenuPage implements LoginListener {
     this._pageTypeToPage.set('economy', EconomyPage);
     this._pageTypeToPage.set('technical_info', TechnicalInfoPage);
     if (navParams.data.viewModel) {
-      console.warn(JSON.stringify(navParams.data.viewModel));
       this._dataService.setViewModel(navParams.data.viewModel);
     }
   }
