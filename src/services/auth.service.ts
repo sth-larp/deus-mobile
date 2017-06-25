@@ -41,14 +41,20 @@ export class AuthService {
   private async _saveCredentials(username: string, password: string) {
     this._username = username;
     this._password = password;
-    await NativeStorage.setItem('username', username);
-    await NativeStorage.setItem('password', password);
+    try {
+      await NativeStorage.setItem('username', username);
+      await NativeStorage.setItem('password', password);
+    }
+    catch (e) { } // Workaround for 'Cordova not available' on ionic serve
     this.notifyListenersOnLogin();
   }
 
   public async logout() {
-    await NativeStorage.remove('username');
-    await NativeStorage.remove('password');
+    try {
+      await NativeStorage.remove('username');
+      await NativeStorage.remove('password');
+    }
+    catch (e) { } // Workaround for 'Cordova not available' on ionic serve
     for (let listener of this._listeners)
       listener.onLogout();
     this._username = null;
