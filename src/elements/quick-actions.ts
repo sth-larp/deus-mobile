@@ -3,6 +3,7 @@ import { ModalController } from "ionic-angular";
 import { Subscription } from "rxjs";
 import { Observable } from "rxjs/Rx";
 
+import { GlobalConfig } from "../config";
 import { ViewQrCodePage } from "../pages/view-qrcode";
 import { QrCodeScanService } from "../services/qrcode-scan.service";
 import { DataService, UpdateStatus } from "../services/data.service";
@@ -48,7 +49,7 @@ export class QuickActions {
       },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
-    setInterval(() => { this.updateVrStatus(); }, 1000);
+    setInterval(() => { this.updateVrStatus(); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
 
   private ngOnDestroy() {
