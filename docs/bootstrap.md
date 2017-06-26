@@ -75,7 +75,7 @@ Make Cordova believe that we are in Cordova project.
 
 To run application in browser with auto-reload on changes (not all plugins are supported):
     
-    ionic serve
+    npm start
 
 ## Set up Android app
 
