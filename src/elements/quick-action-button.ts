@@ -9,6 +9,8 @@ export class QuickActionButton {
   public icon: string;
   @Input()
   public text: string;
+  @Input()
+  public textColor: string;
   // Output: inherits "click" event from ionic button
 
   constructor() {

@@ -1,7 +1,7 @@
 quick-action-button {
   #infoText {
      font-weight: bold;
-     color: color($colors, primary);
+     color: color($colors, primary);  // default color, may be overriden
      position: absolute;
      bottom: 0;
      right: 1vw;

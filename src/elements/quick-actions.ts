@@ -3,7 +3,7 @@ import { ModalController } from "ionic-angular";
 import { Subscription } from "rxjs";
 import { Observable } from "rxjs/Rx";
 
-import { GlobalConfig } from "../config";
+import { GlobalConfig, Colors } from "../config";
 import { ViewQrCodePage } from "../pages/view-qrcode";
 import { QrCodeScanService } from "../services/qrcode-scan.service";
 import { DataService, UpdateStatus } from "../services/data.service";
@@ -17,10 +17,12 @@ import { AuthService } from "../services/auth.service";
 })
 export class QuickActions {
   public updateStatusIcon: string = null;
-  public hpText: string = null;
   public hpIcon: string = null;
+  public hpText: string = null;
+  public hpTextColor: string = null;
   public vrIcon: string = null;
   public vrTimer: string = null;
+  public vrTimerColor: string = null;
 
   private _subscription: Subscription = null;
 
@@ -37,16 +39,7 @@ export class QuickActions {
 
   private ngOnInit() {
     this._subscription = this._dataService.getData().subscribe(
-      json => {
-        var hp: number = json.toolbar.hitPoints;
-        var maxHp: number = json.toolbar.maxHitPoints;
-        var hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * hp / maxHp);
-        if (hp > 0) hpIconIndex = Math.max(hpIconIndex, 1);
-        if (hp < maxHp) hpIconIndex = Math.min(hpIconIndex, GlobalConfig.numHpQuickActionIcons - 1);
-        this.hpIcon = 'hit-points-' + this.formatInteger(hpIconIndex, 2) + '.svg';
-        this.hpText = hp.toString();
-        // TODO(Andrei): Change text color when hp == 0
-      },
+      json => this.updateHp(json),
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
     setInterval(() => { this.updateVrStatus(); }, GlobalConfig.recalculateVrTimerEveryMs);
@@ -83,16 +76,27 @@ export class QuickActions {
     return this.formatInteger(high, 1) + separator + this.formatInteger(low, 2);
   }
 
+  private updateHp(modelViewJson: any) {
+    var hp: number = modelViewJson.toolbar.hitPoints;
+    var maxHp: number = modelViewJson.toolbar.maxHitPoints;
+    var hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * hp / maxHp);
+    if (hp > 0) hpIconIndex = Math.max(hpIconIndex, 1);
+    if (hp < maxHp) hpIconIndex = Math.min(hpIconIndex, GlobalConfig.numHpQuickActionIcons - 1);
+    this.hpIcon = 'hit-points-' + this.formatInteger(hpIconIndex, 2) + '.svg';
+    this.hpText = hp.toString();
+    this.hpTextColor = (hp == 0) ? Colors.red : Colors.primary;
+  }
+
   // TODO: Add tests
-  private getVrTimer(secondsLeft: number) : string {
+  private getVrTimerWithColor(secondsLeft: number) : string[] {
     if (secondsLeft < 0) {
       var separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
-      return this.formatTime(0, separator);
+      return [this.formatTime(0, separator), Colors.red];
     }
     else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
-      return this.formatTime(secondsLeft, '.');
+      return [this.formatTime(secondsLeft, '.'), Colors.yellow];
     else
-      return this.formatTime(secondsLeft / 60, ':');
+      return [this.formatTime(secondsLeft / 60, ':'), Colors.primary];
   }
 
   private updateVrStatus() {
@@ -103,9 +107,10 @@ export class QuickActions {
                       : 'virtual-reality-on.svg';
     // TODO(Andrei): Change text color
     var secondsInVr = this._localDataService.secondsInVr();
-    this.vrTimer = (secondsInVr == null)
-                       ? ''
-                       : this.getVrTimer(maxSecondsInVr - secondsInVr);
+    [this.vrTimer, this.vrTimerColor] =
+        (secondsInVr == null)
+            ? ['', null]
+            : this.getVrTimerWithColor(maxSecondsInVr - secondsInVr);
   }
 
   public onBarcode() {
