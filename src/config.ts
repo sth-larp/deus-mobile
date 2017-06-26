@@ -9,6 +9,8 @@ export const GlobalConfig = {
   viewModelLagTimeMsYellowStatus: 30000,
   viewModelLagTimeMsRedStatus: 30000,
 
+  numHpQuickActionIcons: 12,
+
   remoteLoggingDbUrl: 'http://dev.alice.digital:5984/logging-dev',
 
   timeServerUrl: 'http://dev.alice.digital:8157/time',

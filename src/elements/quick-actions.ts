@@ -17,8 +17,8 @@ import { AuthService } from "../services/auth.service";
 })
 export class QuickActions {
   public updateStatusIcon: string = null;
-  public hitPointsText: string = null;
-  public hitPointsIcon: string = null;
+  public hpText: string = null;
+  public hpIcon: string = null;
   public vrIcon: string = null;
   public vrTimer: string = null;
 
@@ -38,13 +38,14 @@ export class QuickActions {
   private ngOnInit() {
     this._subscription = this._dataService.getData().subscribe(
       json => {
-        var hitPoints = json.toolbar.hitPoints;
-        var maxHitPoints = json.toolbar.maxHitPoints;
-        // TODO(Andrei): Add more icon gradations
-        this.hitPointsIcon = hitPoints == 0
-                                 ? 'hit-points-0.svg'
-                                 : 'hit-points-full.svg';
-        this.hitPointsText = hitPoints + '/' + maxHitPoints;
+        var hp: number = json.toolbar.hitPoints;
+        var maxHp: number = json.toolbar.maxHitPoints;
+        var hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * hp / maxHp);
+        if (hp > 0) hpIconIndex = Math.max(hpIconIndex, 1);
+        if (hp < maxHp) hpIconIndex = Math.min(hpIconIndex, GlobalConfig.numHpQuickActionIcons - 1);
+        this.hpIcon = 'hit-points-' + this.formatInteger(hpIconIndex, 2) + '.svg';
+        this.hpText = hp.toString();
+        // TODO(Andrei): Change text color when hp == 0
       },
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
