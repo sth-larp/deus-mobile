@@ -10,8 +10,6 @@ import { GlobalConfig } from "../config";
   templateUrl: 'passport.html'
 })
 export class PassportPage {
-  public currentFilter = "";
-
   public id: ListItemData;
   public fullName: ListItemData;
   public email: ListItemData;
