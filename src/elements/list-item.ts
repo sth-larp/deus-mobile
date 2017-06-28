@@ -4,18 +4,18 @@ import { ModalController } from "ionic-angular";
 
 export class ListItemData {
   public text: string;
-  public subtext: string;
-  public value: string;
-  public percent: number;
-  public progressBarColor: string;
-  public valueColor: string;
+  public subtext?: string;
+  public value?: string;
+  public percent?: number;
+  public progressBarColor?: string;
+  public valueColor?: string;
 
-  public hasIcon: boolean;
-  public icon: string;
+  public hasIcon?: boolean;
+  public icon?: string;
 
-  public details: DetailsData;
+  public details?: DetailsData;
 
-  public tag: string;
+  public tag?: string;
 }
 
 @Component({

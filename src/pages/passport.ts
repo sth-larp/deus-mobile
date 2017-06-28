@@ -21,11 +21,11 @@ export class PassportPage {
   constructor(navParams: NavParams,
     private _clock: MonotonicTimeService) {
     const passportScreenData = navParams.data.value;
-    this.id = this.makeSimpleListItemData("ID", passportScreenData.id);
-    this.fullName = this.makeSimpleListItemData("Имя", passportScreenData.fullName);
-    this.email = this.makeSimpleListItemData("e-mail", passportScreenData.email);
-    this.corporation = this.makeSimpleListItemData("Корпорация", passportScreenData.corporation);
-    this.insurance = this.makeSimpleListItemData("Страховка", "None");
+    this.id = {text: "ID", value: passportScreenData.id }
+    this.fullName = {text: "Имя", value: passportScreenData.fullName }
+    this.email = {text: "e-mail", value: passportScreenData.email }
+    this.corporation = {text: "Корпорация", value: passportScreenData.corporation }
+    this.insurance = {text: "Страховка", value: "None" }
 
     this.qrContent = encode({
       type: 100, kind: 0,
@@ -33,12 +33,5 @@ export class PassportPage {
       validUntil: (_clock.getUnixTimeMs() + GlobalConfig.passportQrLifespan) / 1000,
       payload: passportScreenData.id
     });
-  }
-
-  private makeSimpleListItemData(key: string, value: string): ListItemData {
-    return {
-      text: key, value: value, subtext: "", percent: 0, progressBarColor: "",
-      valueColor: "", hasIcon: false, icon: "", details: null, tag: ""
-    };
   }
 }
