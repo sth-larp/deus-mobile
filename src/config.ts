@@ -14,7 +14,9 @@ export const GlobalConfig = {
   remoteLoggingDbUrl: 'http://dev.alice.digital:5984/logging-dev',
 
   timeServerUrl: 'http://dev.alice.digital:8157/time',
-  fetchTimeFromServerEveryMs: 60000
+  fetchTimeFromServerEveryMs: 60000,
+
+  passportQrLifespan: 60000 // 1 min
 }
 
 // Apparently, SCSS variables cannot be used in typescript, so copying here.

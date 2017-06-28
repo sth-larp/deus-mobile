@@ -19,7 +19,6 @@ import { LocalDataService } from '../services/local-data.service';
 import { FirebaseService } from '../services/firebase.service';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
 import { LoggingService } from "../services/logging.service";
-import { ViewQrCodePage } from "../pages/view-qrcode";
 import { BrowserModule } from "@angular/platform-browser";
 import { FormsModule } from "@angular/forms";
 import { TechnicalInfoPage } from "../pages/technical-info";
@@ -32,20 +31,23 @@ import { NativeStorageService } from "../services/native-storage.service";
 import { MonotonicTimeService } from "../services/monotonic-time.service";
 import { GeneralQRCodePage } from "../pages/general-qrcode";
 import { AuthService } from "../services/auth.service";
+import { PassportPage } from "../pages/passport";
+import { QrCode } from "../elements/qrcode";
 
 @NgModule({
   declarations: [
     MyApp,
     ListPage,
     ListItem,
+    QrCode,
     LoginPage,
     PlainTextPage,
     EconomyPage,
     MenuPage,
     GeneralQRCodePage,
-    ViewQrCodePage,
     TechnicalInfoPage,
     DetailsPage,
+    PassportPage,
     QuickActionButton,
     QuickActions
   ],
@@ -64,9 +66,10 @@ import { AuthService } from "../services/auth.service";
     EconomyPage,
     MenuPage,
     GeneralQRCodePage,
-    ViewQrCodePage,
     TechnicalInfoPage,
-    DetailsPage
+    DetailsPage,
+    PassportPage,
+    QrCode
   ],
   providers: [
     AuthService,

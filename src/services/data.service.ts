@@ -69,6 +69,10 @@ export class DataService implements LoginListener {
     return existingData.onErrorResumeNext(futureUpdates);
   }
 
+  public getCurrentData(): Promise<any> {
+    return this._viewModelDb.get(this._authService.getUsername());
+  }
+
   public getUpdateStatus(): Observable<UpdateStatus> {
     return Observable.create(observer => {
       let lastUpdateTime = 0;

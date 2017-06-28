@@ -1,26 +1,17 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { NavParams } from 'ionic-angular';
-import { LoggingService } from "../services/logging.service";
+import { Component, ElementRef, ViewChild, Input } from '@angular/core';
 import { QRCode, ErrorCorrectLevel } from 'qrcode-generator-ts/js';
 
 @Component({
-  selector: 'page-qrcode',
-  templateUrl: 'view-qrcode.html'
+  selector: 'element-qrcode',
+  templateUrl: 'qrcode.html'
 })
-export class ViewQrCodePage {
+export class QrCode {
+  @Input()
   public qrContent: string;
-  public imagePath: string;
 
   @ViewChild('qrCanvas') private _canvasRef: ElementRef;
 
-  constructor(navParams: NavParams,
-              private _logging: LoggingService) {
-    this.qrContent = navParams.data.value;
-    _logging.info(`Demonstrating QR: ${JSON.stringify(this.qrContent)}`);
-  }
-
-  // tslint:disable-next-line:no-unused-variable
-  private ionViewDidEnter() {
+  public ngOnInit() {
     let qr = new QRCode();
     qr.setTypeNumber(3);
     qr.setErrorCorrectLevel(ErrorCorrectLevel.M);
@@ -31,8 +22,8 @@ export class ViewQrCodePage {
       this._canvasRef.nativeElement.getContext('2d');
 
     // TODO: device-dependent size? Or how properly adjust it?
-    let cellSize = 20;
-    let margin = cellSize * 1;
+    let cellSize = 10;
+    let margin = cellSize * 3;
 
     var size = qr.getModuleCount() * cellSize + margin * 2;
     this._canvasRef.nativeElement.width = size;
@@ -55,5 +46,6 @@ export class ViewQrCodePage {
       }
     }
   }
+
 }
 

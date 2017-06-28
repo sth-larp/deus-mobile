@@ -1,0 +1,23 @@
+<ion-header>
+	<ion-navbar>
+		<ion-buttons left>
+			<button ion-button navPop icon-only>
+			<ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+		</button>
+		</ion-buttons>
+    <ion-title>Паспорт</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+  <ion-list>
+    <list-item [data]="id" [filter]="currentFilter"></list-item>
+    <list-item [data]="fullName" [filter]="currentFilter"></list-item>
+    <list-item [data]="email" [filter]="currentFilter"></list-item>
+    <list-item [data]="corporation" [filter]="currentFilter"></list-item>
+    <list-item [data]="insurance" [filter]="currentFilter"></list-item>
+  </ion-list>
+  <div class="qrcode" style="margin:0 auto;">
+    <element-qrcode [qrContent]="qrContent"></element-qrcode>
+  </div>
+</ion-content>

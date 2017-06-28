@@ -10,6 +10,7 @@ import { DataService, UpdateStatus } from "../services/data.service";
 import { LocalDataService } from "../services/local-data.service";
 import { LoggingService } from "../services/logging.service";
 import { AuthService } from "../services/auth.service";
+import { PassportPage } from "../pages/passport";
 
 @Component({
   selector: 'quick-actions',
@@ -117,9 +118,10 @@ export class QuickActions {
     this._qrCodeScanService.scanQRCode();
   }
 
-  public onId() {
-    let accessModal = this._modalController.create(ViewQrCodePage,
-      { value: `character:${this._authService.getUsername()}` });
+  public async onId() {
+    const passportPageScreenData = (await this._dataService.getCurrentData()).passportScreen;
+    let accessModal = this._modalController.create(PassportPage,
+      { value: passportPageScreenData });
     accessModal.present();
   }
 
