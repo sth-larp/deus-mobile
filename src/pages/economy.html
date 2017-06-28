@@ -3,11 +3,14 @@
     <button ion-button menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
-    <ion-title>Economy</ion-title>
+    <ion-title>Экономика</ion-title>
   </ion-navbar>
 </ion-header>
 <ion-content>
-  Balance: {{body.balance}}
+  <ion-list>
+    <list-item [data]="balance"></list-item>
+  </ion-list>
+  <button ion-button block>Послать деньги</button>
+  <button ion-button block>Получить деньги</button>
 </ion-content>
-
 <quick-actions></quick-actions>

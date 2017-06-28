@@ -1,25 +1,13 @@
-import { Component, Input } from '@angular/core';
-import { UpdatablePage } from "./updatable";
-import { DataService } from "../services/data.service";
-import { NavParams, NavController } from "ionic-angular";
-
-class EconomyData {
-  public balance: number;
-}
+import { Component } from '@angular/core';
+import { ListItemData } from "../elements/list-item";
 
 @Component({
   selector: 'page-economy',
   templateUrl: 'economy.html'
 })
-export class EconomyPage extends UpdatablePage {
-  @Input()
-  public body: EconomyData = new EconomyData;
+export class EconomyPage {
+  public balance: ListItemData = {text: 'Баланс', value: "100500" };
 
-  constructor(dataService: DataService,  navCtrl: NavController, navParams: NavParams) {
-    super(navParams.data.id, dataService, navCtrl);
-  }
-
-  protected setBody(body: any) {
-    this.body = body;
+  constructor() {
   }
 }
