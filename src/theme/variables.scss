@@ -43,10 +43,11 @@ $img-placeholder-background: transparent;
 $item-md-paragraph-text-color: rgba($text-color, 0.7);
 $list-md-border-color: #8494A1;
 
-// TODO: Side menu colors
+// TODO(Andrei): Fix list item background on click
 
 $action-sheet-md-background: transparent;
 $action-sheet-md-button-background: $toolbar-background;
+$action-sheet-md-button-background-activated: lighten($toolbar-background, 8%);
 $action-sheet-md-button-text-color: color($colors, primary);
 
 $button-md-background-color: $toolbar-background;
@@ -59,6 +60,8 @@ $button-md-text-color: color($colors, primary);
 
 $action-sheet-ios-background: $action-sheet-md-background;
 $action-sheet-ios-button-background: $action-sheet-md-button-background;
+$action-sheet-ios-button-cancel-background: $action-sheet-ios-button-background;
+$action-sheet-ios-button-background-activated: $action-sheet-md-button-background-activated;
 $action-sheet-ios-button-text-color: $action-sheet-md-button-text-color;
 
 $button-ios-background-color: $button-md-background-color;
