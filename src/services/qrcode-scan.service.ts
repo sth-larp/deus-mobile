@@ -3,7 +3,6 @@ import { AlertController, ModalController } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 
 import { LoggingService } from "./logging.service";
-import { CharacterPage } from "../pages/character";
 import { GeneralQRCodePage } from "../pages/general-qrcode";
 import { decode, QrData, FormatError } from "deus-qr-lib"
 import { MonotonicTimeService } from "./monotonic-time.service";
