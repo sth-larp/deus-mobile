@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController } from "ionic-angular";
+import { ActionSheetController, ModalController, Platform } from "ionic-angular";
 import { Subscription } from "rxjs";
 import { Observable } from "rxjs/Rx";
 
@@ -32,6 +32,8 @@ export class QuickActions {
     private _dataService: DataService,
     private _localDataService: LocalDataService,
     private _authService: AuthService,
+    private _platform: Platform,
+    private _actionSheetCtrl: ActionSheetController,
     private _logging: LoggingService) {
     _dataService.getUpdateStatus().subscribe(
       status => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
@@ -103,15 +105,21 @@ export class QuickActions {
   private updateVrStatus() {
     // TODO(Andrei): Read maxSecondsInVr from ViewModel
     var maxSecondsInVr = 60 * 20;
-    this.vrIcon = this._localDataService.vrEnterTime() == null
-                      ? 'virtual-reality-off.svg'
-                      : 'virtual-reality-on.svg';
+    this.vrIcon = this._localDataService.inVr()
+                      ? 'virtual-reality-on.svg'
+                      : 'virtual-reality-off.svg';
     // TODO(Andrei): Change text color
     var secondsInVr = this._localDataService.secondsInVr();
     [this.vrTimer, this.vrTimerColor] =
         (secondsInVr == null)
             ? ['', null]
             : this.getVrTimerWithColor(maxSecondsInVr - secondsInVr);
+  }
+
+  private doToggleVr() {
+    // TODO: Send event to server
+    this._localDataService.toggleVr();
+    this.updateVrStatus();
   }
 
   public onBarcode() {
@@ -126,9 +134,23 @@ export class QuickActions {
   }
 
   public onToggleVr() {
-    // TODO: Send event to server
-    this._localDataService.toggleVr();
-    this.updateVrStatus();
+    let buttons = [{
+      text: this._localDataService.inVr() ? "Выйти из VR" : "Войти в VR",
+      handler: () => this.doToggleVr(),
+    }, {
+      text: 'Отмена',
+      role: 'cancel'
+    }];
+    let actionSheet = this._actionSheetCtrl.create({
+      title: '',
+      buttons: buttons
+    });
+
+    let unregisterFn = this._platform.registerBackButtonAction(() => {
+      actionSheet.dismiss();
+    }, 0);
+    actionSheet.onWillDismiss(unregisterFn);
+    actionSheet.present()
   }
 
   public onRefresh() {

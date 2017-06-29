@@ -17,6 +17,9 @@ export class LocalDataService {
       this._vrEnterTime = null;
     }
   }
+  public inVr() : boolean {
+    return this._vrEnterTime != null;
+  }
   public vrEnterTime() : number {
     return this._vrEnterTime;
   }
