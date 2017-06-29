@@ -16,7 +16,8 @@ export const GlobalConfig = {
   timeServerUrl: 'http://dev.alice.digital:8157/time',
   fetchTimeFromServerEveryMs: 60000,
 
-  passportQrLifespan: 60000 // 1 min
+  passportQrLifespan: 60000, // 1 min
+  transactionQrLifespan: 300000 // 5 min
 }
 
 // Apparently, SCSS variables cannot be used in typescript, so copying here.

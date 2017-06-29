@@ -5,6 +5,7 @@ import { AuthService } from "../services/auth.service";
 import { ModalController } from "ionic-angular";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { EconomyService } from "../services/economy.service";
+import { BillPage } from "./bill";
 
 @Component({
   selector: 'page-economy',
@@ -41,7 +42,12 @@ export class EconomyPage {
   }
 
   public receiveMoney() {
-    console.warn("receive");
+    this._modalController.create(BillPage, {
+      value: {
+        amount: this.receiveForm.value['amount'],
+        receiverAccount: this._authService.getUsername()
+      }
+    }).present();
   }
 }
 

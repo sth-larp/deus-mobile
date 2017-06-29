@@ -34,6 +34,7 @@ import { AuthService } from "../services/auth.service";
 import { PassportPage } from "../pages/passport";
 import { QrCode } from "../elements/qrcode";
 import { EconomyService } from "../services/economy.service";
+import { BillPage } from '../pages/bill';
 
 @NgModule({
   declarations: [
@@ -44,6 +45,7 @@ import { EconomyService } from "../services/economy.service";
     LoginPage,
     PlainTextPage,
     EconomyPage,
+    BillPage,
     MenuPage,
     GeneralQRCodePage,
     TechnicalInfoPage,
@@ -65,6 +67,7 @@ import { EconomyService } from "../services/economy.service";
     LoginPage,
     PlainTextPage,
     EconomyPage,
+    BillPage,
     MenuPage,
     GeneralQRCodePage,
     TechnicalInfoPage,

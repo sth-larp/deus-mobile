@@ -1,0 +1,18 @@
+<ion-header>
+	<ion-navbar>
+		<ion-buttons left>
+			<button ion-button navPop icon-only>
+			<ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+		</button>
+		</ion-buttons>
+    <ion-title>Счет</ion-title>
+	</ion-navbar>
+</ion-header>
+
+<ion-content>
+  Отсканируйте этот QR-код, чтоб перевести {{billPageData.amount}} 
+  на счет {{billPageData.receiverAccount}}.
+  <div class="qrcode" style="margin:0 auto;">
+    <element-qrcode [qrContent]="qrContent"></element-qrcode>
+  </div>
+</ion-content>
