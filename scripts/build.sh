@@ -2,7 +2,7 @@
 set -e
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then  
-  ionic cordova platform add ios
+  ionic cordova platform add ios --noresources
   cp GoogleService-Info.plist platforms/ios/deus-larp-2017/Resources/Resources
   ionic cordova build ios --device --buildConfig ./cordovaBuildConfig.json
   ls  platforms/ios/deus-larp-2017/Resources/Resources/
@@ -12,6 +12,6 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 fi
 
 if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then  
-  ionic cordova platform add android
+  ionic cordova platform add android --noresources
   ionic cordova build android --device
 fi
