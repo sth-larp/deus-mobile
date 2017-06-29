@@ -10,7 +10,26 @@
   <ion-list>
     <list-item [data]="balance"></list-item>
   </ion-list>
-  <button ion-button block>Послать деньги</button>
-  <button ion-button block>Получить деньги</button>
+
+  <form [formGroup]="sendForm" (ngSubmit)="sendMoney()">
+    <ion-item>
+      <ion-label floating>Номер счета</ion-label>
+      <ion-input type="text" formControlName="receiverId"></ion-input>
+    </ion-item>
+    <ion-item>
+      <ion-label floating>Сумма для перевода</ion-label>
+      <ion-input type="number" formControlName="amount"></ion-input>
+    </ion-item>
+    <button ion-button type="submit" [disabled]="!sendForm.valid">Перевести</button>
+  </form>
+
+  <form [formGroup]="receiveForm" (ngSubmit)="receiveMoney()">
+    <ion-item>
+      <ion-label floating>Сумма для перевода</ion-label>
+      <ion-input type="number" formControlName="amount"></ion-input>
+    </ion-item>
+    <button ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
+  </form>
+
 </ion-content>
 <quick-actions></quick-actions>
