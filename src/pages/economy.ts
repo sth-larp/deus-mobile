@@ -31,11 +31,13 @@ export class EconomyPage {
       amount: ['', Validators.required]
     });
 
-    _economyService.getBalance().subscribe(v => this.balance.value = v.toString());
+    this._economyService.getBalance().subscribe(v => this.balance.value = v.toString());
   }
 
   public sendMoney() {
-    console.warn("send");
+    this._economyService.makeTransaction(
+      this.sendForm.value['receiverId'],
+      this.sendForm.value['amount']);
   }
 
   public receiveMoney() {
