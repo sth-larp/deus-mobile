@@ -1,19 +1,19 @@
 <ion-header>
   <ion-navbar>
-    <ion-title>Login</ion-title>
+    <ion-title>Вход в A.L.I.C.E.</ion-title>
   </ion-navbar>
 </ion-header>
 
 <ion-content padding align="center">
   <form [formGroup]="loginForm" (ngSubmit)="login()">
     <ion-item>
-      <ion-label>Username</ion-label>
+      <ion-label>ID</ion-label>
       <ion-input type="text" formControlName="username"></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label>Password</ion-label>
+      <ion-label>Пароль</ion-label>
       <ion-input type="password" formControlName="password"></ion-input>
     </ion-item>
-    <button ion-button type="submit" [disabled]="!loginForm.valid">Submit</button>
+    <button ion-button type="submit" [disabled]="!loginForm.valid">Войти</button>
   </form>
 </ion-content>
