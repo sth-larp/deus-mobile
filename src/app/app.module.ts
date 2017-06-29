@@ -33,6 +33,7 @@ import { GeneralQRCodePage } from "../pages/general-qrcode";
 import { AuthService } from "../services/auth.service";
 import { PassportPage } from "../pages/passport";
 import { QrCode } from "../elements/qrcode";
+import { EconomyService } from "../services/economy.service";
 
 @NgModule({
   declarations: [
@@ -83,7 +84,8 @@ import { QrCode } from "../elements/qrcode";
     BarcodeScanner,
     LocalTimeService,
     ServerTimeService,
-    MonotonicTimeService
+    MonotonicTimeService,
+    EconomyService
   ]
 })
 export class AppModule {}
