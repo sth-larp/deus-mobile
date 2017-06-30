@@ -149,12 +149,13 @@ export class QuickActions implements LoginListener {
       role: 'cancel'
     },
     {
-      text: 'Ок',
+      text: this._localDataService.inVr() ? "Выйти из VR" : "Войти в VR",
       handler: () => this.doToggleVr(),
     }];
     let actionSheet = this._alertController.create({
-      title: this._localDataService.inVr() ? "Выход из VR" : "Вход в VR",
-      message: this._localDataService.inVr() ? "Подтвердить выход из VR?" : "Подтвердить вход из VR?",
+      message: this._localDataService.inVr()
+        ? "Подтвердить выход из VR?"
+        : "Подтвердить вход в VR?",
       buttons: buttons
     });
 

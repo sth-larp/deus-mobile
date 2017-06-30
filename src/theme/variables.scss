@@ -45,6 +45,7 @@ $colors: (
 $text-color:          color($colors, standard);
 $background-color:    #4A5760;
 $toolbar-background:  #32383D;
+$toolbar-background-activated: lighten($toolbar-background, 8%);
 
 // The doc says: "Color of the image when it hasn't fully loaded yet".
 // In fact it was image backgroud even when loading has finished.
@@ -63,8 +64,12 @@ $list-md-border-color: #8494A1;
 
 $action-sheet-md-background: transparent;
 $action-sheet-md-button-background: $toolbar-background;
-$action-sheet-md-button-background-activated: lighten($toolbar-background, 8%);
+$action-sheet-md-button-background-activated: $toolbar-background-activated;
 $action-sheet-md-button-text-color: color($colors, primary);
+
+$alert-md-message-text-color: $text-color;
+$alert-md-background-color: $toolbar-background;
+$alert-md-button-background-color-activated: $toolbar-background-activated;
 
 $button-md-background-color: $toolbar-background;
 $button-md-text-color: color($colors, primary);
@@ -79,6 +84,10 @@ $action-sheet-ios-button-background: $action-sheet-md-button-background;
 $action-sheet-ios-button-cancel-background: $action-sheet-ios-button-background;
 $action-sheet-ios-button-background-activated: $action-sheet-md-button-background-activated;
 $action-sheet-ios-button-text-color: $action-sheet-md-button-text-color;
+
+$alert-ios-message-text-color: $alert-md-message-text-color;
+$alert-ios-background: $alert-md-background-color;
+$alert-ios-button-background-color-activated: $alert-md-button-background-color-activated;
 
 $button-ios-background-color: $button-md-background-color;
 $button-ios-text-color: $button-md-text-color;
