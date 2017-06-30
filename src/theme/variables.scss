@@ -42,9 +42,10 @@ $colors: (
 // To view all the possible Ionic variables, see:
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
-$text-color:          color($colors, standard);
-$background-color:    #4A5760;
-$toolbar-background:  #32383D;
+$text-color: color($colors, standard);
+$background-color: #4A5760;
+$background-color-activated: lighten($background-color, 8%);
+$toolbar-background: #32383D;
 $toolbar-background-activated: lighten($toolbar-background, 8%);
 
 // The doc says: "Color of the image when it hasn't fully loaded yet".
@@ -58,9 +59,9 @@ $img-placeholder-background: transparent;
 
 $item-md-detail-push-show: true;
 $item-md-paragraph-text-color: rgba($text-color, 0.7);
-$list-md-border-color: #8494A1;
 
-// TODO(Andrei): Fix list item background on click
+$list-md-border-color: #8494A1;
+$list-md-activated-background-color: $background-color-activated;
 
 $action-sheet-md-background: transparent;
 $action-sheet-md-button-background: $toolbar-background;
@@ -74,10 +75,15 @@ $alert-md-button-background-color-activated: $toolbar-background-activated;
 $button-md-background-color: $toolbar-background;
 $button-md-text-color: color($colors, primary);
 
-
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
+
+$item-ios-detail-push-show: true;
+$item-ios-paragraph-text-color: rgba($text-color, 0.7);
+
+$list-ios-border-color: #8494A1;
+$list-ios-activated-background-color: $background-color-activated;
 
 $action-sheet-ios-background: $action-sheet-md-background;
 $action-sheet-ios-button-background: $action-sheet-md-button-background;
