@@ -6,7 +6,7 @@
     <ion-title>Техническая информация</ion-title>
   </ion-navbar>
   <ion-toolbar no-border-top>
-    <ion-segment [ngModel]="level">
+    <ion-segment color="standard" [ngModel]="level">
       <ion-segment-button value="debug" (ionSelect)="onLevelSelect('debug')">
         debug
       </ion-segment-button>
@@ -20,7 +20,7 @@
         error
       </ion-segment-button>
     </ion-segment>
-  </ion-toolbar>  
+  </ion-toolbar>
 </ion-header>
 <ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">

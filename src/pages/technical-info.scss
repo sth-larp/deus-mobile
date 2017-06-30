@@ -3,16 +3,16 @@ page-technical-info {
     margin-top: -0.5rem;
     margin-bottom: -0.5rem;
     .debug {
-      color: #1E90FF;
+      color: color($colors, light-blue);
     }
     .info {
-      color: #000000;
+      color: color($colors, standard);
     }
     .warning {
-      color: #DAA520;
+      color: color($colors, light-yellow);
     }
     .error {
-      color: #8B0000;
+      color: color($colors, light-red);
     }
   }
 }
