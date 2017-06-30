@@ -16,7 +16,7 @@ export class EconomyService {
   public getBalance(): Observable<number> {
     return this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUsername(),
       this._authService.getRequestOptionsWithSavedCredentials())
-      .map(response => response.json().User.Cash);
+      .map(response => response.json().Cash);
   }
 
   public makeTransaction(receiver: string, amount: number) {
