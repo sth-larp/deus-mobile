@@ -12,7 +12,7 @@ import { BillPage } from "./bill";
   templateUrl: 'economy.html'
 })
 export class EconomyPage {
-  public balance: ListItemData = { text: 'Баланс', value: "100500" };
+  public balance: ListItemData = { text: 'Баланс', value: "" };
 
   public sendForm: FormGroup;
   public receiveForm: FormGroup;

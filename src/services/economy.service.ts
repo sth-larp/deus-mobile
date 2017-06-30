@@ -14,17 +14,9 @@ export class EconomyService {
     private _http: Http) { }
 
   public getBalance(): Observable<number> {
-    // TODO: query server
-    this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUsername(),
-    {
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        'Authorization': BasicAuthorizationHeader(this._authService.getUsername(), '123456')
-      })
-    })
-    .subscribe(d => console.warn(d));
-    return Observable.timer(0, 10000).map(v => 100 * v + 500);
+    return this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUsername(),
+      this._authService.getRequestOptionsWithSavedCredentials())
+      .map(response => response.json().User.Cash);
   }
 
   public makeTransaction(receiver: string, amount: number) {
@@ -48,5 +40,14 @@ export class EconomyService {
 
   private _makeTransaction(receiver: string, amount: number) {
     console.warn(`Transfered ${amount} to ${receiver}.`);
+    const requestBody = JSON.stringify({
+      Sender: this._authService.getUsername(),
+      Receiver: receiver,
+      Amount: amount,
+    });
+
+    return this._http.post(GlobalConfig.economyTransferMoneyUrl, requestBody,
+      this._authService.getRequestOptionsWithSavedCredentials())
+      .subscribe(response => console.warn(JSON.stringify(response)));
   }
 }
