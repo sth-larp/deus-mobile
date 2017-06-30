@@ -1,11 +1,12 @@
 quick-action-button {
   #infoText {
-     font-weight: bold;
-     color: color($colors, primary);  // default color, may be overriden
-     position: absolute;
-     bottom: 0;
-     right: 1vw;
-     text-shadow:
+    font-size: 110%;
+    font-weight: bold;
+    color: color($colors, primary);  // default color, may be overriden
+    position: absolute;
+    bottom: 0;
+    right: 1vw;
+    text-shadow:
        -0.05em -0.05em 0 $toolbar-background,
           0em  -0.05em 0 $toolbar-background,
         0.05em -0.05em 0 $toolbar-background,
