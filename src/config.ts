@@ -17,7 +17,9 @@ export const GlobalConfig = {
   fetchTimeFromServerEveryMs: 60000,
 
   passportQrLifespan: 60000, // 1 min
-  transactionQrLifespan: 300000 // 5 min
+  transactionQrLifespan: 300000, // 5 min
+
+  economyGetBalanceBaseUrl: 'http://deus2017economy.azurewebsites.net/api/accounts/fullprofile?login='
 }
 
 // Apparently, SCSS variables cannot be used in typescript, so copying here.
