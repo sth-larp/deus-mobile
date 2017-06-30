@@ -127,7 +127,7 @@ export class QuickActions implements LoginListener {
   }
 
   private doToggleVr() {
-    // TODO: Send event to server
+    this._dataService.pushEvent(this._localDataService.inVr() ? 'exitVr' : 'enterVr', {});
     this._localDataService.toggleVr();
     this.updateVrStatus();
   }
