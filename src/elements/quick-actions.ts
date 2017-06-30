@@ -11,12 +11,13 @@ import { LocalDataService } from "../services/local-data.service";
 import { LoggingService } from "../services/logging.service";
 import { AuthService } from "../services/auth.service";
 import { PassportPage } from "../pages/passport";
+import { LoginListener } from "../services/login-listener";
 
 @Component({
   selector: 'quick-actions',
   templateUrl: 'quick-actions.html'
 })
-export class QuickActions {
+export class QuickActions implements LoginListener {
   public updateStatusIcon: string = null;
   public hpIcon: string = null;
   public hpText: string = null;
@@ -25,7 +26,8 @@ export class QuickActions {
   public vrTimer: string = null;
   public vrTimerColor: string = null;
 
-  private _subscription: Subscription = null;
+  private _hpSubscription: Subscription = null;
+  private _updateStatusSubscription: Subscription = null;
 
   constructor(private _modalController: ModalController,
     private _qrCodeScanService: QrCodeScanService,
@@ -35,23 +37,31 @@ export class QuickActions {
     private _platform: Platform,
     private _actionSheetCtrl: ActionSheetController,
     private _logging: LoggingService) {
-    _dataService.getUpdateStatus().subscribe(
-      status => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
-      error => console.error('Cannot get update status: ' + error))
+    this._authService.addListener(this);
   }
 
-  private ngOnInit() {
-    this._subscription = this._dataService.getData().subscribe(
+  public onSuccessfulLogin(username: string) {
+    this._hpSubscription = this._dataService.getData().subscribe(
       json => this.updateHp(json),
       error => this._logging.error('JSON parsing error: ' + JSON.stringify(error))
     );
+
+    this._updateStatusSubscription = this._hpSubscription = this._dataService.getUpdateStatus().subscribe(
+      status => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
+      error => console.error('Cannot get update status: ' + error))
+
     setInterval(() => { this.updateVrStatus(); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
 
-  private ngOnDestroy() {
-    if (this._subscription) {
-      this._subscription.unsubscribe();
-      this._subscription = null;
+  public onLogout() {
+    if (this._hpSubscription) {
+      this._hpSubscription.unsubscribe();
+      this._hpSubscription = null;
+    }
+
+    if (this._updateStatusSubscription) {
+      this._updateStatusSubscription.unsubscribe();
+      this._updateStatusSubscription = null;
     }
   }
 
