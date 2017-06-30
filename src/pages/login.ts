@@ -52,6 +52,7 @@ export class LoginPage {
       this._hideLoader();
       this._goToLoggedInArea();
     }, (err) => {
+      this._logging.error(JSON.stringify(err));
       this._logging.info("No token/username found, need to authentificate");
       this._hideLoader();
     });

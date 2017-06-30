@@ -4,6 +4,7 @@ import { LoginListener } from "./login-listener";
 import { AuthService } from "./auth.service";
 import { upsert } from "../utils/pouchdb-utils";
 import { GlobalConfig } from "../config";
+import { MonotonicTimeService } from "./monotonic-time.service";
 
 export class NoOpLoggingService {
   public debug(msg: string) { };
@@ -49,7 +50,7 @@ export class LoggingService implements LoggingService, LoginListener {
     const currentDate = new Date();
     if (this._username) {
       this._loggingDb.post(
-        { character: this._username, level: level, msg: msg, timestamp: currentDate.valueOf() }
+        { character: this._username, level: level, msg: msg, timestamp: this._monotonicTimeService.getUnixTimeMs() }
       )
         .then(resp => {
           if (!resp.ok)
