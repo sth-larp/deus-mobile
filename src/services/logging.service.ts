@@ -1,7 +1,6 @@
 import * as PouchDB from 'pouchdb'
 import { Injectable } from '@angular/core'
 import { LoginListener } from "./login-listener";
-import { AuthService } from "./auth.service";
 import { upsert } from "../utils/pouchdb-utils";
 import { GlobalConfig } from "../config";
 import { MonotonicTimeService } from "./monotonic-time.service";
@@ -20,8 +19,7 @@ export class LoggingService implements LoggingService, LoginListener {
   private _loggingDbReplication: PouchDB.Replication.Replication<{}> = null;
   private _username: string = null;
 
-  constructor(authService: AuthService,
-              private _monotonicTimeService: MonotonicTimeService) {
+  constructor(private _monotonicTimeService: MonotonicTimeService) {
     //authService.addListener(this);
     this.onSuccessfulLogin('vasya');
   }

@@ -5,6 +5,7 @@ import { Headers, RequestOptionsArgs, Http } from "@angular/http";
 import { GlobalConfig } from "../config";
 
 import * as BasicAuthorizationHeader from 'basic-authorization-header'
+import { LoggingService } from "./logging.service";
 
 @Injectable()
 export class AuthService {
@@ -12,12 +13,18 @@ export class AuthService {
   private _password: string = null;
   private _listeners = new Array<LoginListener>();
 
-  constructor(private _http: Http) { }
+  constructor(private _http: Http,
+              private _log: LoggingService) { }
 
   public addListener(listener: LoginListener) {
     this._listeners.push(listener);
-    if (this._username)
+    if (this._username) {
+      this._log.debug(`Adding listener ${listener.constructor.name}, already logged in`);
       listener.onSuccessfulLogin(this._username);
+    }
+    else {
+      this._log.debug(`Adding listener ${listener.constructor.name}, not logged in`);
+    }
   }
 
   public getUsername(): string {
@@ -33,31 +40,41 @@ export class AuthService {
   }
 
   public async checkExistingCredentials() {
+    this._log.debug('checkExistingCredentials - begin');
     const username = await NativeStorage.getItem('username');
     const password = await NativeStorage.getItem('password');
     await this._saveCredentials(username, password);
+    this._log.debug('checkExistingCredentials - end');
   }
 
   private async _saveCredentials(username: string, password: string) {
+    this._log.debug('_saveCredentials - begin');
     this._username = username;
     this._password = password;
     await NativeStorage.setItem('username', username);
     await NativeStorage.setItem('password', password);
     this.notifyListenersOnLogin();
+    this._log.debug('_saveCredentials - end');
   }
 
   public async logout() {
+    this._log.debug('logout - begin');
     await NativeStorage.remove('username');
     await NativeStorage.remove('password');
-    for (let listener of this._listeners)
+    for (let listener of this._listeners.reverse()) {
+      this._log.debug('Notify about logout: ' + listener.constructor.name);
       listener.onLogout();
+    }
     this._username = null;
     this._password = null;
+    this._log.debug('logout - end');
   }
 
   private notifyListenersOnLogin() {
-    for (let listener of this._listeners)
+    for (let listener of this._listeners) {
+      this._log.debug('Notify about login: ' + listener.constructor.name);
       listener.onSuccessfulLogin(this._username);
+    }
   }
 
   public getRequestOptionsWithSavedCredentials(): RequestOptionsArgs {
