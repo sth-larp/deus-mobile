@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ActionSheetController, ModalController, Platform } from "ionic-angular";
+import { AlertController, ModalController, Platform } from "ionic-angular";
 import { Subscription } from "rxjs";
 import { Observable } from "rxjs/Rx";
 
@@ -35,7 +35,7 @@ export class QuickActions implements LoginListener {
     private _localDataService: LocalDataService,
     private _authService: AuthService,
     private _platform: Platform,
-    private _actionSheetCtrl: ActionSheetController,
+    private _alertController: AlertController,
     private _logging: LoggingService) {
     this._authService.addListener(this);
   }
@@ -65,7 +65,7 @@ export class QuickActions implements LoginListener {
     }
   }
 
-  private getUpdateStatusIcon(status: UpdateStatus) : string {
+  private getUpdateStatusIcon(status: UpdateStatus): string {
     switch (status) {
       case UpdateStatus.Green: return 'sync-green.svg';
       case UpdateStatus.Yellow: return 'sync-green.svg';
@@ -75,14 +75,14 @@ export class QuickActions implements LoginListener {
   }
 
   // TODO: Add tests
-  private formatInteger(value: number, padding: number) : string {
+  private formatInteger(value: number, padding: number): string {
     var str = value.toFixed(0);
     return (str.length >= padding) ? str : ('0000000000000000' + str).slice(-padding);
   }
 
   // TODO: Add tests
   // Prints "H:MM" is valud is minutes of "M:SS" if values is seconds.
-  private formatTime(value: number, separator: string) : string {
+  private formatTime(value: number, separator: string): string {
     var value = Math.floor(value);
     var high = Math.floor(value / 60);
     var low = value % 60;
@@ -101,7 +101,7 @@ export class QuickActions implements LoginListener {
   }
 
   // TODO: Add tests
-  private getVrTimerWithColor(secondsLeft: number) : string[] {
+  private getVrTimerWithColor(secondsLeft: number): string[] {
     if (secondsLeft < 0) {
       var separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
       return [this.formatTime(0, separator), Colors.red];
@@ -116,14 +116,14 @@ export class QuickActions implements LoginListener {
     // TODO(Andrei): Read maxSecondsInVr from ViewModel
     var maxSecondsInVr = 60 * 20;
     this.vrIcon = this._localDataService.inVr()
-                      ? 'virtual-reality-on.svg'
-                      : 'virtual-reality-off.svg';
+      ? 'virtual-reality-on.svg'
+      : 'virtual-reality-off.svg';
     // TODO(Andrei): Change text color
     var secondsInVr = this._localDataService.secondsInVr();
     [this.vrTimer, this.vrTimerColor] =
-        (secondsInVr == null)
-            ? ['', null]
-            : this.getVrTimerWithColor(maxSecondsInVr - secondsInVr);
+      (secondsInVr == null)
+        ? ['', null]
+        : this.getVrTimerWithColor(maxSecondsInVr - secondsInVr);
   }
 
   private doToggleVr() {
@@ -145,14 +145,16 @@ export class QuickActions implements LoginListener {
 
   public onToggleVr() {
     let buttons = [{
-      text: this._localDataService.inVr() ? "Выйти из VR" : "Войти в VR",
-      handler: () => this.doToggleVr(),
-    }, {
       text: 'Отмена',
       role: 'cancel'
+    },
+    {
+      text: 'Ок',
+      handler: () => this.doToggleVr(),
     }];
-    let actionSheet = this._actionSheetCtrl.create({
-      title: '',
+    let actionSheet = this._alertController.create({
+      title: this._localDataService.inVr() ? "Выход из VR" : "Вход в VR",
+      message: this._localDataService.inVr() ? "Подтвердить выход из VR?" : "Подтвердить вход из VR?",
       buttons: buttons
     });
 
