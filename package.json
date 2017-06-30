@@ -49,6 +49,7 @@
         "rxjs": "5.1.1",
         "sw-toolbox": "3.6.0",
         "typescript": "2.3.4",
+        "typescript-map": "0.0.4",
         "zone.js": "0.8.5"
     },
     "devDependencies": {

@@ -1,22 +1,45 @@
 import { Injectable } from "@angular/core";
 import { AlertController, ModalController } from 'ionic-angular';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+import { TSMap } from "typescript-map"
 
 import { LoggingService } from "./logging.service";
 import { GeneralQRCodePage } from "../pages/general-qrcode";
-import { decode, QrData, FormatError } from "deus-qr-lib"
+import { decode, QrData } from "deus-qr-lib/lib/qr"
 import { MonotonicTimeService } from "./monotonic-time.service";
+import { QrType } from "deus-qr-lib/lib/qr.type";
+import { EconomyService } from "./economy.service";
 
 class QrExpiredError extends Error {
 }
 
+type QrCallback = ((data: QrData) => void);
+
 @Injectable()
 export class QrCodeScanService {
+  private _qrTypeToCallback = new TSMap<QrType, QrCallback>();
+  private _defaultCallback: QrCallback;
+
   constructor(private _barcodeScanner: BarcodeScanner,
     private _alertController: AlertController,
     private _modalController: ModalController,
     private _logging: LoggingService,
-    private _monotonicClock: MonotonicTimeService) {
+    private _monotonicClock: MonotonicTimeService,
+    private _economyService: EconomyService) {
+
+    this._defaultCallback = (data: QrData) => {
+      let modal = this._modalController.create(GeneralQRCodePage, { value: data });
+      modal.present();
+    };
+
+    this.registerCallback(QrType.Bill, data => {
+      const splitPayload = data.payload.split(',');
+      this._economyService.makeTransaction(splitPayload[0], Number(splitPayload[1]));
+    });
+  }
+
+  public registerCallback(type: QrType, callback: QrCallback) {
+    this._qrTypeToCallback.set(type, callback);
   }
 
   private _qrScanningOptions = {
@@ -50,8 +73,10 @@ export class QrCodeScanService {
       this._logging.info('Decoded QR code: ' + JSON.stringify(data));
       if (data.validUntil < this._monotonicClock.getUnixTimeMs() / 1000)
         throw new QrExpiredError('QR code expired');
-      let modal = this._modalController.create(GeneralQRCodePage, { value: data });
-      modal.present();
+      if (this._qrTypeToCallback.has(data.type))
+        this._qrTypeToCallback.get(data.type)(data);
+      else
+        this._defaultCallback(data);
     } catch (e) {
       this._logging.warning('Unsupported QR code scanned, error: ' + e);
       if (e instanceof QrExpiredError)
@@ -65,7 +90,7 @@ export class QrCodeScanService {
     this._alertController.create({
       title: 'Не получается отсканировать QR-код',
       message: 'Приложение не может отсканировать QR-код. Пожалуйста, убедитесь, что у приложения есть ' +
-               'доступ к камере, QR код хорошего качества. Используйте кнопку включения подсветки при необходимости.',
+      'доступ к камере, QR код хорошего качества. Используйте кнопку включения подсветки при необходимости.',
       buttons: ['Ок']
     }).present();
   }
@@ -74,8 +99,8 @@ export class QrCodeScanService {
     this._alertController.create({
       title: 'Некорректный формат QR-кода',
       message: 'QR-код распознан, но имеет неправильный формат. Если вы уверены, что это допустимый код ' +
-               'и вам точно необходимо его использовать, сфотографируйте код и отправьте эту фотографию ' +
-               'с описанием ситуации на адрес support@alice.digital.',
+      'и вам точно необходимо его использовать, сфотографируйте код и отправьте эту фотографию ' +
+      'с описанием ситуации на адрес support@alice.digital.',
       buttons: ['Ок']
     }).present();
   }
@@ -84,8 +109,8 @@ export class QrCodeScanService {
     this._alertController.create({
       title: 'Срок действия QR-кода истек',
       message: 'QR-код распознан, но срок его действия истек. Если вы уверены, что это допустимый код ' +
-               'и вам точно необходимо его использовать, сфотографируйте код и отправьте эту фотографию ' +
-               'с описанием ситуации на адрес support@alice.digital.',
+      'и вам точно необходимо его использовать, сфотографируйте код и отправьте эту фотографию ' +
+      'с описанием ситуации на адрес support@alice.digital.',
       buttons: ['Ок']
     }).present();
   }

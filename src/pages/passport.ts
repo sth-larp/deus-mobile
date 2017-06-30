@@ -1,9 +1,10 @@
 import { Component } from "@angular/core";
 import { ListItemData } from "../elements/list-item";
 import { NavParams } from "ionic-angular";
-import { encode } from "deus-qr-lib/";
 import { MonotonicTimeService } from "../services/monotonic-time.service";
 import { GlobalConfig } from "../config";
+import { encode } from "deus-qr-lib/lib/qr";
+import { QrType } from "deus-qr-lib/lib/qr.type";
 
 @Component({
   selector: 'page-passport',
@@ -28,7 +29,7 @@ export class PassportPage {
     this.insurance = {text: "Страховка", value: "None" }
 
     this.qrContent = encode({
-      type: 100, kind: 0,
+      type: QrType.Passport, kind: 0,
       // TODO: add helper for expiring QR generation
       validUntil: (_clock.getUnixTimeMs() + GlobalConfig.passportQrLifespan) / 1000,
       payload: passportScreenData.id
