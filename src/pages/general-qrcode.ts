@@ -12,6 +12,6 @@ export class GeneralQRCodePage {
   constructor(navParams: NavParams,
     dataService: DataService) {
     this.data = navParams.data.value;
-    dataService.pushEvent('scanQR', this.data);
+    dataService.pushEvent('scanQr', this.data);
   }
 }
