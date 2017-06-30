@@ -20,8 +20,10 @@ export class LoggingService implements LoggingService, LoginListener {
   private _loggingDbReplication: PouchDB.Replication.Replication<{}> = null;
   private _username: string = null;
 
-  constructor(authService: AuthService) {
-    authService.addListener(this);
+  constructor(authService: AuthService,
+              private _monotonicTimeService: MonotonicTimeService) {
+    //authService.addListener(this);
+    this.onSuccessfulLogin('vasya');
   }
 
   public debug(msg: string) {
