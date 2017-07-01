@@ -119,24 +119,24 @@ export class QuickActions implements LoginListener {
       return [this.formatTime(secondsLeft / 60, ':'), Colors.primary];
   }
 
-  private updateVrStatus() {
+  private async updateVrStatus() {
     // TODO(Andrei): Read maxSecondsInVr from ViewModel
     var maxSecondsInVr = 60 * 20;
-    this.vrIcon = this._localDataService.inVr()
+    this.vrIcon = (await this._localDataService.inVr())
       ? 'virtual-reality-on.svg'
       : 'virtual-reality-off.svg';
     // TODO(Andrei): Change text color
-    var secondsInVr = this._localDataService.secondsInVr();
+    var secondsInVr = await this._localDataService.secondsInVr();
     [this.vrTimer, this.vrTimerColor] =
       (secondsInVr == null)
         ? ['', null]
         : this.getVrTimerWithColor(maxSecondsInVr - secondsInVr);
   }
 
-  private doToggleVr() {
+  private async doToggleVr() {
     this._dataService.pushEvent(this._localDataService.inVr() ? 'exitVr' : 'enterVr', {});
-    this._localDataService.toggleVr();
-    this.updateVrStatus();
+    await this._localDataService.toggleVr();
+    await this.updateVrStatus();
   }
 
   public onBarcode() {
@@ -150,17 +150,18 @@ export class QuickActions implements LoginListener {
     accessModal.present();
   }
 
-  public onToggleVr() {
+  public async onToggleVr() {
+    const inVr: Boolean = await this._localDataService.inVr();
     let buttons = [{
       text: 'Отмена',
       role: 'cancel'
     },
     {
-      text: this._localDataService.inVr() ? "Выйти из VR" : "Войти в VR",
+      text: inVr ? "Выйти из VR" : "Войти в VR",
       handler: () => this.doToggleVr(),
     }];
     let actionSheet = this._alertController.create({
-      message: this._localDataService.inVr()
+      message: inVr
         ? "Подтвердить выход из VR?"
         : "Подтвердить вход в VR?",
       buttons: buttons
