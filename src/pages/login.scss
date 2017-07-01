@@ -1,0 +1,14 @@
+#loginForm {
+  width: 90%;
+  // Position form in the center.
+  // Use "perspective(1px)" to prevent blurriness due to the element being placed on a "half pixel"
+  // (see http://zerosixthree.se/vertical-align-anything-with-just-3-lines-of-css/).
+  position: relative;
+  top: 50%;
+  left: 50%;
+  transform: perspective(1px) translate(-50%, -50%);
+}
+#submitButton {
+  width: 100%;
+  margin-top: 2em;
+}

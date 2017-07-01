@@ -5,15 +5,15 @@
 </ion-header>
 
 <ion-content padding align="center">
-  <form [formGroup]="loginForm" (ngSubmit)="login()">
-    <ion-item>
+  <form id="loginForm" [formGroup]="loginForm" (ngSubmit)="login()">
+    <ion-item no-padding>
       <ion-label>ID</ion-label>
       <ion-input type="text" formControlName="username"></ion-input>
     </ion-item>
-    <ion-item>
+    <ion-item  no-padding>
       <ion-label>Пароль</ion-label>
       <ion-input type="password" formControlName="password"></ion-input>
     </ion-item>
-    <button ion-button type="submit" [disabled]="!loginForm.valid">Войти</button>
+    <button id="submitButton" ion-button type="submit" [disabled]="!loginForm.valid">Войти</button>
   </form>
 </ion-content>
