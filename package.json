@@ -72,6 +72,7 @@
         "karma-remap-istanbul": "0.6.0",
         "ts-node": "3.0.2",
         "tslint": "5.1.0",
+        "tslint-consistent-codestyle": "^1.5.0",
         "tslint-eslint-rules": "4.0.0",
         "typemoq": "1.4.1"
     },

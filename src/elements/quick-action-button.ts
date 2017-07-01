@@ -1,8 +1,8 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input } from '@angular/core';
 
 @Component({
   selector: 'quick-action-button',
-  templateUrl: 'quick-action-button.html'
+  templateUrl: 'quick-action-button.html',
 })
 export class QuickActionButton {
   @Input()
@@ -12,7 +12,4 @@ export class QuickActionButton {
   @Input()
   public textColor: string;
   // Output: inherits "click" event from ionic button
-
-  constructor() {
-  }
 }

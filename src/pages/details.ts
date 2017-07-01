@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { NavParams, ActionSheetController, NavController, Platform } from "ionic-angular";
-import { DataService } from "../services/data.service";
+import { ActionSheetController, NavController, NavParams, Platform } from 'ionic-angular';
+import { DataService } from '../services/data.service';
 
 export class ActionData {
   public text: string;
@@ -11,47 +11,47 @@ export class ActionData {
 export class DetailsData {
   public header: string;
   public text: string;
-  public actions: Array<ActionData>;
+  public actions: ActionData[];
 }
 
 @Component({
   selector: 'page-details',
-  templateUrl: 'details.html'
+  templateUrl: 'details.html',
 })
 export class DetailsPage {
   public data: DetailsData;
   constructor(navParams: NavParams,
-    private _navCtrl: NavController,
-    private _actionSheetCtrl: ActionSheetController,
-    private _dataService: DataService,
-    private _platform: Platform) {
+              private _navCtrl: NavController,
+              private _actionSheetCtrl: ActionSheetController,
+              private _dataService: DataService,
+              private _platform: Platform) {
     this.data = navParams.data.value;
   }
 
   public showActions() {
-    let buttons = [];
-    for (let action of this.data.actions) {
+    const buttons = [];
+    for (const action of this.data.actions) {
       buttons.push({
         text: action.text,
         handler: () => {
           this._dataService.pushEvent(action.eventType, action.data);
           this._navCtrl.pop();
-        }
+        },
       });
     }
     buttons.push({
           text: 'Отмена',
-          role: 'cancel'
-        })
-    let actionSheet = this._actionSheetCtrl.create({
+          role: 'cancel',
+        });
+    const actionSheet = this._actionSheetCtrl.create({
       title: '',
-      buttons: buttons
+      buttons,
     });
 
-    let unregisterFn = this._platform.registerBackButtonAction(() => {
+    const unregisterFn = this._platform.registerBackButtonAction(() => {
       actionSheet.dismiss();
     }, 0);
     actionSheet.onWillDismiss(unregisterFn);
-    actionSheet.present()
+    actionSheet.present();
   }
 }

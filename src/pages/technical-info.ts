@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
-import { Refresher, InfiniteScroll } from "ionic-angular";
-import { LoggingService } from "../services/logging.service";
+import { InfiniteScroll, Refresher } from 'ionic-angular';
+import { LoggingService } from '../services/logging.service';
 
 class LogEntry {
   public text: string;
@@ -9,33 +9,19 @@ class LogEntry {
 
 @Component({
   selector: 'page-technical-info',
-  templateUrl: 'technical-info.html'
+  templateUrl: 'technical-info.html',
 })
 export class TechnicalInfoPage {
   public logEntries = new Array<LogEntry>();
-  public level: string = "info";
+  public level: string = 'info';
   private _numEntries = 20;
 
   constructor(private _loggingService: LoggingService) { }
 
   // tslint:disable-next-line:no-unused-variable
-  private ionViewWillEnter() {
+  public ionViewWillEnter() {
     this._numEntries = 20;
     this._queryLogs();
-  }
-
-  private _queryLogs(): Promise<void> {
-    return this._loggingService.getLoggingDb()
-      .query(`mobile/${this.level}`, { include_docs: true, limit: this._numEntries, descending: true })
-      .then(res => this.logEntries = res.rows.map(row => this._rowToLogEntry(row)))
-      .catch(err => console.log(JSON.stringify(err)));
-  }
-
-  private _rowToLogEntry(row: any): LogEntry {
-    return {
-      text: row.doc.msg,
-      level: row.doc.level
-    }
   }
 
   public onLevelSelect(level: string) {
@@ -52,5 +38,19 @@ export class TechnicalInfoPage {
   public doInfinite(infiniteScroll: InfiniteScroll) {
     this._numEntries += 20;
     infiniteScroll.waitFor(this._queryLogs());
+  }
+
+  private _queryLogs(): Promise<void> {
+    return this._loggingService.getLoggingDb()
+      .query(`mobile/${this.level}`, { include_docs: true, limit: this._numEntries, descending: true })
+      .then((res) => this.logEntries = res.rows.map((row) => this._rowToLogEntry(row)))
+      .catch((err) => console.log(JSON.stringify(err)));
+  }
+
+  private _rowToLogEntry(row: any): LogEntry {
+    return {
+      text: row.doc.msg,
+      level: row.doc.level,
+    };
   }
 }

@@ -1,41 +1,39 @@
-import { Injectable } from "@angular/core";
-import { AuthService } from "./auth.service";
-import { Observable } from "rxjs/Observable";
-import { AlertController } from "ionic-angular";
-import { Http, Headers } from "@angular/http";
-import { GlobalConfig } from "../config";
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { AlertController } from 'ionic-angular';
 
-import * as BasicAuthorizationHeader from 'basic-authorization-header'
-import { ListItemData } from "../elements/list-item";
+import { GlobalConfig } from '../config';
+import { ListItemData } from '../elements/list-item';
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class EconomyService {
   constructor(private _authService: AuthService,
-    private _alertCtrl: AlertController,
-    private _http: Http) { }
+              private _alertCtrl: AlertController,
+              private _http: Http) { }
 
   public getBalance(): Promise<number> {
     return this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUsername(),
       this._authService.getRequestOptionsWithSavedCredentials())
-      .map(response => response.json().Cash).toPromise();
+      .map((response) => response.json().Cash).toPromise();
   }
 
   public getShortTransactionHistory(): Promise<ListItemData[]> {
     return this._http.get(GlobalConfig.economyTransactionsUrl +
       '?login=' + this._authService.getUsername() + '&take=10&skip=0',
       this._authService.getRequestOptionsWithSavedCredentials())
-      .map(response => {
+      .map((response) => {
         const entries: any[] = response.json();
-        return entries.map(function (entry): ListItemData {
+        return entries.map((entry): ListItemData => {
           return {
             text: `${entry.Sender} --> ${entry.Receiver}`,
             value: entry.Amount,
             details: {
-              header: "Детали операции",
+              header: 'Детали операции',
               text: JSON.stringify(entry, null, 2),
-              actions: null
-            }
-          }
+              actions: null,
+            },
+          };
         });
       }).toPromise();
   }
@@ -43,16 +41,16 @@ export class EconomyService {
   public makeTransaction(receiver: string, amount: number): Promise<{}> {
     // TODO: validate amount?
     return new Promise((resolve, reject) => {
-      let notifyAndReject = (e: string) => {
-        let alert = this._alertCtrl.create({
+      const notifyAndReject = (e: string) => {
+        const alert = this._alertCtrl.create({
           title: 'Ошибка',
           message: e,
-          buttons: [{text: 'Ок', handler: reject}]
+          buttons: [{text: 'Ок', handler: reject}],
         });
         alert.present();
       };
 
-      let alert = this._alertCtrl.create({
+      const alert = this._alertCtrl.create({
         title: 'Подтвердите перевод',
         message: `Подтвердите перевод ${amount} на счет ${receiver}.`,
         buttons: [
@@ -65,17 +63,16 @@ export class EconomyService {
             handler: async () => {
               try {
                 await this._makeTransaction(receiver, amount);
-                resolve();
-              }
-              catch (e) {
+              resolve();
+              } catch (e) {
                 if (e && e.json && e.json() && e.json().Message)
-                  notifyAndReject(e.json().Message)
+                  notifyAndReject(e.json().Message);
                 else
                   notifyAndReject('Сервер недоступен');
               }
-            }
-          }
-        ]
+            },
+          },
+        ],
       });
       alert.present();
     });

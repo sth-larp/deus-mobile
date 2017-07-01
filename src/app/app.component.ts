@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen } from 'ionic-native';
+import { Splashscreen, StatusBar } from 'ionic-native';
 
 import { LoginPage } from '../pages/login';
 
 @Component({
-  template: `<ion-nav [root]="rootPage"></ion-nav>`
+  template: `<ion-nav [root]="rootPage"></ion-nav>`,
 })
 export class MyApp {
   public rootPage = null;

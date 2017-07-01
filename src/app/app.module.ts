@@ -1,42 +1,42 @@
-﻿import { NgModule } from '@angular/core';
-import { HttpModule } from '@angular/http';
-import { IonicApp, IonicModule } from 'ionic-angular';
-import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { Firebase } from '@ionic-native/firebase';
+﻿ import { NgModule } from '@angular/core';
+ import { HttpModule } from '@angular/http';
+ import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+ import { Firebase } from '@ionic-native/firebase';
+ import { IonicApp, IonicModule } from 'ionic-angular';
 
-import { MyApp } from './app.component';
+ import { MyApp } from './app.component';
 
-import { ListPage } from '../pages/list';
-import { LoginPage } from '../pages/login';
-import { PlainTextPage } from '../pages/plain-text';
-import { EconomyPage } from '../pages/economy';
-import { MenuPage } from '../pages/menu';
+ import { EconomyPage } from '../pages/economy';
+ import { ListPage } from '../pages/list';
+ import { LoginPage } from '../pages/login';
+ import { MenuPage } from '../pages/menu';
+ import { PlainTextPage } from '../pages/plain-text';
 
-import { ListItem } from '../elements/list-item';
+ import { ListItem } from '../elements/list-item';
 
-import { DataService } from '../services/data.service';
-import { LocalDataService } from '../services/local-data.service';
-import { FirebaseService } from '../services/firebase.service';
-import { QrCodeScanService } from '../services/qrcode-scan.service';
-import { LoggingService } from "../services/logging.service";
-import { BrowserModule } from "@angular/platform-browser";
-import { FormsModule, ReactiveFormsModule } from "@angular/forms";
-import { TechnicalInfoPage } from "../pages/technical-info";
-import { DetailsPage } from "../pages/details";
-import { QuickActionButton } from "../elements/quick-action-button";
-import { QuickActions } from "../elements/quick-actions";
-import { ServerTimeService } from "../services/server-time.service";
-import { LocalTimeService } from "../services/local-time.service";
-import { NativeStorageService } from "../services/native-storage.service";
-import { MonotonicTimeService } from "../services/monotonic-time.service";
-import { GeneralQRCodePage } from "../pages/general-qrcode";
-import { AuthService } from "../services/auth.service";
-import { PassportPage } from "../pages/passport";
-import { QrCode } from "../elements/qrcode";
-import { EconomyService } from "../services/economy.service";
-import { BillPage } from '../pages/bill';
+ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+ import { BrowserModule } from '@angular/platform-browser';
+ import { QrCode } from '../elements/qrcode';
+ import { QuickActionButton } from '../elements/quick-action-button';
+ import { QuickActions } from '../elements/quick-actions';
+ import { BillPage } from '../pages/bill';
+ import { DetailsPage } from '../pages/details';
+ import { GeneralQRCodePage } from '../pages/general-qrcode';
+ import { PassportPage } from '../pages/passport';
+ import { TechnicalInfoPage } from '../pages/technical-info';
+ import { AuthService } from '../services/auth.service';
+ import { DataService } from '../services/data.service';
+ import { EconomyService } from '../services/economy.service';
+ import { FirebaseService } from '../services/firebase.service';
+ import { LocalDataService } from '../services/local-data.service';
+ import { LocalTimeService } from '../services/local-time.service';
+ import { LoggingService } from '../services/logging.service';
+ import { MonotonicTimeService } from '../services/monotonic-time.service';
+ import { NativeStorageService } from '../services/native-storage.service';
+ import { QrCodeScanService } from '../services/qrcode-scan.service';
+ import { ServerTimeService } from '../services/server-time.service';
 
-@NgModule({
+ @NgModule({
   declarations: [
     MyApp,
     ListPage,
@@ -52,14 +52,14 @@ import { BillPage } from '../pages/bill';
     DetailsPage,
     PassportPage,
     QuickActionButton,
-    QuickActions
+    QuickActions,
   ],
   imports: [
     IonicModule.forRoot(MyApp),
     BrowserModule,
     FormsModule,
     ReactiveFormsModule,
-    HttpModule
+    HttpModule,
   ],
   bootstrap: [IonicApp],
   entryComponents: [
@@ -74,7 +74,7 @@ import { BillPage } from '../pages/bill';
     TechnicalInfoPage,
     DetailsPage,
     PassportPage,
-    QrCode
+    QrCode,
   ],
   providers: [
     AuthService,
@@ -89,7 +89,7 @@ import { BillPage } from '../pages/bill';
     LocalTimeService,
     ServerTimeService,
     MonotonicTimeService,
-    EconomyService
-  ]
+    EconomyService,
+  ],
 })
 export class AppModule {}

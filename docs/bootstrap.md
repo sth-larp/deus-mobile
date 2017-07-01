@@ -50,11 +50,11 @@ Install Cordova and Ionic:
     sudo npm install -g cordova
     sudo npm install -g ionic
 
-## Unit-test infrastructure
+## Unit-test and lint infrastructure
 
 Install Karma:
 
-    sudo npm install -g karma-cli
+    sudo npm install -g karma-cli tslint
 
 # Setup
 
@@ -74,7 +74,7 @@ First, build the plugins (only once):
     ionic cordova build browser
 
 To run application in browser with auto-reload on changes (not all plugins are supported):
-    
+
     npm start
 
 and open [http://localhost:8100/](http://localhost:8100/).

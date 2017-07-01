@@ -1,7 +1,7 @@
-import { TestBed, inject, async, fakeAsync, tick } from '@angular/core/testing'
-import { Http, HttpModule, BaseRequestOptions, Response, ResponseOptions } from '@angular/http'
-import { MockBackend, MockConnection } from '@angular/http/testing'
-import { ServerTimeService } from "./server-time.service";
+import { async, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
+import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions } from '@angular/http';
+import { MockBackend, MockConnection } from '@angular/http/testing';
+import { ServerTimeService } from './server-time.service';
 
 describe('ServerTimeService', () => {
   beforeEach(async(() => {
@@ -13,11 +13,11 @@ describe('ServerTimeService', () => {
         BaseRequestOptions,
         {
           provide: Http,
-          useFactory: (mockBackend, options) => { return new Http(mockBackend, options) },
-          deps: [MockBackend, BaseRequestOptions]
-        }
+          useFactory: (mockBackend, options) => new Http(mockBackend, options),
+          deps: [MockBackend, BaseRequestOptions],
+        },
       ],
-      imports: [HttpModule]
+      imports: [HttpModule],
     }).compileComponents();
   }));
 
@@ -33,12 +33,12 @@ describe('ServerTimeService', () => {
         let currentTime = 0;
         mockBackend.connections.subscribe((connection: MockConnection) => {
           connection.mockRespond(new Response(new ResponseOptions({
-            body: { serverTime: currentTime++ }
-          })))
+            body: { serverTime: currentTime++ },
+          })));
         });
 
-        let times = [];
-        let subscription = serverTimeService.getUnixTimeMs().subscribe(t => times.push(t));
+        const times = [];
+        const subscription = serverTimeService.getUnixTimeMs().subscribe((t) => times.push(t));
         tick(serverTimeService.getFetchInterval() * 4);
         expect(times).toEqual([0, 1, 2, 3, 4]);
         subscription.unsubscribe();
@@ -52,7 +52,7 @@ describe('ServerTimeService', () => {
         mockBackend.connections.subscribe((connection: MockConnection) => {
           if (currentTime % 2 == 0) {
             connection.mockRespond(new Response(new ResponseOptions({
-              body: { serverTime: currentTime }
+              body: { serverTime: currentTime },
             })));
           } else {
             connection.mockError();
@@ -60,8 +60,8 @@ describe('ServerTimeService', () => {
           ++currentTime;
         });
 
-        let times = [];
-        let subscription = serverTimeService.getUnixTimeMs().subscribe(t => times.push(t));
+        const times = [];
+        const subscription = serverTimeService.getUnixTimeMs().subscribe((t) => times.push(t));
         tick(serverTimeService.getFetchInterval() * 4);
         expect(times).toEqual([0, 2, 4]);
         subscription.unsubscribe();

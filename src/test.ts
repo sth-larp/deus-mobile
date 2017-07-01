@@ -1,28 +1,23 @@
-﻿import './polyfills.ts';
+﻿ import './polyfills.ts';
 
 import 'zone.js/dist/long-stack-trace-zone';
 import 'zone.js/dist/proxy.js';
 import 'zone.js/dist/sync-test';
+// Must be imported later for w/e reason
+// tslint:disable-next-line:ordered-imports
 import 'zone.js/dist/jasmine-patch';
 import 'zone.js/dist/async-test';
 import 'zone.js/dist/fake-async-test';
 
-// tslint:disable:no-unused-variable
-import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { getTestBed, TestBed } from '@angular/core/testing';
+import { getTestBed } from '@angular/core/testing';
 import { BrowserDynamicTestingModule, platformBrowserDynamicTesting } from '@angular/platform-browser-dynamic/testing';
-import { App, Config, Form, IonicModule, Keyboard, DomController, MenuController, NavController, Platform } from 'ionic-angular';
-import { ConfigMock } from './mocks';
-// tslint:enable:no-unused-variable
 
 // Unfortunately there's no typing for the `__karma__` variable. Just declare it as any.
-declare var __karma__: any;
-declare var require: any;
+declare const __karma__: any;
+declare const require: any;
 
 // Prevent Karma from running prematurely.
-__karma__.loaded = function (): void {
-  // noop
-};
+__karma__.loaded = () => {};
 
 // First, initialize the Angular testing environment.
 getTestBed().initTestEnvironment(
@@ -31,7 +26,7 @@ getTestBed().initTestEnvironment(
 );
 
 // Then we find all the tests.
-let context: any = require.context('./', true, /\.spec\.ts/);
+const context: any = require.context('./', true, /\.spec\.ts/);
 
 // And load the modules.
 context.keys().map(context);

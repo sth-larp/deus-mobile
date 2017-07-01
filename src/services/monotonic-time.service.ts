@@ -1,7 +1,7 @@
-import { Injectable } from "@angular/core";
-import { ServerTimeService } from "./server-time.service";
-import { LocalTimeService } from "./local-time.service";
-import { NativeStorageService } from "./native-storage.service";
+import { Injectable } from '@angular/core';
+import { LocalTimeService } from './local-time.service';
+import { NativeStorageService } from './native-storage.service';
+import { ServerTimeService } from './server-time.service';
 
 @Injectable()
 export class MonotonicTimeService {
@@ -9,16 +9,16 @@ export class MonotonicTimeService {
   private _lastKnownServerToClientShift = 0;
 
   constructor(private _nativeStorageService: NativeStorageService,
-    private _localTimeService: LocalTimeService,
-    private _serverTimeService: ServerTimeService) {
+              private _localTimeService: LocalTimeService,
+              private _serverTimeService: ServerTimeService) {
     this._nativeStorageService.getItem('MonotonicTimeService/MaxReturnedTime')
-      .then(t => this._maxReturnedTime = t)
+      .then((t) => this._maxReturnedTime = t)
       .catch(() => {});
     this._nativeStorageService.getItem('MonotonicTimeService/LastKnownServerToClientShift')
-      .then(t => this._lastKnownServerToClientShift = t)
+      .then((t) => this._lastKnownServerToClientShift = t)
       .catch(() => {});
 
-    _serverTimeService.getUnixTimeMs().subscribe(time => {
+    _serverTimeService.getUnixTimeMs().subscribe((time) => {
       this._saveLastKnownServerToClientShift(this._localTimeService.getUnixTimeMs() - time);
     });
   }

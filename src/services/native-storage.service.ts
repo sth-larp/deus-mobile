@@ -1,5 +1,5 @@
-import { Injectable } from "@angular/core";
-import { NativeStorage } from "ionic-native/dist/es5";
+import { Injectable } from '@angular/core';
+import { NativeStorage } from 'ionic-native/dist/es5';
 
 // Injecrable wrapper aroun NativeStorage plugin code,
 // to be able to mock/fake it in tests.
@@ -22,7 +22,6 @@ export class NativeStorageService {
   }
 }
 
-
 export class InMemoryNativeStorageService {
   private _values = new Map();
 
@@ -35,7 +34,7 @@ export class InMemoryNativeStorageService {
     if (this._values.has(reference))
       return Promise.resolve(this._values.get(reference));
     else
-      return Promise.reject("Not found");
+      return Promise.reject('Not found');
   }
 
   public remove(reference: string): Promise<any> {

@@ -1,6 +1,6 @@
-import { Subscription } from "rxjs/Rx";
-import { NavController } from "ionic-angular";
-import { DataService } from "../services/data.service";
+import { NavController } from 'ionic-angular';
+import { Subscription } from 'rxjs/Rx';
+import { DataService } from '../services/data.service';
 
 // Needs to be in sync with json, which uses snake case.
 // tslint:disable:variable-name
@@ -18,12 +18,10 @@ export abstract class UpdatablePage {
               protected _navCtrl: NavController) {
   }
 
-  protected abstract setBody(body: any);
-
   // tslint:disable-next-line:no-unused-variable
   public ionViewWillEnter() {
-    this._subscription = this._dataService.getData().subscribe(json => {
-      const pagesTyped: Array<UpdatablePageData> = json.pages;
+    this._subscription = this._dataService.getData().subscribe((json) => {
+      const pagesTyped: UpdatablePageData[] = json.pages;
       const thisPageData = pagesTyped.find((p: UpdatablePageData) => p.menuTitle == this._title);
       if (thisPageData)
         this.setBody(thisPageData.body);
@@ -40,4 +38,6 @@ export abstract class UpdatablePage {
       this._subscription = null;
     }
   }
+
+  protected abstract setBody(body: any);
 }

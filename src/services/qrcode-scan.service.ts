@@ -1,14 +1,14 @@
-import { Injectable } from "@angular/core";
-import { AlertController, ModalController } from 'ionic-angular';
+import { Injectable } from '@angular/core';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { TSMap } from "typescript-map"
+import { AlertController, ModalController } from 'ionic-angular';
+import { TSMap } from 'typescript-map';
 
-import { LoggingService } from "./logging.service";
-import { GeneralQRCodePage } from "../pages/general-qrcode";
-import { decode, QrData } from "deus-qr-lib/lib/qr"
-import { MonotonicTimeService } from "./monotonic-time.service";
-import { QrType } from "deus-qr-lib/lib/qr.type";
-import { EconomyService } from "./economy.service";
+import { decode, QrData } from 'deus-qr-lib/lib/qr';
+import { QrType } from 'deus-qr-lib/lib/qr.type';
+import { GeneralQRCodePage } from '../pages/general-qrcode';
+import { EconomyService } from './economy.service';
+import { LoggingService } from './logging.service';
+import { MonotonicTimeService } from './monotonic-time.service';
 
 class QrExpiredError extends Error {
 }
@@ -20,19 +20,31 @@ export class QrCodeScanService {
   private _qrTypeToCallback = new TSMap<QrType, QrCallback>();
   private _defaultCallback: QrCallback;
 
+  private _qrScanningOptions = {
+    preferFrontCamera: false,
+    showFlipCameraButton: false,
+    showTorchButton: true,
+    torchOn: false,
+    prompt: '',
+    resultDisplayDuration: 0,
+    formats: 'QR_CODE',
+    disableAnimations: true,
+    disableSuccessBeep: true,
+  };
+
   constructor(private _barcodeScanner: BarcodeScanner,
-    private _alertController: AlertController,
-    private _modalController: ModalController,
-    private _logging: LoggingService,
-    private _monotonicClock: MonotonicTimeService,
-    private _economyService: EconomyService) {
+              private _alertController: AlertController,
+              private _modalController: ModalController,
+              private _logging: LoggingService,
+              private _monotonicClock: MonotonicTimeService,
+              private _economyService: EconomyService) {
 
     this._defaultCallback = (data: QrData) => {
-      let modal = this._modalController.create(GeneralQRCodePage, { value: data });
+      const modal = this._modalController.create(GeneralQRCodePage, { value: data });
       modal.present();
     };
 
-    this.registerCallback(QrType.Bill, data => {
+    this.registerCallback(QrType.Bill, (data) => {
       const splitPayload = data.payload.split(',');
       this._economyService.makeTransaction(splitPayload[0], Number(splitPayload[1]));
     });
@@ -42,23 +54,11 @@ export class QrCodeScanService {
     this._qrTypeToCallback.set(type, callback);
   }
 
-  private _qrScanningOptions = {
-    preferFrontCamera: false,
-    showFlipCameraButton: false,
-    showTorchButton: true,
-    torchOn: false,
-    prompt: '',
-    resultDisplayDuration: 0,
-    formats: "QR_CODE",
-    disableAnimations: true,
-    disableSuccessBeep: true
-  };
-
   public scanQRCode(): void {
     this._barcodeScanner.scan(this._qrScanningOptions).then((barcodeData) => {
       this._logging.info('Read QR code: ' + JSON.stringify(barcodeData));
-      if (!barcodeData['cancelled'])
-        this.onQRScanned(barcodeData['text']);
+      if (!barcodeData.cancelled)
+        this.onQRScanned(barcodeData.text);
       else
         this._logging.info('QR code scanning was canncelled by user');
     }, (err) => {
@@ -69,7 +69,7 @@ export class QrCodeScanService {
 
   private onQRScanned(qr: string) {
     try {
-      let data: QrData = decode(qr);
+      const data: QrData = decode(qr);
       this._logging.info('Decoded QR code: ' + JSON.stringify(data));
       if (data.validUntil < this._monotonicClock.getUnixTimeMs() / 1000)
         throw new QrExpiredError('QR code expired');
@@ -80,7 +80,7 @@ export class QrCodeScanService {
     } catch (e) {
       this._logging.warning('Unsupported QR code scanned, error: ' + e);
       if (e instanceof QrExpiredError)
-        this.showExperidQrWarning()
+        this.showExperidQrWarning();
       else
         this.showInvalidQrFormatWarning();
     }
@@ -91,7 +91,7 @@ export class QrCodeScanService {
       title: 'Не получается отсканировать QR-код',
       message: 'Приложение не может отсканировать QR-код. Пожалуйста, убедитесь, что у приложения есть ' +
       'доступ к камере, QR код хорошего качества. Используйте кнопку включения подсветки при необходимости.',
-      buttons: ['Ок']
+      buttons: ['Ок'],
     }).present();
   }
 
@@ -101,7 +101,7 @@ export class QrCodeScanService {
       message: 'QR-код распознан, но имеет неправильный формат. Если вы уверены, что это допустимый код ' +
       'и вам точно необходимо его использовать, сфотографируйте код и отправьте эту фотографию ' +
       'с описанием ситуации на адрес support@alice.digital.',
-      buttons: ['Ок']
+      buttons: ['Ок'],
     }).present();
   }
 
@@ -111,7 +111,7 @@ export class QrCodeScanService {
       message: 'QR-код распознан, но срок его действия истек. Если вы уверены, что это допустимый код ' +
       'и вам точно необходимо его использовать, сфотографируйте код и отправьте эту фотографию ' +
       'с описанием ситуации на адрес support@alice.digital.',
-      buttons: ['Ок']
+      buttons: ['Ок'],
     }).present();
   }
 }

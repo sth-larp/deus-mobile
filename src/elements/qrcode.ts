@@ -1,9 +1,9 @@
-import { Component, ElementRef, ViewChild, Input } from '@angular/core';
-import { QRCode, ErrorCorrectLevel } from 'qrcode-generator-ts/js';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
+import { ErrorCorrectLevel, QRCode } from 'qrcode-generator-ts/js';
 
 @Component({
   selector: 'element-qrcode',
-  templateUrl: 'qrcode.html'
+  templateUrl: 'qrcode.html',
 })
 export class QrCode {
   @Input()
@@ -12,20 +12,20 @@ export class QrCode {
   @ViewChild('qrCanvas') private _canvasRef: ElementRef;
 
   public ngOnInit() {
-    let qr = new QRCode();
+    const qr = new QRCode();
     qr.setTypeNumber(3);
     qr.setErrorCorrectLevel(ErrorCorrectLevel.M);
     qr.addData(this.qrContent);
     qr.make();
 
-    let ctx: CanvasRenderingContext2D =
+    const ctx: CanvasRenderingContext2D =
       this._canvasRef.nativeElement.getContext('2d');
 
     // TODO: device-dependent size? Or how properly adjust it?
-    let cellSize = 10;
-    let margin = cellSize * 3;
+    const cellSize = 10;
+    const margin = cellSize * 3;
 
-    let size = qr.getModuleCount() * cellSize + margin * 2;
+    const size = qr.getModuleCount() * cellSize + margin * 2;
     this._canvasRef.nativeElement.width = size;
     this._canvasRef.nativeElement.height = size;
 
@@ -48,4 +48,3 @@ export class QrCode {
   }
 
 }
-

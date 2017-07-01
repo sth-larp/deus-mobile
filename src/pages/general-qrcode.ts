@@ -1,16 +1,16 @@
 import { Component } from '@angular/core';
-import { NavParams } from "ionic-angular";
-import { DataService } from "../services/data.service";
-import { QrData } from "deus-qr-lib";
+import { QrData } from 'deus-qr-lib';
+import { NavParams } from 'ionic-angular';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'page-general-qrcode',
-  templateUrl: 'general-qrcode.html'
+  templateUrl: 'general-qrcode.html',
 })
 export class GeneralQRCodePage {
   public data: QrData;
   constructor(navParams: NavParams,
-    dataService: DataService) {
+              dataService: DataService) {
     this.data = navParams.data.value;
     dataService.pushEvent('scanQr', this.data);
   }

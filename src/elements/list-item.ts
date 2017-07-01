@@ -1,6 +1,6 @@
 import { Component, Input } from '@angular/core';
-import { DetailsData, DetailsPage } from "../pages/details";
-import { ModalController } from "ionic-angular";
+import { ModalController } from 'ionic-angular';
+import { DetailsData, DetailsPage } from '../pages/details';
 
 export class ListItemData {
   public text: string;
@@ -20,7 +20,7 @@ export class ListItemData {
 
 @Component({
   selector: 'list-item',
-  templateUrl: 'list-item.html'
+  templateUrl: 'list-item.html',
 })
 export class ListItem {
   @Input()
@@ -32,20 +32,20 @@ export class ListItem {
 
   public getValueColor(): string {
     // TODO: Get color from variables.scss instead
-    return this.data.valueColor ? this.data.valueColor : "#F3F5F8";
+    return this.data.valueColor ? this.data.valueColor : '#F3F5F8';
   }
 
   public getProgressBarColor(): string {
     // TODO: Add color to variables.scss instead
-    return this.data.progressBarColor ? this.data.progressBarColor : "#6987A4";
+    return this.data.progressBarColor ? this.data.progressBarColor : '#6987A4';
   }
 
   public getIcon(): string {
-    return "assets/icon/" + this.data.icon + ".svg";
+    return 'assets/icon/' + this.data.icon + '.svg';
   }
 
   public openDetails(details: DetailsData) {
-    let accessModal = this._modalCtrl.create(DetailsPage, { value: details });
+    const accessModal = this._modalCtrl.create(DetailsPage, { value: details });
     accessModal.present();
   }
 }

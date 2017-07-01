@@ -1,8 +1,8 @@
 import { GlobalConfig } from '../config';
 
-import { Injectable } from "@angular/core";
-import { Observable } from "rxjs/Rx";
-import { Http } from "@angular/http";
+import { Injectable } from '@angular/core';
+import { Http } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
 
 @Injectable()
 export class ServerTimeService {
@@ -11,8 +11,8 @@ export class ServerTimeService {
     return Observable.timer(0, GlobalConfig.fetchTimeFromServerEveryMs)
       .flatMap(() => {
         return this._http.get(GlobalConfig.timeServerUrl)
-          .map(response => response.json().serverTime)
-          .catch(err => Observable.empty());
+          .map((response) => response.json().serverTime)
+          .catch(() => Observable.empty());
       });
   }
 
