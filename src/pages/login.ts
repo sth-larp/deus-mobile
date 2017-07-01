@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { NavController, LoadingController, Loading } from 'ionic-angular';
+import { NavController, LoadingController, Loading, AlertController } from 'ionic-angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { AuthService } from "../services/auth.service";
 import { MenuPage } from "./menu";
@@ -15,6 +15,7 @@ export class LoginPage {
 
   constructor(private _navCtrl: NavController,
     private _loadingCtrl: LoadingController,
+    private _alertCtrl: AlertController,
     private _formBuilder: FormBuilder,
     private _authService: AuthService,
     private _logging: LoggingService) {
@@ -37,8 +38,22 @@ export class LoginPage {
       err => {
         this._hideLoader();
         // TODO: show some warning/error message to user
-        console.warn(err)
+        console.warn(JSON.stringify(err));
+        if (err.status == 404)
+          this.showLoginFailedAlert('Персонаж с данным ID не найден');
+        else if (err.status == 401)
+          this.showLoginFailedAlert('Неправильный пароль');
+        else
+          this.showLoginFailedAlert('Ошибка подключения к серверу, повторите попытку позже');
       });
+  }
+
+  private showLoginFailedAlert(msg: string) {
+    let alert = this._alertCtrl.create({
+      message: msg,
+      buttons: ['Ок']
+    });
+    alert.present();
   }
 
   public ionViewDidLoad() {
