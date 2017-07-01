@@ -41,7 +41,7 @@ export class LoginPage {
       });
   }
 
-  public ionViewDidLoad() {
+  public ionViewDidEnter() {
     this._checkIfAlreadyAuthentificated();
   }
 
