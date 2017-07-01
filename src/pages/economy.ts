@@ -65,13 +65,7 @@ export class EconomyPage {
         this.refreshData()
         this.sendForm.reset();
       })
-      .catch((reason: string) => {
-        let alert = this._alertCtrl.create({
-          title: 'Ошибка',
-          message: reason,
-          buttons: ['Ок']
-        });
-        alert.present();
+      .catch(() => {
         this.refreshData();
       });
   }

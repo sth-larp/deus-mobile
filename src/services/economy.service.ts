@@ -43,6 +43,15 @@ export class EconomyService {
   public makeTransaction(receiver: string, amount: number): Promise<{}> {
     // TODO: validate amount?
     return new Promise((resolve, reject) => {
+      let notifyAndReject = (e: string) => {
+        let alert = this._alertCtrl.create({
+          title: 'Ошибка',
+          message: e,
+          buttons: [{text: 'Ок', handler: reject}]
+        });
+        alert.present();
+      };
+
       let alert = this._alertCtrl.create({
         title: 'Подтвердите перевод',
         message: `Подтвердите перевод ${amount} на счет ${receiver}.`,
@@ -60,9 +69,9 @@ export class EconomyService {
               }
               catch (e) {
                 if (e && e.json && e.json() && e.json().Message)
-                  reject(e.json().Message)
+                  notifyAndReject(e.json().Message)
                 else
-                  reject('Сервер недоступен');
+                  notifyAndReject('Сервер недоступен');
               }
             }
           }
