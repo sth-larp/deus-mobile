@@ -6,6 +6,7 @@ import { Http, Headers } from "@angular/http";
 import { GlobalConfig } from "../config";
 
 import * as BasicAuthorizationHeader from 'basic-authorization-header'
+import { ListItemData } from "../elements/list-item";
 
 @Injectable()
 export class EconomyService {
@@ -13,10 +14,30 @@ export class EconomyService {
     private _alertCtrl: AlertController,
     private _http: Http) { }
 
-  public getBalance(): Observable<number> {
+  public getBalance(): Promise<number> {
     return this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUsername(),
       this._authService.getRequestOptionsWithSavedCredentials())
-      .map(response => response.json().Cash);
+      .map(response => response.json().Cash).toPromise();
+  }
+
+  public getShortTransactionHistory(): Promise<ListItemData[]> {
+    return this._http.get(GlobalConfig.economyTransactionsUrl +
+      '?login=' + this._authService.getUsername() + '&take=10&skip=0',
+      this._authService.getRequestOptionsWithSavedCredentials())
+      .map(response => {
+        const entries: any[] = response.json();
+        return entries.map(function (entry): ListItemData {
+          return {
+            text: `${entry.Sender} --> ${entry.Receiver}`,
+            value: entry.Amount,
+            details: {
+              header: "Детали операции",
+              text: JSON.stringify(entry, null, 2),
+              actions: null
+            }
+          }
+        });
+      }).toPromise();
   }
 
   public makeTransaction(receiver: string, amount: number) {

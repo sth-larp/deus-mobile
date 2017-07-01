@@ -7,6 +7,10 @@
   </ion-navbar>
 </ion-header>
 <ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-list>
     <list-item [data]="balance"></list-item>
   </ion-list>
@@ -30,6 +34,10 @@
     </ion-item>
     <button ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
   </form>
+
+  <ion-list>
+    <list-item *ngFor="let item of history" [data]="item"></list-item>
+  </ion-list>
 
 </ion-content>
 <quick-actions></quick-actions>

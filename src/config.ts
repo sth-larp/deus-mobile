@@ -20,7 +20,8 @@ export const GlobalConfig = {
   transactionQrLifespan: 300000, // 5 min
 
   economyGetBalanceBaseUrl: 'http://deus2017economy.azurewebsites.net/api/accounts/profile?login=',
-  economyTransferMoneyUrl: 'http://deus2017economy.azurewebsites.net/api/transfer'
+  economyTransferMoneyUrl: 'http://deus2017economy.azurewebsites.net/api/transfer',
+  economyTransactionsUrl: 'http://deus2017economy.azurewebsites.net/api/transactions'
 }
 
 // Apparently, SCSS variables cannot be used in typescript, so copying here.

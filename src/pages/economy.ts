@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ListItemData } from "../elements/list-item";
 import { Http } from "@angular/http";
 import { AuthService } from "../services/auth.service";
-import { ModalController } from "ionic-angular";
+import { ModalController, Refresher } from "ionic-angular";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { EconomyService } from "../services/economy.service";
 import { BillPage } from "./bill";
@@ -16,6 +16,8 @@ export class EconomyPage {
 
   public sendForm: FormGroup;
   public receiveForm: FormGroup;
+
+  public history: ListItemData[];
 
   constructor(private _http: Http,
     private _authService: AuthService,
@@ -32,7 +34,20 @@ export class EconomyPage {
       amount: ['', Validators.required]
     });
 
-    this._economyService.getBalance().subscribe(v => this.balance.value = v.toString());
+    this.refreshData();
+  }
+
+  public doRefresh(refresher: Refresher) {
+    // TODO: error indication?
+    this.refreshData()
+    .then(() => refresher.complete())
+    .catch(() => refresher.complete());
+  }
+
+  private async refreshData() {
+    let balanceNum = 0;
+    [balanceNum, this.history] = await Promise.all([this._economyService.getBalance(), this._economyService.getShortTransactionHistory()])
+    this.balance.value = balanceNum.toString();
   }
 
   public sendMoney() {
