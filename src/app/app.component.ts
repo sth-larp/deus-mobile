@@ -8,7 +8,7 @@ import { LoginPage } from '../pages/login';
   template: `<ion-nav [root]="rootPage"></ion-nav>`
 })
 export class MyApp {
-  public rootPage = LoginPage;
+  public rootPage = null;
 
   constructor(platform: Platform) {
     platform.ready().then(() => {
@@ -16,6 +16,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
+      this.rootPage = LoginPage;
     });
   }
 }
