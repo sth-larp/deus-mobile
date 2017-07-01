@@ -1,11 +1,11 @@
 import { Injectable } from "@angular/core";
-import { NativeStorage } from 'ionic-native';
 import { LoginListener } from "./login-listener";
 import { Headers, RequestOptionsArgs, Http } from "@angular/http";
 import { GlobalConfig } from "../config";
 
 import * as BasicAuthorizationHeader from 'basic-authorization-header'
 import { LoggingService } from "./logging.service";
+import { NativeStorageService } from "./native-storage.service";
 
 @Injectable()
 export class AuthService {
@@ -14,7 +14,8 @@ export class AuthService {
   private _listeners = new Array<LoginListener>();
 
   constructor(private _http: Http,
-              private _log: LoggingService) { }
+              private _log: LoggingService,
+              private _nativeStorage: NativeStorageService) { }
 
   public addListener(listener: LoginListener) {
     this._listeners.push(listener);
@@ -40,22 +41,22 @@ export class AuthService {
   }
 
   public async checkExistingCredentials() {
-    const username = await NativeStorage.getItem('username');
-    const password = await NativeStorage.getItem('password');
+    const username = await this._nativeStorage.getItem('username');
+    const password = await this._nativeStorage.getItem('password');
     await this._saveCredentials(username, password);
   }
 
   private async _saveCredentials(username: string, password: string) {
     this._username = username;
     this._password = password;
-    await NativeStorage.setItem('username', username);
-    await NativeStorage.setItem('password', password);
+    await this._nativeStorage.setItem('username', username);
+    await this._nativeStorage.setItem('password', password);
     this.notifyListenersOnLogin();
   }
 
   public async logout() {
-    await NativeStorage.remove('username');
-    await NativeStorage.remove('password');
+    await this._nativeStorage.remove('username');
+    await this._nativeStorage.remove('password');
     for (let listener of this._listeners) {
       listener.onLogout();
     }
