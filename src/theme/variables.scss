@@ -22,10 +22,10 @@ $colors: (
   primary:      $standard-blue,
 
   // Foreground colors for use on dark backgrounds (toolbar)
-  pale-blue:    $standard-blue,
-  pale-green:   $standard-green,
-  pale-yellow:  $standard-yellow,
-  pale-red:     $standard-red,
+  dark-blue:    $standard-blue,
+  dark-green:   $standard-green,
+  dark-yellow:  $standard-yellow,
+  dark-red:     $standard-red,
 
   // Foreground colors for use on lighter backgrounds (main area)
   light-blue:   lighten(saturate($standard-blue, 30%), 12%),
@@ -90,6 +90,7 @@ $action-sheet-ios-button-background: $action-sheet-md-button-background;
 $action-sheet-ios-button-cancel-background: $action-sheet-ios-button-background;
 $action-sheet-ios-button-background-activated: $action-sheet-md-button-background-activated;
 $action-sheet-ios-button-text-color: $action-sheet-md-button-text-color;
+$action-sheet-ios-button-destructive-text-color: color($colors, dark-red);
 
 $alert-ios-message-text-color: $alert-md-message-text-color;
 $alert-ios-background: $alert-md-background-color;

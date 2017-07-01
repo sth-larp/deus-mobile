@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { AlertController, ModalController, Platform } from "ionic-angular";
+import { ActionSheetController, AlertController, ModalController, Platform } from "ionic-angular";
 import { Subscription } from "rxjs";
 import { Observable } from "rxjs/Rx";
 
@@ -19,6 +19,7 @@ import { LoginListener } from "../services/login-listener";
 })
 export class QuickActions implements LoginListener {
   public updateStatusIcon: string = null;
+  public hp: number = null;
   public hpIcon: string = null;
   public hpText: string = null;
   public hpTextColor: string = null;
@@ -35,6 +36,7 @@ export class QuickActions implements LoginListener {
     private _localDataService: LocalDataService,
     private _authService: AuthService,
     private _platform: Platform,
+    private _actionSheetController: ActionSheetController,
     private _alertController: AlertController,
     private _logging: LoggingService) {
   }
@@ -97,14 +99,39 @@ export class QuickActions implements LoginListener {
   }
 
   private updateHp(modelViewJson: any) {
-    let hp: number = modelViewJson.toolbar.hitPoints;
+    this.hp = modelViewJson.toolbar.hitPoints;
     let maxHp: number = modelViewJson.toolbar.maxHitPoints;
-    let hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * hp / maxHp);
-    if (hp > 0) hpIconIndex = Math.max(hpIconIndex, 1);
-    if (hp < maxHp) hpIconIndex = Math.min(hpIconIndex, GlobalConfig.numHpQuickActionIcons - 1);
+    let hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * this.hp / maxHp);
+    if (this.hp > 0) hpIconIndex = Math.max(hpIconIndex, 1);
+    if (this.hp < maxHp) hpIconIndex = Math.min(hpIconIndex, GlobalConfig.numHpQuickActionIcons - 1);
     this.hpIcon = 'hit-points-' + this.formatInteger(hpIconIndex, 2) + '.svg';
-    this.hpText = hp.toString();
-    this.hpTextColor = (hp == 0) ? Colors.red : Colors.primary;
+    this.hpText = this.hp.toString();
+    this.hpTextColor = (this.hp == 0) ? Colors.red : Colors.primary;
+  }
+
+  private async doSubtractHp(hpLost: number) {
+    this._dataService.pushEvent('subtractHp', {hpLost: hpLost});
+  }
+
+  private async subtractHpWithConfirmation(hpLost: number) {
+    let buttons = [{
+      text: 'Отмена',
+      role: 'cancel',
+    },
+    {
+      text: 'Снять ' + hpLost.toString() + ' HP',
+      handler: () => this.doSubtractHp(hpLost),
+    }];
+    let alert = this._alertController.create({
+      message: "Подтвердить снятие " + hpLost.toString() + " HP?",
+      buttons: buttons,
+    });
+
+    let unregisterFn = this._platform.registerBackButtonAction(() => {
+      alert.dismiss();
+    }, 0);
+    alert.onWillDismiss(unregisterFn);
+    alert.present();
   }
 
   // TODO: Add tests
@@ -150,7 +177,35 @@ export class QuickActions implements LoginListener {
     accessModal.present();
   }
 
-  public async onToggleVr() {
+  public async onHp() {
+    let buttons = []
+    buttons.push({
+      text: 'Снять все HP',
+      role: 'destructive',
+      handler: () => this.subtractHpWithConfirmation(this.hp),
+    });
+    for (let i: number = Math.min(this.hp - 1, 5); i > 0; i--) {
+      buttons.push({
+        text: 'Снять ' + i.toString() + ' HP',
+        handler: () => this.subtractHpWithConfirmation(i),
+      })
+    }
+    buttons.push({
+      text: 'Отмена',
+      role: 'cancel'
+    });
+    let actionSheet = this._actionSheetController.create({
+      buttons: buttons
+    });
+
+    let unregisterFn = this._platform.registerBackButtonAction(() => {
+      actionSheet.dismiss();
+    }, 0);
+    actionSheet.onWillDismiss(unregisterFn);
+    actionSheet.present();
+  }
+
+  public async onVr() {
     const inVr: Boolean = await this._localDataService.inVr();
     let buttons = [{
       text: 'Отмена',
@@ -160,7 +215,7 @@ export class QuickActions implements LoginListener {
       text: inVr ? "Выйти из VR" : "Войти в VR",
       handler: () => this.doToggleVr(),
     }];
-    let actionSheet = this._alertController.create({
+    let alert = this._alertController.create({
       message: inVr
         ? "Подтвердить выход из VR?"
         : "Подтвердить вход в VR?",
@@ -168,10 +223,10 @@ export class QuickActions implements LoginListener {
     });
 
     let unregisterFn = this._platform.registerBackButtonAction(() => {
-      actionSheet.dismiss();
+      alert.dismiss();
     }, 0);
-    actionSheet.onWillDismiss(unregisterFn);
-    actionSheet.present()
+    alert.onWillDismiss(unregisterFn);
+    alert.present();
   }
 
   public onRefresh() {
