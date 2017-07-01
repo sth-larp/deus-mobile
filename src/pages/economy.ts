@@ -3,9 +3,11 @@ import { ListItemData } from "../elements/list-item";
 import { Http } from "@angular/http";
 import { AuthService } from "../services/auth.service";
 import { ModalController, Refresher, AlertController } from "ionic-angular";
-import { FormGroup, FormBuilder, Validators } from "@angular/forms";
+import { FormGroup, FormBuilder, Validators, FormControl, ValidatorFn, AbstractControl, ValidationErrors } from "@angular/forms";
 import { EconomyService } from "../services/economy.service";
 import { BillPage } from "./bill";
+import { CustomValidators } from 'ng2-validation';
+
 
 @Component({
   selector: 'page-economy',
@@ -26,13 +28,17 @@ export class EconomyPage {
     private _formBuilder: FormBuilder,
     private _economyService: EconomyService) {
 
+    const lessThanBalanceValidator: ValidatorFn = (control: AbstractControl): ValidationErrors => {
+      return Number(control.value) <= Number(this.balance.value) ? null : { lessThenBalance: false };
+    };
+
     this.sendForm = this._formBuilder.group({
       receiverId: ['', Validators.required],
-      amount: ['', Validators.required]
+      amount: ['', Validators.compose([Validators.required, CustomValidators.digits, lessThanBalanceValidator])]
     });
 
     this.receiveForm = this._formBuilder.group({
-      amount: ['', Validators.required]
+      amount: ['', Validators.compose([Validators.required, CustomValidators.digits])]
     });
 
     this.refreshData();
@@ -55,7 +61,10 @@ export class EconomyPage {
     return this._economyService.makeTransaction(
       this.sendForm.value['receiverId'],
       this.sendForm.value['amount'])
-      .then(() => this.refreshData())
+      .then(() => {
+        this.refreshData()
+        this.sendForm.reset();
+      })
       .catch((reason: string) => {
         let alert = this._alertCtrl.create({
           title: 'Ошибка',

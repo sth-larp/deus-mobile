@@ -20,7 +20,7 @@ import { FirebaseService } from '../services/firebase.service';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
 import { LoggingService } from "../services/logging.service";
 import { BrowserModule } from "@angular/platform-browser";
-import { FormsModule } from "@angular/forms";
+import { FormsModule, ReactiveFormsModule } from "@angular/forms";
 import { TechnicalInfoPage } from "../pages/technical-info";
 import { DetailsPage } from "../pages/details";
 import { QuickActionButton } from "../elements/quick-action-button";
@@ -58,6 +58,7 @@ import { BillPage } from '../pages/bill';
     IonicModule.forRoot(MyApp),
     BrowserModule,
     FormsModule,
+    ReactiveFormsModule,
     HttpModule
   ],
   bootstrap: [IonicApp],
