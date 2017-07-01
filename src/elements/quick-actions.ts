@@ -83,23 +83,23 @@ export class QuickActions implements LoginListener {
 
   // TODO: Add tests
   private formatInteger(value: number, padding: number): string {
-    var str = value.toFixed(0);
+    let str = value.toFixed(0);
     return (str.length >= padding) ? str : ('0000000000000000' + str).slice(-padding);
   }
 
   // TODO: Add tests
   // Prints "H:MM" or "M:SS" with a given separator.
   private formatTime(value: number, separator: string): string {
-    var value = Math.floor(value);
-    var high = Math.floor(value / 60);
-    var low = value % 60;
+    value = Math.floor(value);
+    let high = Math.floor(value / 60);
+    let low = value % 60;
     return this.formatInteger(high, 1) + separator + this.formatInteger(low, 2);
   }
 
   private updateHp(modelViewJson: any) {
-    var hp: number = modelViewJson.toolbar.hitPoints;
-    var maxHp: number = modelViewJson.toolbar.maxHitPoints;
-    var hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * hp / maxHp);
+    let hp: number = modelViewJson.toolbar.hitPoints;
+    let maxHp: number = modelViewJson.toolbar.maxHitPoints;
+    let hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * hp / maxHp);
     if (hp > 0) hpIconIndex = Math.max(hpIconIndex, 1);
     if (hp < maxHp) hpIconIndex = Math.min(hpIconIndex, GlobalConfig.numHpQuickActionIcons - 1);
     this.hpIcon = 'hit-points-' + this.formatInteger(hpIconIndex, 2) + '.svg';
@@ -110,7 +110,7 @@ export class QuickActions implements LoginListener {
   // TODO: Add tests
   private getVrTimerWithColor(secondsLeft: number): string[] {
     if (secondsLeft < 0) {
-      var separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
+      let separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
       return [this.formatTime(0, separator), Colors.red];
     }
     else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
@@ -121,12 +121,12 @@ export class QuickActions implements LoginListener {
 
   private async updateVrStatus() {
     // TODO(Andrei): Read maxSecondsInVr from ViewModel
-    var maxSecondsInVr = 60 * 20 + 1;
+    let maxSecondsInVr = 60 * 20 + 1;
     this.vrIcon = (await this._localDataService.inVr())
       ? 'virtual-reality-on.svg'
       : 'virtual-reality-off.svg';
     // TODO(Andrei): Change text color
-    var secondsInVr = await this._localDataService.secondsInVr();
+    let secondsInVr = await this._localDataService.secondsInVr();
     [this.vrTimer, this.vrTimerColor] =
       (secondsInVr == null)
         ? ['', null]

@@ -25,7 +25,7 @@ export class QrCode {
     let cellSize = 10;
     let margin = cellSize * 3;
 
-    var size = qr.getModuleCount() * cellSize + margin * 2;
+    let size = qr.getModuleCount() * cellSize + margin * 2;
     this._canvasRef.nativeElement.width = size;
     this._canvasRef.nativeElement.height = size;
 
@@ -35,8 +35,8 @@ export class QrCode {
 
     // draw cells
     ctx.fillStyle = '#000000';
-    for (var row = 0; row < qr.getModuleCount(); row += 1) {
-      for (var col = 0; col < qr.getModuleCount(); col += 1) {
+    for (let row = 0; row < qr.getModuleCount(); row += 1) {
+      for (let col = 0; col < qr.getModuleCount(); col += 1) {
         if (qr.isDark(row, col) ) {
           ctx.fillRect(
             col * cellSize + margin,
