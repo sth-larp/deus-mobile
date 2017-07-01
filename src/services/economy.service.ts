@@ -73,7 +73,6 @@ export class EconomyService {
   }
 
   private _makeTransaction(receiver: string, amount: number) {
-    console.warn(`Transfered ${amount} to ${receiver}.`);
     const requestBody = JSON.stringify({
       Sender: this._authService.getUsername(),
       Receiver: receiver,
