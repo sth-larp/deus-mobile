@@ -37,7 +37,6 @@ export class MenuPage implements LoginListener {
     // Hack to instantiate it)
     private _firebaseService: FirebaseService,
     navParams: NavParams) {
-    this._authService.addListener(this);
     this._pageTypeToPage.set('list', ListPage);
     this._pageTypeToPage.set('plain_text', PlainTextPage);
     this._pageTypeToPage.set('economy', EconomyPage);
@@ -45,6 +44,14 @@ export class MenuPage implements LoginListener {
     if (navParams.data.viewModel) {
       this._dataService.setViewModel(navParams.data.viewModel);
     }
+  }
+
+  public ngOnInit() {
+    this._authService.addListener(this);
+  }
+
+  public ngOnDestroy() {
+    this._authService.removeListener(this);
   }
 
   // tslint:disable-next-line:no-unused-variable

@@ -28,6 +28,13 @@ export class AuthService {
     this._log.debug(`There is ${this._listeners.length} listeners`);
   }
 
+  public removeListener(listener: LoginListener) {
+    this._log.debug(`Removing listener ${listener.constructor.name}`);
+    this._log.debug(`There is ${this._listeners.length} listeners`);
+    this._listeners = this._listeners.filter(elt => elt != listener);
+    this._log.debug(`There is ${this._listeners.length} listeners`);
+  }
+
   public getUsername(): string {
     return this._username;
   }
@@ -36,7 +43,7 @@ export class AuthService {
     const fullUrl = GlobalConfig.getViewmodelBaseUrl + '/' + username + '?type=mobile';
     const response = await this._http.get(fullUrl,
       this.getRequestOptionsWithCredentials(username, password)).toPromise();
-    this._saveCredentials(username, password);
+    await this._saveCredentials(username, password);
     return response.json().viewModel;
   }
 

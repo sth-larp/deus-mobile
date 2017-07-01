@@ -37,7 +37,14 @@ export class QuickActions implements LoginListener {
     private _platform: Platform,
     private _alertController: AlertController,
     private _logging: LoggingService) {
+  }
+
+  public ngOnInit() {
     this._authService.addListener(this);
+  }
+
+  public ngOnDestroy() {
+    this._authService.removeListener(this);
   }
 
   public onSuccessfulLogin(username: string) {
