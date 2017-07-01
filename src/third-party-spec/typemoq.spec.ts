@@ -1,3 +1,4 @@
+import {describe, expect, it} from 'angular2/testing';
 import * as TypeMoq from 'typemoq';
 
 class Foo {

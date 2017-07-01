@@ -1,6 +1,7 @@
 import { async, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
+import { beforeEach, describe, expect, it } from 'angular2/testing';
 import { ServerTimeService } from './server-time.service';
 
 describe('ServerTimeService', () => {
