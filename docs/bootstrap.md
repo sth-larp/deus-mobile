@@ -67,15 +67,23 @@ Install needed packages:
 
     npm install
 
-Make Cordova believe that we are in Cordova project.
-
-    mkdir www
-
 ## Set up browser emulation
+
+First, build the plugins (only once):
+
+    ionic cordova build browser
 
 To run application in browser with auto-reload on changes (not all plugins are supported):
     
     npm start
+
+and open [http://localhost:8100/](http://localhost:8100/).
+
+For mobile emulation (iPhone + Android) run
+
+    npm start -- --lab
+
+and open [http://localhost:8100/ionic-lab](http://localhost:8100/ionic-lab).
 
 ## Set up Android app
 
