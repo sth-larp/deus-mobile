@@ -40,23 +40,36 @@ export class EconomyService {
       }).toPromise();
   }
 
-  public makeTransaction(receiver: string, amount: number) {
+  public makeTransaction(receiver: string, amount: number): Promise<{}> {
     // TODO: validate amount?
-    let alert = this._alertCtrl.create({
-      title: 'Подтвердите перевод',
-      message: `Подтвердите перевод ${amount} на счет ${receiver}.`,
-      buttons: [
-        {
-          text: 'Отмена',
-          role: 'cancel',
-        },
-        {
-          text: 'Подтверждаю',
-          handler: () => this._makeTransaction(receiver, amount)
-        }
-      ]
+    return new Promise((resolve, reject) => {
+      let alert = this._alertCtrl.create({
+        title: 'Подтвердите перевод',
+        message: `Подтвердите перевод ${amount} на счет ${receiver}.`,
+        buttons: [
+          {
+            text: 'Отмена',
+            role: 'cancel',
+          },
+          {
+            text: 'Подтверждаю',
+            handler: async () => {
+              try {
+                await this._makeTransaction(receiver, amount);
+                resolve();
+              }
+              catch (e) {
+                if (e && e.json && e.json() && e.json().Message)
+                  reject(e.json().Message)
+                else
+                  reject('Сервер недоступен');
+              }
+            }
+          }
+        ]
+      });
+      alert.present();
     });
-    alert.present();
   }
 
   private _makeTransaction(receiver: string, amount: number) {
@@ -68,7 +81,6 @@ export class EconomyService {
     });
 
     return this._http.post(GlobalConfig.economyTransferMoneyUrl, requestBody,
-      this._authService.getRequestOptionsWithSavedCredentials())
-      .subscribe(response => console.warn(JSON.stringify(response)));
+      this._authService.getRequestOptionsWithSavedCredentials()).toPromise();
   }
 }

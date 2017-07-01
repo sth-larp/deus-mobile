@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { ListItemData } from "../elements/list-item";
 import { Http } from "@angular/http";
 import { AuthService } from "../services/auth.service";
-import { ModalController, Refresher } from "ionic-angular";
+import { ModalController, Refresher, AlertController } from "ionic-angular";
 import { FormGroup, FormBuilder, Validators } from "@angular/forms";
 import { EconomyService } from "../services/economy.service";
 import { BillPage } from "./bill";
@@ -22,6 +22,7 @@ export class EconomyPage {
   constructor(private _http: Http,
     private _authService: AuthService,
     private _modalController: ModalController,
+    private _alertCtrl: AlertController,
     private _formBuilder: FormBuilder,
     private _economyService: EconomyService) {
 
@@ -40,8 +41,8 @@ export class EconomyPage {
   public doRefresh(refresher: Refresher) {
     // TODO: error indication?
     this.refreshData()
-    .then(() => refresher.complete())
-    .catch(() => refresher.complete());
+      .then(() => refresher.complete())
+      .catch(() => refresher.complete());
   }
 
   private async refreshData() {
@@ -51,9 +52,19 @@ export class EconomyPage {
   }
 
   public sendMoney() {
-    this._economyService.makeTransaction(
+    return this._economyService.makeTransaction(
       this.sendForm.value['receiverId'],
-      this.sendForm.value['amount']);
+      this.sendForm.value['amount'])
+      .then(() => this.refreshData())
+      .catch((reason: string) => {
+        let alert = this._alertCtrl.create({
+          title: 'Ошибка',
+          message: reason,
+          buttons: ['Ок']
+        });
+        alert.present();
+        this.refreshData();
+      });
   }
 
   public receiveMoney() {
