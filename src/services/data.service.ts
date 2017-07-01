@@ -61,7 +61,6 @@ export class DataService implements LoginListener {
       let changesStream = this._viewModelDb.changes(
         { live: true, include_docs: true, doc_ids: [this._authService.getUsername()] });
       changesStream.on('change', change => {
-        this._logging.debug("Received page update: " + JSON.stringify(change));
         observer.next(change.doc);
       });
       return () => { changesStream.cancel(); }
