@@ -15,11 +15,16 @@
         <icon density="xhdpi" src="resources/android/icon/an-icon-96-xhdpi.png" />
         <icon density="xxhdpi" src="resources/android/icon/an-icon-144-xxhdpi.png" />
         <icon density="xxxhdpi" src="resources/android/icon/an-icon-192-xxxhdpi.png" />
-        <splash density="port-mdpi" src="resources/android/splash/ss15-a320-mdpi.png" />
-        <splash density="port-hdpi" src="resources/android/splash/ss16-a480-hdpi.png" />
-        <splash density="port-xhdpi" src="resources/android/splash/ss17-a720-xhdpi.png" />
-        <splash density="port-xxhdpi" src="resources/android/splash/ss16-a960-xxhdpi.png" />
-        <splash density="port-xxxhdpi" src="resources/android/splash/ss17-a1080-xxxhdpi.png" />
+        <splash density="port-mdpi" src="resources/android/splash/and-ss15-320-mdpi.png" />
+        <splash density="port-hdpi" src="resources/android/splash/and-ss16-480-hdpi.png" />
+        <splash density="port-xhdpi" src="resources/android/splash/and-ss17-720-xhdpi.png" />
+        <splash density="port-xxhdpi" src="resources/android/splash/and-ss16-960-xxhdpi.png" />
+        <splash density="port-xxxhdpi" src="resources/android/splash/and-ss17-1080-xxxhdpi.png" />
+        <splash density="mdpi" src="resources/android/splash/and-land-ss15-320-mdpi.png" />
+        <splash density="hdpi" src="resources/android/splash/and-land-ss16-480-hdpi.png" />
+        <splash density="xhdpi" src="resources/android/splash/and-land-ss17-720-xhdpi.png" />
+        <splash density="xxhdpi" src="resources/android/splash/and-land-ss16-960-xxhdpi.png" />
+        <splash density="xxxhdpi" src="resources/android/splash/and-land-ss17-1080-xxxhdpi.png" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
