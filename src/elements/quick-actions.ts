@@ -88,7 +88,7 @@ export class QuickActions implements LoginListener {
   }
 
   // TODO: Add tests
-  // Prints "H:MM" is valud is minutes of "M:SS" if values is seconds.
+  // Prints "H:MM" or "M:SS" with a given separator.
   private formatTime(value: number, separator: string): string {
     var value = Math.floor(value);
     var high = Math.floor(value / 60);
@@ -121,7 +121,7 @@ export class QuickActions implements LoginListener {
 
   private async updateVrStatus() {
     // TODO(Andrei): Read maxSecondsInVr from ViewModel
-    var maxSecondsInVr = 60 * 20;
+    var maxSecondsInVr = 60 * 20 + 1;
     this.vrIcon = (await this._localDataService.inVr())
       ? 'virtual-reality-on.svg'
       : 'virtual-reality-off.svg';
