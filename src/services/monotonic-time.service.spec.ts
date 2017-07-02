@@ -1,5 +1,4 @@
 import { fakeAsync, tick } from '@angular/core/testing';
-import { beforeEach, describe, expect, it } from 'angular2/testing';
 import { Observable } from 'rxjs/Rx';
 import * as TypeMoq from 'typemoq';
 import { LocalTimeService } from './local-time.service';
