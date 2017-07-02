@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Keyboard } from '@ionic-native/keyboard';
 import { ActionSheetController, AlertController, ModalController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
@@ -16,6 +17,7 @@ import { QrCodeScanService } from '../services/qrcode-scan.service';
   templateUrl: 'quick-actions.html',
 })
 export class QuickActions implements ILoginListener {
+  public hidden: boolean = false;
   public updateStatusIcon: string = null;
   public hp: number = null;
   public hpIcon: string = null;
@@ -28,6 +30,9 @@ export class QuickActions implements ILoginListener {
   private _hpSubscription: Subscription = null;
   private _updateStatusSubscription: Subscription = null;
 
+  private _keyboardShowSubscription: Subscription = null;
+  private _keyboardHideSubscription: Subscription = null;
+
   constructor(private _modalController: ModalController,
               private _qrCodeScanService: QrCodeScanService,
               private _dataService: DataService,
@@ -36,15 +41,20 @@ export class QuickActions implements ILoginListener {
               private _platform: Platform,
               private _actionSheetController: ActionSheetController,
               private _alertController: AlertController,
-              private _logging: LoggingService) {
+              private _logging: LoggingService,
+              private _keyboard: Keyboard) {
   }
 
   public ngOnInit() {
     this._authService.addListener(this);
+    this._keyboardShowSubscription = this._keyboard.onKeyboardShow().subscribe(() => this.hidden = true);
+    this._keyboardHideSubscription = this._keyboard.onKeyboardHide().subscribe(() => this.hidden = false);
   }
 
   public ngOnDestroy() {
     this._authService.removeListener(this);
+    this._keyboardHideSubscription.unsubscribe();
+    this._keyboardShowSubscription.unsubscribe();
   }
 
   public onSuccessfulLogin(_username: string) {
