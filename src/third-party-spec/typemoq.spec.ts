@@ -1,4 +1,5 @@
 import * as TypeMoq from 'typemoq';
+/// <reference path="../node_modules/@types/jasmine/index.d.ts" />
 
 class Foo {
   public bar(_a: number): number { return 1; }

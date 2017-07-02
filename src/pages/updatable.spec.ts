@@ -5,6 +5,7 @@ import { Observable } from 'rxjs/Rx';
 import * as TypeMoq from 'typemoq';
 import { DataService } from '../services/data.service';
 import { UpdatablePage, UpdatablePageData } from './updatable';
+/// <reference path="../node_modules/@types/jasmine/index.d.ts" />
 
 class TestUpdatablePage extends UpdatablePage {
   public body: any = null;

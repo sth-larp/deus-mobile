@@ -5,6 +5,7 @@ import { LocalTimeService } from './local-time.service';
 import { MonotonicTimeService } from './monotonic-time.service';
 import { InMemoryNativeStorageService } from './native-storage.service';
 import { ServerTimeService } from './server-time.service';
+/// <reference path="../node_modules/@types/jasmine/index.d.ts" />
 
 describe('MonotonicTimeService', () => {
   const fakeNativeStorage = new InMemoryNativeStorageService();
