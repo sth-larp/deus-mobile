@@ -65,7 +65,7 @@ export class QuickActions implements ILoginListener {
 
     this._updateStatusSubscription = this._hpSubscription = this._dataService.getUpdateStatus().subscribe(
       (status) => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
-    (error) => console.error('Cannot get update status: ' + error));
+      (error) => console.error('Cannot get update status: ' + error));
 
     setInterval(() => { this.updateVrStatus(); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
@@ -185,7 +185,7 @@ export class QuickActions implements ILoginListener {
   }
 
   private async doSubtractHp(hpLost: number) {
-    this._dataService.pushEvent('subtractHp', {hpLost});
+    this._dataService.pushEvent('subtractHp', { hpLost });
   }
 
   private async subtractHpWithConfirmation(hpLost: number) {
