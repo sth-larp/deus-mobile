@@ -51,7 +51,6 @@ export class EconomyService {
       };
 
       const alert = this._alertCtrl.create({
-        title: 'Подтвердите перевод',
         message: `Подтвердите перевод ${amount} на счет ${receiver}.`,
         buttons: [
           {
@@ -59,7 +58,7 @@ export class EconomyService {
             role: 'cancel',
           },
           {
-            text: 'Подтверждаю',
+            text: 'Перевести',
             handler: async () => {
               try {
                 await this._makeTransaction(receiver, amount);
