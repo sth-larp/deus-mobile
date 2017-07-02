@@ -52,6 +52,8 @@ $toolbar-background-activated: lighten($toolbar-background, 8%);
 // In fact it was image backgroud even when loading has finished.
 $img-placeholder-background: transparent;
 
+$alert-min-width: 285px;
+
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -71,6 +73,7 @@ $action-sheet-md-button-text-color: color($colors, primary);
 $alert-md-message-text-color: $text-color;
 $alert-md-background-color: $toolbar-background;
 $alert-md-button-background-color-activated: $toolbar-background-activated;
+$alert-md-max-width: $alert-min-width;
 
 $button-md-background-color: $toolbar-background;
 $button-md-text-color: color($colors, primary);
@@ -95,6 +98,7 @@ $action-sheet-ios-button-destructive-text-color: color($colors, dark-red);
 $alert-ios-message-text-color: $alert-md-message-text-color;
 $alert-ios-background: $alert-md-background-color;
 $alert-ios-button-background-color-activated: $alert-md-button-background-color-activated;
+$alert-ios-max-width: $alert-min-width;
 
 $button-ios-background-color: $button-md-background-color;
 $button-ios-text-color: $button-md-text-color;

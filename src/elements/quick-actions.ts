@@ -118,7 +118,7 @@ export class QuickActions implements ILoginListener {
       role: 'cancel',
     },
     {
-      text: inVr ? 'Выйти' : 'Войти',
+      text: inVr ? 'Выйти из VR' : 'Войти в VR',
       handler: () => this.doToggleVr(),
     }];
     const alert = this._alertController.create({
@@ -184,7 +184,7 @@ export class QuickActions implements ILoginListener {
       role: 'cancel',
     },
     {
-      text: '−' + hpLost.toString() + ' HP',
+      text: 'Снять ' + hpLost.toString() + ' HP',
       handler: () => this.doSubtractHp(hpLost),
     }];
     const alert = this._alertController.create({
