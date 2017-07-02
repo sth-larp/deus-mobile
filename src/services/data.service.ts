@@ -54,10 +54,7 @@ export class DataService implements ILoginListener {
   }
 
   public getData(): Observable<any> {
-    const existingData: Observable<any> = Observable.fromPromise(
-      this._viewModelDb.get(this._authService.getUsername()));
-
-    const futureUpdates: Observable<any> = Observable.create((observer) => {
+    return Observable.create((observer) => {
       const changesStream = this._viewModelDb.changes(
         { live: true, include_docs: true, doc_ids: [this._authService.getUsername()] });
       changesStream.on('change', (change) => {
@@ -65,7 +62,6 @@ export class DataService implements ILoginListener {
       });
       return () => { changesStream.cancel(); };
     });
-    return existingData.onErrorResumeNext(futureUpdates);
   }
 
   public getCurrentData(): Promise<any> {
