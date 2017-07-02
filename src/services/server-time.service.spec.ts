@@ -1,8 +1,8 @@
 import { async, fakeAsync, inject, TestBed, tick } from '@angular/core/testing';
 import { BaseRequestOptions, Http, HttpModule, Response, ResponseOptions } from '@angular/http';
 import { MockBackend, MockConnection } from '@angular/http/testing';
+import {} from 'jasmine';
 import { ServerTimeService } from './server-time.service';
-/// <reference path="../node_modules/@types/jasmine/index.d.ts" />
 
 describe('ServerTimeService', () => {
   beforeEach(async(() => {

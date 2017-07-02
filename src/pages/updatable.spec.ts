@@ -1,11 +1,11 @@
 import { fakeAsync } from '@angular/core/testing';
 import { tick } from '@angular/core/testing';
 import { NavController } from 'ionic-angular';
+import {} from 'jasmine';
 import { Observable } from 'rxjs/Rx';
 import * as TypeMoq from 'typemoq';
 import { DataService } from '../services/data.service';
 import { UpdatablePage, UpdatablePageData } from './updatable';
-/// <reference path="../node_modules/@types/jasmine/index.d.ts" />
 
 class TestUpdatablePage extends UpdatablePage {
   public body: any = null;
