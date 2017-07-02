@@ -1,6 +1,5 @@
 import { fakeAsync } from '@angular/core/testing';
 import { tick } from '@angular/core/testing';
-import { beforeEach, describe, expect, it } from 'angular2/testing';
 import { NavController } from 'ionic-angular';
 import { Observable } from 'rxjs/Rx';
 import * as TypeMoq from 'typemoq';
