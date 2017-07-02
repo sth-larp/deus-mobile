@@ -1,15 +1,15 @@
 page-login {
-  ion-content {
+  .middle {
     width: 100%;
     height: 100%;
-  }
-  #loginForm {
-    width: 90%;
     position: relative;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
+  }
+  .inner {
+    height: 50%;
+    width: 90%;
+    margin: auto;
+    position: absolute;
+    top: 0; left: 0; bottom: 0; right: 0;
   }
   .submitButton {
     width: 100%;
