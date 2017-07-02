@@ -188,7 +188,7 @@ export class QuickActions implements ILoginListener {
       handler: () => this.doSubtractHp(hpLost),
     }];
     const alert = this._alertController.create({
-      message: 'Подтвердить снятие ' + hpLost.toString() + ' HP?',
+      message: `Подтвердить снятие ${hpLost} HP?`,
       buttons,
     });
 
