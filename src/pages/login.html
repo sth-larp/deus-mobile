@@ -10,10 +10,10 @@
       <ion-label>ID</ion-label>
       <ion-input type="text" formControlName="username"></ion-input>
     </ion-item>
-    <ion-item  no-padding>
+    <ion-item no-padding>
       <ion-label>Пароль</ion-label>
       <ion-input type="password" formControlName="password"></ion-input>
     </ion-item>
-    <button id="submitButton" ion-button type="submit" [disabled]="!loginForm.valid">Войти</button>
+    <button class="submitButton" ion-button type="submit" [disabled]="!loginForm.valid">Войти</button>
   </form>
 </ion-content>

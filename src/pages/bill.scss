@@ -1,0 +1,9 @@
+page-bill {
+  .comment {
+    margin-top: 1.5rem;
+  }
+  .amount, .receiver {
+    font-weight: bold;
+    color: color($colors, light-blue);
+  }
+}

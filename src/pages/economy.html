@@ -11,29 +11,39 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-list>
+  <ion-card padding>
     <list-item [data]="balance"></list-item>
-  </ion-list>
+  </ion-card>
 
-  <form [formGroup]="sendForm" (ngSubmit)="sendMoney()">
-    <ion-item>
-      <ion-label floating>Номер счета</ion-label>
-      <ion-input type="text" formControlName="receiverId"></ion-input>
-    </ion-item>
-    <ion-item>
-      <ion-label floating>Сумма для перевода</ion-label>
-      <ion-input type="number" formControlName="amount"></ion-input>
-    </ion-item>
-    <button ion-button type="submit" [disabled]="!sendForm.valid">Перевести</button>
-  </form>
+  <ion-card padding>
+    <ion-card-header>
+      Перевести деньги
+    </ion-card-header>
+    <form [formGroup]="sendForm" (ngSubmit)="sendMoney()">
+      <ion-item no-padding>
+        <ion-label>Получатель</ion-label>
+        <ion-input type="text" formControlName="receiverId"></ion-input>
+      </ion-item>
+      <ion-item no-padding>
+        <ion-label>Сумма</ion-label>
+        <ion-input type="number" formControlName="amount"></ion-input>
+      </ion-item>
+      <button class="submitButton" ion-button type="submit" [disabled]="!sendForm.valid">Перевести</button>
+    </form>
+  </ion-card>
 
-  <form [formGroup]="receiveForm" (ngSubmit)="receiveMoney()">
-    <ion-item>
-      <ion-label floating>Сумма для перевода</ion-label>
-      <ion-input type="number" formControlName="amount"></ion-input>
-    </ion-item>
-    <button ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
-  </form>
+  <ion-card padding>
+    <ion-card-header>
+      Выставить счёт
+    </ion-card-header>
+    <form [formGroup]="receiveForm" (ngSubmit)="receiveMoney()">
+      <ion-item no-padding>
+        <ion-label>Сумма</ion-label>
+        <ion-input type="number" formControlName="amount"></ion-input>
+      </ion-item>
+      <button class="submitButton" ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
+    </form>
+  </ion-card>
 
   <ion-list>
     <list-item *ngFor="let item of history" [data]="item"></list-item>

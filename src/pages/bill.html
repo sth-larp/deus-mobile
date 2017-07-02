@@ -9,10 +9,14 @@
 	</ion-navbar>
 </ion-header>
 
-<ion-content>
-  Отсканируйте этот QR-код, чтоб перевести {{billPageData.amount}} 
-  на счет {{billPageData.receiverAccount}}.
+<ion-content padding>
   <div class="qrcode" style="margin:0 auto;">
     <element-qrcode [qrContent]="qrContent"></element-qrcode>
   </div>
+	<div class="comment">
+		Отсканируйте этот QR-код, чтобы перевести
+		<span class="amount">{{billPageData.amount}}$</span>
+		на счет
+		<span class="receiver">{{billPageData.receiverAccount}}</span>.
+	</div>
 </ion-content>

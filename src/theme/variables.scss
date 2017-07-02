@@ -43,6 +43,7 @@ $colors: (
 // http://ionicframework.com/docs/v2/theming/overriding-ionic-variables/
 
 $text-color: color($colors, standard);
+$text-color-pale: darken($text-color, 16%);
 $background-color: #4A5760;
 $background-color-activated: lighten($background-color, 8%);
 $toolbar-background: #32383D;
@@ -78,6 +79,9 @@ $alert-md-max-width: $alert-min-width;
 $button-md-background-color: $toolbar-background;
 $button-md-text-color: color($colors, primary);
 
+$card-md-header-color: $text-color-pale;
+$card-md-text-color: $text-color-pale;
+
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
@@ -102,6 +106,9 @@ $alert-ios-max-width: $alert-min-width;
 
 $button-ios-background-color: $button-md-background-color;
 $button-ios-text-color: $button-md-text-color;
+
+$card-ios-header-color: $card-md-header-color;
+$card-ios-text-color: $card-md-text-color;
 
 
 // App Windows Variables
