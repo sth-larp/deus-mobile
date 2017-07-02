@@ -30,6 +30,7 @@
         "cordova-android": "^6.2.3",
         "cordova-browser": "^4.1.0",
         "cordova-custom-config": "^4.0.2",
+        "cordova-ios": "^4.4.0",
         "cordova-plugin-compat": "^1.0.0",
         "cordova-plugin-console": "^1.0.7",
         "cordova-plugin-device": "^1.1.6",
@@ -103,7 +104,8 @@
         },
         "platforms": [
             "android",
-            "browser"
+            "browser",
+            "ios"
         ]
     }
 }
