@@ -7,6 +7,7 @@
   top: 50%;
   left: 50%;
   transform: perspective(1px) translate(-50%, -50%);
+  -webkit-transform: perspective(1px) translate(-50%, -50%);
 }
 #submitButton {
   width: 100%;
