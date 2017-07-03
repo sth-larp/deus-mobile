@@ -5,61 +5,73 @@
     </button>
     <ion-title>Экономика</ion-title>
   </ion-navbar>
+  <ion-toolbar no-border-top>
+    <ion-segment color="standard" [(ngModel)]="tab">
+      <ion-segment-button value="main">
+        Управление
+      </ion-segment-button>
+      <ion-segment-button value="history">
+        История
+      </ion-segment-button>
+    </ion-segment>
+  </ion-toolbar>
 </ion-header>
+
 <ion-content>
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <div padding>
-    <table style="width: 100%">
-      <tr>
-        <td>
-          <h4>Баланс</h4>
-        </td>
-        <td align="right">
-          <b>{{balance.value}}</b>
-        </td>
-      </tr>
-    </table>
-  </div>
+  <div [ngSwitch]="tab">
+    <div *ngSwitchCase="'main'">
+      <div padding>
+        <table style="width: 100%">
+          <tr>
+            <td>
+              <h4>Баланс</h4>
+            </td>
+            <td align="right">
+              <b>{{balance.value}}</b>
+            </td>
+          </tr>
+        </table>
+      </div>
 
-  <hr>
+      <hr>
 
-  <div padding>
-    <h4>Перевести деньги</h4>
-    <form [formGroup]="sendForm" (ngSubmit)="sendMoney()">
-      <ion-item no-padding>
-        <ion-label>Получатель</ion-label>
-        <ion-input type="text" formControlName="receiverId"></ion-input>
-      </ion-item>
-      <ion-item no-padding>
-        <ion-label>Сумма</ion-label>
-        <ion-input type="number" formControlName="amount"></ion-input>
-      </ion-item>
-      <button class="submitButton" ion-button type="submit" [disabled]="!sendForm.valid">Перевести</button>
-    </form>
-  </div>
+      <div padding>
+        <h4>Перевести деньги</h4>
+        <form [formGroup]="sendForm" (ngSubmit)="sendMoney()">
+          <ion-item no-padding>
+            <ion-label>Получатель</ion-label>
+            <ion-input type="text" formControlName="receiverId"></ion-input>
+          </ion-item>
+          <ion-item no-padding>
+            <ion-label>Сумма</ion-label>
+            <ion-input type="number" formControlName="amount"></ion-input>
+          </ion-item>
+          <button class="submitButton" ion-button type="submit" [disabled]="!sendForm.valid">Перевести</button>
+        </form>
+      </div>
 
-  <hr>
+      <hr>
 
-  <div padding>
-    <h4>Выставить счёт</h4>
-    <form [formGroup]="receiveForm" (ngSubmit)="receiveMoney()">
-      <ion-item no-padding>
-        <ion-label>Сумма</ion-label>
-        <ion-input type="number" formControlName="amount"></ion-input>
-      </ion-item>
-      <button class="submitButton" ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
-    </form>
-  </div>
-
-  <hr>
-
-  <div padding>
-    <ion-list>
-      <list-item *ngFor="let item of history" [data]="item"></list-item>
-    </ion-list>
+      <div padding>
+        <h4>Выставить счёт</h4>
+        <form [formGroup]="receiveForm" (ngSubmit)="receiveMoney()">
+          <ion-item no-padding>
+            <ion-label>Сумма</ion-label>
+            <ion-input type="number" formControlName="amount"></ion-input>
+          </ion-item>
+          <button class="submitButton" ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
+        </form>
+      </div>
+    </div>
+    <div *ngSwitchCase="'history'">
+      <ion-list>
+        <list-item *ngFor="let item of history" [data]="item"></list-item>
+      </ion-list>
+    </div>
   </div>
 
 </ion-content>
