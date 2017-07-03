@@ -4,6 +4,13 @@ page-economy {
     background: $separator-color !important;
     border: none !important;
   }
+  .balance {
+    text-align: right;
+    vertical-align: top;
+    font-size: 140%;
+    font-weight: bold;
+    color: color($colors, light-blue);
+  }
   .submitButton {
     width: 100%;
     margin-top: 1em;
