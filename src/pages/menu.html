@@ -2,7 +2,7 @@
   <ion-content>
     <ion-item class="menu-header">
       <img style='height: 2em; width: 2em' src='assets/icon/deus-logo.svg' item-left>
-      <h2>{{getCharacterName()}}</h2>
+      <h2>{{characterName}}</h2>
     </ion-item>
     <ion-list [ngStyle]="{'position': 'relative'}">
       <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">{{p.menuTitle}}</button>

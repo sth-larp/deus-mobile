@@ -23,6 +23,7 @@
 })
 export class MenuPage implements ILoginListener {
   public pages: PageData[] = [{root: ListPage, menuTitle: ''}];
+  public characterName: string = null;
 
   @ViewChild(Nav) private _nav: Nav;
   private _pageTypeToPage = new Map<string, any>();
@@ -56,6 +57,7 @@ export class MenuPage implements ILoginListener {
   public ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe(
       (json) => {
+        this.characterName = json.menu ? json.menu.characterName : null;
         this.pages = [];
         for (const p of json.pages)
           this.pages.push({ root: this._pageTypeToPage.get(p.pageType), menuTitle: p.menuTitle });
@@ -75,10 +77,6 @@ export class MenuPage implements ILoginListener {
   public openPage(page: PageData) {
     this._nav.setRoot(page.root, { id: page.menuTitle })
       .catch((err) => this._logging.error(JSON.stringify(err)));
-  }
-
-  public getCharacterName() {
-    return this._authService.getUsername();
   }
 
   public onSuccessfulLogin(_username: string) {}
