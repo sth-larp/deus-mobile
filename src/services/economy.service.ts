@@ -51,7 +51,7 @@ export class EconomyService {
       };
 
       const alert = this._alertCtrl.create({
-        message: `Перевести ${amount} к. на счет ${receiver}?`,
+        message: `Перевести ${amount} кр. на счет ${receiver}?`,
         buttons: [
           {
             text: 'Отмена',
