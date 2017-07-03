@@ -1,8 +1,8 @@
 page-economy {
-  hr {
-    height: 2px !important;
-    background: $separator-color !important;
-    border: none !important;
+  .sectionSeparator {
+    height: 2px;
+    background: $separator-color;
+    border: none;
   }
   .balance {
     text-align: right;
