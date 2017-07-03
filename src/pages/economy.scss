@@ -1,4 +1,9 @@
 page-economy {
+  hr {
+    height: 2px !important;
+    background: $separator-color !important;
+    border: none !important;
+  }
   .submitButton {
     width: 100%;
     margin-top: 1em;

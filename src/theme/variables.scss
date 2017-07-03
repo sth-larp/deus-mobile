@@ -44,12 +44,15 @@ $colors: (
 
 $text-color: color($colors, standard);
 $text-color-pale: darken($text-color, 16%);
+
 $background-color: #545B60;
 $background-color-activated: lighten($background-color, 8%);
 $toolbar-background: #34383A;
 $toolbar-background-activated: lighten($toolbar-background, 8%);
 $popups-background-color: #656d72;
 $popups-background-color-activated: lighten($popups-background-color, 8%);
+
+$separator-color: #8494A1;
 
 // The doc says: "Color of the image when it hasn't fully loaded yet".
 // In fact it was image backgroud even when loading has finished.
@@ -65,7 +68,7 @@ $alert-min-width: 285px;
 $item-md-detail-push-show: true;
 $item-md-paragraph-text-color: rgba($text-color, 0.7);
 
-$list-md-border-color: #8494A1;
+$list-md-border-color: $separator-color;
 $list-md-activated-background-color: $background-color-activated;
 
 $action-sheet-md-background: transparent;
@@ -91,7 +94,7 @@ $card-md-text-color: $text-color-pale;
 $item-ios-detail-push-show: true;
 $item-ios-paragraph-text-color: rgba($text-color, 0.7);
 
-$list-ios-border-color: #8494A1;
+$list-ios-border-color: $separator-color;
 $list-ios-activated-background-color: $background-color-activated;
 
 $action-sheet-ios-background: transparent;

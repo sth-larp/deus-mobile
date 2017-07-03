@@ -13,6 +13,7 @@ import { BillPage } from './bill';
   templateUrl: 'economy.html',
 })
 export class EconomyPage {
+  // TODO: Change "balance" type: list-item is not used any more.
   public balance: ListItemData = { text: 'Баланс', value: '' };
 
   public sendForm: FormGroup;

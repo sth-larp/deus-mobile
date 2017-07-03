@@ -11,14 +11,23 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-card padding>
-    <list-item [data]="balance"></list-item>
-  </ion-card>
+  <div padding>
+    <table style="width: 100%">
+      <tr>
+        <td>
+          <h4>Баланс</h4>
+        </td>
+        <td align="right">
+          <b>{{balance.value}}</b>
+        </td>
+      </tr>
+    </table>
+  </div>
 
-  <ion-card padding>
-    <ion-card-header>
-      Перевести деньги
-    </ion-card-header>
+  <hr>
+
+  <div padding>
+    <h4>Перевести деньги</h4>
     <form [formGroup]="sendForm" (ngSubmit)="sendMoney()">
       <ion-item no-padding>
         <ion-label>Получатель</ion-label>
@@ -30,12 +39,12 @@
       </ion-item>
       <button class="submitButton" ion-button type="submit" [disabled]="!sendForm.valid">Перевести</button>
     </form>
-  </ion-card>
+  </div>
 
-  <ion-card padding>
-    <ion-card-header>
-      Выставить счёт
-    </ion-card-header>
+  <hr>
+
+  <div padding>
+    <h4>Выставить счёт</h4>
     <form [formGroup]="receiveForm" (ngSubmit)="receiveMoney()">
       <ion-item no-padding>
         <ion-label>Сумма</ion-label>
@@ -43,11 +52,15 @@
       </ion-item>
       <button class="submitButton" ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
     </form>
-  </ion-card>
+  </div>
 
-  <ion-list>
-    <list-item *ngFor="let item of history" [data]="item"></list-item>
-  </ion-list>
+  <hr>
+
+  <div padding>
+    <ion-list>
+      <list-item *ngFor="let item of history" [data]="item"></list-item>
+    </ion-list>
+  </div>
 
 </ion-content>
 <quick-actions></quick-actions>
