@@ -13,8 +13,7 @@ import { BillPage } from './bill';
   templateUrl: 'economy.html',
 })
 export class EconomyPage {
-  // TODO: Change "balance" type: list-item is not used any more.
-  public balance: ListItemData = { text: 'Баланс', value: '' };
+  public balance: number = null;
 
   public sendForm: FormGroup;
   public receiveForm: FormGroup;
@@ -31,7 +30,7 @@ export class EconomyPage {
               private _economyService: EconomyService) {
 
     const lessThanBalanceValidator: ValidatorFn = (control: AbstractControl): ValidationErrors => {
-      return Number(control.value) <= Number(this.balance.value) ? null : { lessThenBalance: false };
+      return Number(control.value) <= this.balance ? null : { lessThenBalance: false };
     };
 
     this.sendForm = this._formBuilder.group({
@@ -81,6 +80,6 @@ export class EconomyPage {
       this._economyService.getBalance(),
       this._economyService.getShortTransactionHistory(),
     ]);
-    this.balance.value = balanceNum.toString();
+    this.balance = balanceNum;
   }
 }
