@@ -11,7 +11,7 @@ import { LocalDataService } from '../services/local-data.service';
 import { LoggingService } from '../services/logging.service';
 import { ILoginListener } from '../services/login-listener';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
-import { DeusAlertPopIn, DeusAlertPopOut } from './deus-alert-transitions';
+import { fixAlertTransitions, fixActionSheettTransitions } from './deus-alert-transitions';
 
 @Component({
   selector: 'quick-actions',
@@ -116,6 +116,8 @@ export class QuickActions implements ILoginListener {
       buttons,
     });
 
+    fixActionSheettTransitions(this._config);
+
     const unregisterFn = this._platform.registerBackButtonAction(() => {
       actionSheet.dismiss();
     }, 0);
@@ -140,8 +142,7 @@ export class QuickActions implements ILoginListener {
       buttons,
     });
 
-    this._config.setTransition('alert-pop-in', DeusAlertPopIn);
-    this._config.setTransition('alert-pop-out', DeusAlertPopOut);
+    fixAlertTransitions(this._config);
 
     const unregisterFn = this._platform.registerBackButtonAction(() => {
       alert.dismiss();
@@ -206,6 +207,8 @@ export class QuickActions implements ILoginListener {
       message: `Подтвердить снятие ${hpLost} HP?`,
       buttons,
     });
+
+    fixAlertTransitions(this._config);
 
     const unregisterFn = this._platform.registerBackButtonAction(() => {
       alert.dismiss();

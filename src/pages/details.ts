@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
-import { ActionSheetController, NavController, NavParams, Platform } from 'ionic-angular';
+import { ActionSheetController, NavController, NavParams, Platform, Config } from 'ionic-angular';
 import { DataService } from '../services/data.service';
+import { fixActionSheettTransitions } from '../elements/deus-alert-transitions';
 
 export class ActionData {
   public text: string;
@@ -24,7 +25,8 @@ export class DetailsPage {
               private _navCtrl: NavController,
               private _actionSheetCtrl: ActionSheetController,
               private _dataService: DataService,
-              private _platform: Platform) {
+              private _platform: Platform,
+              private _config: Config) {
     this.data = navParams.data.value;
   }
 
@@ -47,6 +49,8 @@ export class DetailsPage {
       title: '',
       buttons,
     });
+
+    fixActionSheettTransitions(this._config);
 
     const unregisterFn = this._platform.registerBackButtonAction(() => {
       actionSheet.dismiss();
