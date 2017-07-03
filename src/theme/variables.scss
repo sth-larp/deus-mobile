@@ -11,7 +11,7 @@
 // colors so you can add, rename and remove colors as needed.
 // The "primary" color is the only required color in the map.
 
-$standard-blue:   #4990E2;  // Standard bluish color
+$standard-blue:   #4C99E5;  // Standard bluish color
 $standard-green:  #68BB0D;  // "OK", "good"
 $standard-yellow: #B2901D;  // Warnings
 $standard-red:    #FF373F;  // Errors and dangerous actions
@@ -44,10 +44,12 @@ $colors: (
 
 $text-color: color($colors, standard);
 $text-color-pale: darken($text-color, 16%);
-$background-color: #4A5760;
+$background-color: #545B60;
 $background-color-activated: lighten($background-color, 8%);
-$toolbar-background: #32383D;
+$toolbar-background: #34383A;
 $toolbar-background-activated: lighten($toolbar-background, 8%);
+$popups-background-color: #656d72;
+$popups-background-color-activated: lighten($popups-background-color, 8%);
 
 // The doc says: "Color of the image when it hasn't fully loaded yet".
 // In fact it was image backgroud even when loading has finished.
@@ -92,23 +94,29 @@ $item-ios-paragraph-text-color: rgba($text-color, 0.7);
 $list-ios-border-color: #8494A1;
 $list-ios-activated-background-color: $background-color-activated;
 
-$action-sheet-ios-background: $action-sheet-md-background;
-$action-sheet-ios-button-background: $action-sheet-md-button-background;
+$action-sheet-ios-background: transparent;
+$action-sheet-ios-button-background: $background-color;
 $action-sheet-ios-button-cancel-background: $action-sheet-ios-button-background;
-$action-sheet-ios-button-background-activated: $action-sheet-md-button-background-activated;
-$action-sheet-ios-button-text-color: $action-sheet-md-button-text-color;
+$action-sheet-ios-button-background-activated: $background-color-activated;
+$action-sheet-ios-button-text-color: color($colors, standard);
 $action-sheet-ios-button-destructive-text-color: color($colors, dark-red);
+$action-sheet-ios-border-color: $background-color-activated;
+$action-sheet-ios-button-border-color: $background-color-activated;
+$action-sheet-ios-button-border-width: 1px;
 
-$alert-ios-message-text-color: $alert-md-message-text-color;
-$alert-ios-background: $alert-md-background-color;
-$alert-ios-button-background-color-activated: $alert-md-button-background-color-activated;
+$alert-ios-message-text-color: color($colors, standard);
+$alert-ios-background: $background-color;
+$alert-ios-button-background-color-activated: $background-color-activated;
 $alert-ios-max-width: $alert-min-width;
+$alert-ios-button-border-color: lighten($background-color, 20%);
 
 $button-ios-background-color: $button-md-background-color;
 $button-ios-text-color: $button-md-text-color;
 
 $card-ios-header-color: $card-md-header-color;
 $card-ios-text-color: $card-md-text-color;
+
+
 
 
 // App Windows Variables

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Keyboard } from '@ionic-native/keyboard';
-import { ActionSheetController, AlertController, ModalController, Platform } from 'ionic-angular';
+import { ActionSheetController, AlertController, ModalController, Platform, Config } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 import { Colors, GlobalConfig } from '../config';
@@ -11,6 +11,7 @@ import { LocalDataService } from '../services/local-data.service';
 import { LoggingService } from '../services/logging.service';
 import { ILoginListener } from '../services/login-listener';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
+import { DeusAlertPopIn, DeusAlertPopOut } from './deus-alert-transitions';
 
 @Component({
   selector: 'quick-actions',
@@ -42,7 +43,8 @@ export class QuickActions implements ILoginListener {
               private _actionSheetController: ActionSheetController,
               private _alertController: AlertController,
               private _logging: LoggingService,
-              private _keyboard: Keyboard) {
+              private _keyboard: Keyboard,
+              private _config: Config) {
   }
 
   public ngOnInit() {
@@ -137,6 +139,9 @@ export class QuickActions implements ILoginListener {
         : 'Подтвердить вход в VR?',
       buttons,
     });
+
+    this._config.setTransition('alert-pop-in', DeusAlertPopIn);
+    this._config.setTransition('alert-pop-out', DeusAlertPopOut);
 
     const unregisterFn = this._platform.registerBackButtonAction(() => {
       alert.dismiss();
