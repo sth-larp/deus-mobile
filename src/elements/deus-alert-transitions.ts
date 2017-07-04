@@ -1,18 +1,16 @@
-import { Animation, Transition, Config } from 'ionic-angular';
+import { Animation, Config, Transition } from 'ionic-angular';
 
 const BACKDROP_OPACITY_ALERT_IOS: number = 0.6;
 const BACKDROP_OPACITY_ASHEET_IOS: number = 0.6;
 
-
-export function fixAlertTransitions(config: Config): void{
+export function fixAlertTransitions(config: Config): void {
     config.setTransition('alert-pop-in', DeusAlertPopIn);
     config.setTransition('alert-pop-out', DeusAlertPopOut);
     config.setTransition('alert-md-pop-in', DeusAlertPopIn);
     config.setTransition('alert-md-pop-out', DeusAlertPopOut);
 }
 
-
-export function fixActionSheettTransitions(config: Config): void{
+export function fixActionSheetTransitions(config: Config): void {
     config.setTransition('action-sheet-slide-in', DeusActionSheetSlideIn);
     config.setTransition('action-sheet-slide-out', DeusActionSheetSlideOut);
     config.setTransition('action-sheet-md-slide-in', DeusActionSheetSlideIn);
@@ -21,7 +19,6 @@ export function fixActionSheettTransitions(config: Config): void{
 
 export class DeusAlertPopIn extends Transition {
   public init() {
-
     const ele = this.enteringView.pageRef().nativeElement;
     const backdrop = new Animation(this.plt, ele.querySelector('ion-backdrop'));
     const wrapper = new Animation(this.plt, ele.querySelector('.alert-wrapper'));
@@ -39,7 +36,6 @@ export class DeusAlertPopIn extends Transition {
 
 export class DeusAlertPopOut extends Transition {
   public init() {
-
     const ele = this.leavingView.pageRef().nativeElement;
     const backdrop = new Animation(this.plt, ele.querySelector('ion-backdrop'));
     const wrapper = new Animation(this.plt, ele.querySelector('.alert-wrapper'));
@@ -56,7 +52,7 @@ export class DeusAlertPopOut extends Transition {
 }
 
 export class DeusActionSheetSlideIn extends Transition {
-  init() {
+  public init() {
     const ele = this.enteringView.pageRef().nativeElement;
     const backdrop = new Animation(this.plt, ele.querySelector('ion-backdrop'));
     const wrapper = new Animation(this.plt, ele.querySelector('.action-sheet-wrapper'));
@@ -68,9 +64,8 @@ export class DeusActionSheetSlideIn extends Transition {
   }
 }
 
-
 export class DeusActionSheetSlideOut extends Transition {
-  init() {
+  public init() {
     const ele = this.leavingView.pageRef().nativeElement;
     const backdrop = new Animation(this.plt, ele.querySelector('ion-backdrop'));
     const wrapper = new Animation(this.plt, ele.querySelector('.action-sheet-wrapper'));

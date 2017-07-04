@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Keyboard } from '@ionic-native/keyboard';
-import { ActionSheetController, AlertController, ModalController, Platform, Config } from 'ionic-angular';
+import { ActionSheetController, AlertController, Config, ModalController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 import { Colors, GlobalConfig } from '../config';
@@ -11,7 +11,7 @@ import { LocalDataService } from '../services/local-data.service';
 import { LoggingService } from '../services/logging.service';
 import { ILoginListener } from '../services/login-listener';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
-import { fixAlertTransitions, fixActionSheettTransitions } from './deus-alert-transitions';
+import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-transitions';
 
 @Component({
   selector: 'quick-actions',
@@ -116,7 +116,7 @@ export class QuickActions implements ILoginListener {
       buttons,
     });
 
-    fixActionSheettTransitions(this._config);
+    fixActionSheetTransitions(this._config);
 
     const unregisterFn = this._platform.registerBackButtonAction(() => {
       actionSheet.dismiss();
