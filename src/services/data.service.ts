@@ -20,6 +20,8 @@
 
  @Injectable()
 export class DataService implements ILoginListener {
+  private _inMemoryViewmodel: any = null;
+
   private _refreshModelUpdateSubscription: Subscription = null;
   private _eventsDb: PouchDB.Database<{ eventType: string; data: any; }> = null;
   private _viewModelDb: PouchDB.Database<{ timestamp: number }> = null;
@@ -51,10 +53,11 @@ export class DataService implements ILoginListener {
       this._refreshModelUpdateSubscription.unsubscribe();
       this._refreshModelUpdateSubscription = null;
     }
+    this._inMemoryViewmodel = null;
   }
 
   public getData(): Observable<any> {
-    return Observable.create((observer) => {
+    const persistantAndFutureData: Observable<any> = Observable.create((observer) => {
       const changesStream = this._viewModelDb.changes(
         { live: true, include_docs: true, doc_ids: [this._authService.getUsername()] });
       changesStream.on('change', (change) => {
@@ -62,6 +65,12 @@ export class DataService implements ILoginListener {
       });
       return () => { changesStream.cancel(); };
     });
+     // TODO: Rework code to make sure that this._inMemoryViewmodel is always populated
+     // (currently it isn't in case of offline login).
+    if (this._inMemoryViewmodel)
+      return Observable.of(this._inMemoryViewmodel).concat(persistantAndFutureData);
+    else
+      return persistantAndFutureData;
   }
 
   public getCurrentData(): Promise<any> {
@@ -143,6 +152,7 @@ export class DataService implements ILoginListener {
   public async setViewModel(viewModel: any) {
     viewModel._id = this._authService.getUsername();
     upsert(this._viewModelDb, viewModel);
+    this._inMemoryViewmodel = viewModel;
   }
 
   private pushRefreshModelEvent(): Promise<PouchDB.Core.Response> {
