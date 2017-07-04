@@ -49,8 +49,10 @@ $background-color: #545B60;
 $background-color-activated: lighten($background-color, 8%);
 $toolbar-background: #34383A;
 $toolbar-background-activated: lighten($toolbar-background, 8%);
-$popups-background-color: #656d72;
-$popups-background-color-activated: lighten($popups-background-color, 8%);
+
+$menu-background-color: #404549;
+$menu-separator-color: lighten($menu-background-color, 10%);
+$menu-background-color-activated: lighten($menu-background-color, 8%);
 
 $separator-color: #8494A1;
 
@@ -72,14 +74,18 @@ $list-md-border-color: $separator-color;
 $list-md-activated-background-color: $background-color-activated;
 
 $action-sheet-md-background: transparent;
-$action-sheet-md-button-background: $toolbar-background;
-$action-sheet-md-button-background-activated: $toolbar-background-activated;
-$action-sheet-md-button-text-color: color($colors, primary);
+$action-sheet-md-button-background: $background-color;
+$action-sheet-md-button-background-activated: $background-color-activated;
+$action-sheet-md-button-text-color: color($colors, standard);
 
 $alert-md-message-text-color: $text-color;
-$alert-md-background-color: $toolbar-background;
-$alert-md-button-background-color-activated: $toolbar-background-activated;
+$alert-md-background-color: $background-color;
+$alert-md-button-background-color-activated: $background-color-activated;
 $alert-md-max-width: $alert-min-width;
+
+.alert-md .alert-title {
+  color: color($colors, standard);
+}
 
 $button-md-background-color: $toolbar-background;
 $button-md-text-color: color($colors, primary);
@@ -90,6 +96,8 @@ $card-md-text-color: $text-color-pale;
 // App iOS Variables
 // --------------------------------------------------
 // iOS only Sass variables can go here
+
+$menu-ios-background: $toolbar-background;
 
 $item-ios-detail-push-show: true;
 $item-ios-paragraph-text-color: rgba($text-color, 0.7);
@@ -106,6 +114,8 @@ $action-sheet-ios-button-destructive-text-color: color($colors, dark-red);
 $action-sheet-ios-border-color: $background-color-activated;
 $action-sheet-ios-button-border-color: $background-color-activated;
 $action-sheet-ios-button-border-width: 1px;
+$action-sheet-ios-button-padding: 1.4rem;
+
 
 $alert-ios-message-text-color: color($colors, standard);
 $alert-ios-background: $background-color;
@@ -113,8 +123,34 @@ $alert-ios-button-background-color-activated: $background-color-activated;
 $alert-ios-max-width: $alert-min-width;
 $alert-ios-button-border-color: lighten($background-color, 20%);
 
-$button-ios-background-color: $button-md-background-color;
-$button-ios-text-color: $button-md-text-color;
+.alert-ios .alert-title {
+  color: color($colors, standard);
+}
+
+.alert-ios .alert-button:last-child {
+  font-weight: normal !important;
+}
+
+.destructive-button {
+    color: color($colors, dark-red) !important;
+}
+
+ion-menu .item-ios, ion-menu .content-ios  {
+    background-color: $menu-background-color;
+    border-color: $menu-separator-color !important;
+}
+
+ion-menu .item-ios, ion-menu .item-inner{
+  border-color: $menu-separator-color !important;
+}
+
+ion-menu .item-ios.activated{
+    background-color: $menu-background-color-activated;
+}
+
+$button-ios-font-size: 1.7rem;
+$button-ios-background-color: $toolbar-background;
+$button-ios-text-color: color($colors, primary);
 
 $card-ios-header-color: $card-md-header-color;
 $card-ios-text-color: $card-md-text-color;

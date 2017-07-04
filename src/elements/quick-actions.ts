@@ -133,12 +133,17 @@ export class QuickActions implements ILoginListener {
     },
     {
       text: inVr ? 'Выйти из VR' : 'Войти в VR',
+      cssClass: inVr ? null : 'destructive-button',
       handler: () => this.doToggleVr(),
     }];
+
     const alert = this._alertController.create({
+      title: inVr
+        ? 'Выйти из VR?'
+        : 'Войти в VR?',
       message: inVr
-        ? 'Подтвердить выход из VR?'
-        : 'Подтвердить вход в VR?',
+        ? 'Подтвердите, что вы действительно хотите покинуть VR'
+        : 'Подтвердите, что вы действительно хотите войти в VR<br/>(время нахождения в VR ограничено)',
       buttons,
     });
 
@@ -200,11 +205,13 @@ export class QuickActions implements ILoginListener {
       role: 'cancel',
     },
     {
-      text: 'Снять ' + hpLost.toString() + ' HP',
+      text: 'Снять HP',
+      cssClass: 'destructive-button',
       handler: () => this.doSubtractHp(hpLost),
     }];
     const alert = this._alertController.create({
-      message: `Подтвердить снятие ${hpLost} HP?`,
+      title: 'Вам нанесены повреждения?',
+      message: `Подтвердите, что вы потеряли ${hpLost} HP?`,
       buttons,
     });
 
