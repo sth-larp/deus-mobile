@@ -24,6 +24,7 @@ export class QuickActions implements ILoginListener {
   public hpIcon: string = null;
   public hpText: string = null;
   public hpTextColor: string = null;
+  public maxSecondsInVr: number = 60 * 20;  // TODO(Andrei): Read from ViewModel
   public vrIcon: string = null;
   public vrTimer: string = null;
   public vrTimerColor: string = null;
@@ -137,13 +138,15 @@ export class QuickActions implements ILoginListener {
       handler: () => this.doToggleVr(),
     }];
 
+    const maxTimeInVar = this.formatTime3(this.maxSecondsInVr, ':');
     const alert = this._alertController.create({
       title: inVr
-        ? 'Выйти из VR?'
-        : 'Войти в VR?',
+        ? 'Выход из VR'
+        : 'Вход в VR',
       message: inVr
-        ? 'Подтвердите, что вы действительно хотите покинуть VR'
-        : 'Подтвердите, что вы действительно хотите войти в VR<br/>(время нахождения в VR ограничено)',
+        ? 'Вы действительно хотите покинуть VR?'
+        : 'Вы действительно хотите войти в VR?<br/>' +
+          `Ваше максимальное время нахождения в VR составляет <b>${maxTimeInVar}</b>.`,
       buttons,
     });
 
@@ -177,11 +180,23 @@ export class QuickActions implements ILoginListener {
 
   // TODO: Add tests
   // Prints "H:MM" or "M:SS" with a given separator.
-  private formatTime(value: number, separator: string): string {
+  private formatTime2(value: number, separator: string): string {
     value = Math.floor(value);
     const high = Math.floor(value / 60);
     const low = value % 60;
     return this.formatInteger(high, 1) + separator + this.formatInteger(low, 2);
+  }
+
+  // TODO: Add tests
+  // Prints "H:MM:SS" with a given separator.
+  private formatTime3(value: number, separator: string): string {
+    value = Math.floor(value);
+    const hour = Math.floor(value / 3600);
+    const min = Math.floor(value / 60) % 60;
+    const sec = value % 60;
+    return this.formatInteger(hour, 1) + separator +
+           this.formatInteger(min, 2) + separator +
+           this.formatInteger(sec, 2);
   }
 
   private updateHp(modelViewJson: any) {
@@ -210,8 +225,8 @@ export class QuickActions implements ILoginListener {
       handler: () => this.doSubtractHp(hpLost),
     }];
     const alert = this._alertController.create({
-      title: 'Вам нанесены повреждения?',
-      message: `Подтвердите, что вы потеряли ${hpLost} HP?`,
+      title: 'Подтверждение урона',
+      message: `Вы действительно потеряли <b>${hpLost}&nbspHP</b>?`,
       buttons,
     });
 
@@ -228,20 +243,20 @@ export class QuickActions implements ILoginListener {
   private getVrTimerWithColor(secondsLeft: number): string[] {
     if (secondsLeft < 0) {
       const separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
-      return [this.formatTime(0, separator), Colors.red];
+      return [this.formatTime2(0, separator), Colors.red];
     } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
-      return [this.formatTime(secondsLeft, '.'), Colors.yellow];
+      return [this.formatTime2(secondsLeft, '.'), Colors.yellow];
     else
-      return [this.formatTime(secondsLeft / 60, ':'), Colors.primary];
+      return [this.formatTime2(secondsLeft / 60, ':'), Colors.primary];
   }
 
   private async updateVrStatus() {
-    // TODO(Andrei): Read maxSecondsInVr from ViewModel
-    const maxSecondsInVr = 60 * 20 + 1;
+    let maxSecondsInVr = this.maxSecondsInVr;
+    if (maxSecondsInVr % 60 == 0)
+      maxSecondsInVr++;  // Let the user see initial time first
     this.vrIcon = (await this._localDataService.inVr())
       ? 'virtual-reality-on.svg'
       : 'virtual-reality-off.svg';
-    // TODO(Andrei): Change text color
     const secondsInVr = await this._localDataService.secondsInVr();
     [this.vrTimer, this.vrTimerColor] =
       (secondsInVr == null)
