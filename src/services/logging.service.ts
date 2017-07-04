@@ -55,15 +55,15 @@ export class LoggingService implements LoggingService, ILoginListener {
       retry: true,
       continuous: true,
     };
-    this._loggingDbReplication = this._loggingDb.replicate.to(
-      GlobalConfig.remoteLoggingDbUrl, replicationOptions);
+    //this._loggingDbReplication = this._loggingDb.replicate.to(
+    //  GlobalConfig.remoteLoggingDbUrl, replicationOptions);
   }
 
   public onLogout() {
     this._username = null;
     if (this._loggingDb) {
-      this._loggingDbReplication.cancel();
-      this._loggingDbReplication = null;
+      //this._loggingDbReplication.cancel();
+      //this._loggingDbReplication = null;
       this._loggingDb = null;
     }
   }
