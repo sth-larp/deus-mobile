@@ -26,8 +26,8 @@ export class EconomyService {
         const entries: any[] = response.json();
         return entries.map((entry): ListItemData => {
           return {
-            text: `${entry.Sender} --> ${entry.Receiver}`,
-            value: entry.Amount,
+            text: `${entry.Sender} → ${entry.Receiver}`,
+            value: `${entry.Amount} кр.`,
             details: {
               header: 'Детали операции',
               text: JSON.stringify(entry, null, 2),
