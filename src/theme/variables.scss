@@ -62,6 +62,10 @@ $img-placeholder-background: transparent;
 
 $alert-min-width: 285px;
 
+.destructive-button {
+    color: color($colors, light-red) !important;
+}
+
 
 // App Material Design Variables
 // --------------------------------------------------
@@ -110,7 +114,6 @@ $action-sheet-ios-button-background: $background-color;
 $action-sheet-ios-button-cancel-background: $action-sheet-ios-button-background;
 $action-sheet-ios-button-background-activated: $background-color-activated;
 $action-sheet-ios-button-text-color: color($colors, standard);
-$action-sheet-ios-button-destructive-text-color: color($colors, dark-red);
 $action-sheet-ios-border-color: $background-color-activated;
 $action-sheet-ios-button-border-color: $background-color-activated;
 $action-sheet-ios-button-border-width: 1px;
@@ -129,10 +132,6 @@ $alert-ios-button-border-color: lighten($background-color, 20%);
 
 .alert-ios .alert-button:last-child {
   font-weight: normal !important;
-}
-
-.destructive-button {
-    color: color($colors, dark-red) !important;
 }
 
 ion-menu .item-ios, ion-menu .content-ios  {
