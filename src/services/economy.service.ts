@@ -1,16 +1,18 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { AlertController } from 'ionic-angular';
+import { AlertController, Config } from 'ionic-angular';
 
 import { GlobalConfig } from '../config';
 import { ListItemData } from '../elements/list-item';
 import { AuthService } from './auth.service';
+import { fixAlertTransitions } from '../elements/deus-alert-transitions';
 
 @Injectable()
 export class EconomyService {
   constructor(private _authService: AuthService,
               private _alertCtrl: AlertController,
-              private _http: Http) { }
+              private _http: Http,
+              private _config: Config) { }
 
   public getBalance(): Promise<number> {
     return this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUsername(),
@@ -27,7 +29,7 @@ export class EconomyService {
         return entries.map((entry): ListItemData => {
           return {
             text: `${entry.Sender} → ${entry.Receiver}`,
-            value: `${entry.Amount} кр.`,
+            value: `${entry.Amount} кр.`,
             details: {
               header: 'Детали операции',
               text: JSON.stringify(entry, null, 2),
@@ -47,11 +49,25 @@ export class EconomyService {
           message: e,
           buttons: [{text: 'Ок', handler: reject}],
         });
+
+        fixAlertTransitions(this._config);
+        alert.present();
+      };
+
+      const notifySuccess = () => {
+        const alert = this._alertCtrl.create({
+          title: 'Успешно',
+          message: 'Перевод выполнен!',
+          buttons: [{text: 'Ок', handler: resolve}],
+        });
+
+        fixAlertTransitions(this._config);
         alert.present();
       };
 
       const alert = this._alertCtrl.create({
-        message: `Перевести <b>${amount} кр.</b> на счет <b>${receiver}</b>?`,
+        title: 'Подтверждение перевода',
+        message: `Вы хотите перевести <b>${amount} кр.</b> на счет <b>${receiver}</b>?`,
         buttons: [
           {
             text: 'Отмена',
@@ -62,7 +78,7 @@ export class EconomyService {
             handler: async () => {
               try {
                 await this._makeTransaction(receiver, amount);
-              resolve();
+                notifySuccess();
               } catch (e) {
                 if (e && e.json && e.json() && e.json().Message)
                   notifyAndReject(e.json().Message);
@@ -73,6 +89,9 @@ export class EconomyService {
           },
         ],
       });
+
+      fixAlertTransitions(this._config);
+
       alert.present();
     });
   }

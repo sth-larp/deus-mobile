@@ -48,6 +48,10 @@ $text-color-pale: darken($text-color, 16%);
 $background-color: #545B60;
 $background-color-activated: lighten($background-color, 8%);
 $background-color-highlighted: mix($background-color, color($colors, dark-blue), 85%);
+
+$section-header-color: lighten($background-color, 20%);
+$section-separator-color: lighten($background-color-highlighted, 10%);
+
 $toolbar-background: #34383A;
 $toolbar-background-activated: lighten($toolbar-background, 8%);
 

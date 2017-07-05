@@ -28,7 +28,7 @@
         <table style="width: 100%">
           <tr>
             <td>
-              <h4 class="balanceHeader">Баланс</h4>
+              <span class="balanceHeader">Баланс</span>
             </td>
             <td class="balanceValue">
               {{balance}} кр.
@@ -37,31 +37,29 @@
         </table>
       </div>
 
-      <hr class="sectionSeparator">
+      <hr class="sectionSeparator"/>
 
       <div padding>
-        <h4>Перевести деньги</h4>
+        <div class="sectionHeader">Перевести деньги</div>
         <form [formGroup]="sendForm" (ngSubmit)="sendMoney()">
           <ion-item no-padding>
             <ion-label fixed>Получатель</ion-label>
-            <ion-input type="text" formControlName="receiverId"></ion-input>
+            <ion-input type="text" formControlName="receiverId" placeholder="номер счета">></ion-input>
           </ion-item>
           <ion-item no-padding>
             <ion-label fixed>Сумма</ion-label>
-            <ion-input type="number" formControlName="amount"></ion-input>
+            <ion-input type="number" formControlName="amount" placeholder="сумма перевода">></ion-input>
           </ion-item>
           <button class="submitButton" ion-button type="submit" [disabled]="!sendForm.valid">Перевести</button>
         </form>
       </div>
 
-      <hr class="sectionSeparator">
-
       <div padding>
-        <h4>Выставить счёт</h4>
+        <div class="sectionHeader">Выставить счёт</div>
         <form [formGroup]="receiveForm" (ngSubmit)="receiveMoney()">
           <ion-item no-padding>
             <ion-label fixed>Сумма</ion-label>
-            <ion-input type="number" formControlName="amount"></ion-input>
+            <ion-input type="number" formControlName="amount" placeholder="сумма счета"></ion-input>
           </ion-item>
           <button class="submitButton" ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
         </form>

@@ -1,10 +1,18 @@
 page-economy {
   h4 {
-    color: $text-color-pale;
+    color: $section-header-color;
   }
+
+  .sectionHeader{
+    color: $section-header-color;
+    font-weight: normal;
+    font-size: 1.7rem;
+    margin-bottom: 1rem;
+  }
+
   .sectionSeparator {
-    height: 2px;
-    background: $separator-color;
+    height: 1px;
+    background: $section-separator-color;
     border: none;
     margin: 0;
   }
@@ -12,17 +20,25 @@ page-economy {
     background-color: $background-color-highlighted;
   }
   .balanceHeader {
+    color: $text-color;
+    font-weight: normal;
+    font-size: 2rem;
     -webkit-margin-after: 0em;
   }
   .balanceValue {
     text-align: right;
     vertical-align: top;
-    font-size: 140%;
-    font-weight: bold;
+    font-size: 2rem;
+    font-weight: normal;
     color: color($colors, light-blue);
   }
   .submitButton {
     width: 100%;
     margin-top: 1em;
   }
+
+  .text-input::-webkit-input-placeholder {
+    color: lighten($background-color, 8%);
+    font-weight: normal;
+  } 
 }
