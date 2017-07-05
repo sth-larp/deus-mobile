@@ -134,17 +134,17 @@ $alert-ios-button-border-color: lighten($background-color, 20%);
   font-weight: normal !important;
 }
 
-ion-menu .item-ios, ion-menu .content-ios  {
-    background-color: $menu-background-color;
-    border-color: $menu-separator-color !important;
-}
-
-ion-menu .item-ios, ion-menu .item-inner{
+ion-menu .item-ios, ion-menu .content-ios {
+  background-color: $menu-background-color;
   border-color: $menu-separator-color !important;
 }
 
-ion-menu .item-ios.activated{
-    background-color: $menu-background-color-activated;
+ion-menu .item-ios, ion-menu .item-inner {
+  border-color: $menu-separator-color !important;
+}
+
+ion-menu .item-ios.activated {
+  background-color: $menu-background-color-activated;
 }
 
 $button-ios-font-size: 1.7rem;

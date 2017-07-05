@@ -20,7 +20,7 @@ export class EconomyPage {
 
   public history: ListItemData[];
 
-  public tab: string = "main";
+  public tab: string = 'main';
 
   constructor(private _http: Http,
               private _authService: AuthService,

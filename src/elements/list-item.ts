@@ -40,8 +40,8 @@ export class ListItem {
     return this.data.progressBarColor ? this.data.progressBarColor : '#6987A4';
   }
 
-  public getProgressBarWidth(): string{
-    return Math.round(this.data.percent) + "%";
+  public getProgressBarWidth(): string {
+    return Math.round(this.data.percent) + '%';
   }
 
   public getIcon(): string {
