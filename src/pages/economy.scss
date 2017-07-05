@@ -11,7 +11,10 @@ page-economy {
   .balanceSection {
     background-color: $background-color-highlighted;
   }
-  .balance {
+  .balanceHeader {
+    -webkit-margin-after: 0em;
+  }
+  .balanceValue {
     text-align: right;
     vertical-align: top;
     font-size: 140%;
