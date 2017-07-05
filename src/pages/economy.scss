@@ -5,6 +5,9 @@ page-economy {
     border: none;
     margin: 0;
   }
+  .balanceSection {
+    background-color: $background-color-highlighted;
+  }
   .balance {
     text-align: right;
     vertical-align: top;
