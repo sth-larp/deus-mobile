@@ -272,7 +272,7 @@ export class QuickActions implements ILoginListener {
   }
 
   private async doToggleVr() {
-    this._dataService.pushEvent(this._localDataService.inVr() ? 'exitVr' : 'enterVr', {});
+    this._dataService.pushEvent(await this._localDataService.inVr() ? 'exitVr' : 'enterVr', {});
     await this._localDataService.toggleVr();
     await this.updateVrStatus(null);
   }

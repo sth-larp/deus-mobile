@@ -1,0 +1,85 @@
+{
+  "_id": "0001",
+  "memory": [
+    {
+        "title": "Воспоминания персонажа №1",
+        "text": "Какие-то воспоминания о прекрасном..."
+    },
+    {
+        "title": "Воспоминания персонажа №2",
+        "text" : "...Несмотря на огромное богатство графа Безухова, с тех пор как Пьер получил его и получал, как говорили, пятьсот тысяч годового дохода, он чувствовал себя гораздо менее богатым, чем когда он получал свои десять тысяч от покойного графа. В общих чертах он смутно чувствовал следующий бюджет. В Совет платилось около восьмидесяти тысяч по всем имениям; около тридцати тысяч стоило содержание подмосковной, московского дома и княжон..."
+    }
+  ],
+  "firstName": "Джон",
+  "lastName": "Смит",
+  "skills": [
+    "skillName1",
+    "skillName2",
+    "skillName3"
+  ],
+  "systems": {
+    "NervousSystem": 6,
+    "CardioSystem": 6,
+    "Hands": 6,
+    "Legs": 6
+  },
+  "characterId": "0001",
+  "mail": "dsmith@alice.digital",
+  "sex": "male",
+  "corporation": "Skynet",
+  "hp": 5,
+  "maxHp": 5,
+  "mind": {
+    "A": [0, 1, 2, 3, 2, 1 ],
+    "B": [0, 1, 2, 3 ],
+    "C": [1, 2,4 ]
+  },
+  "conditions": [
+    {
+      "id": "headPain1",
+      "mID": "0a8a012f-dcb1-4d3e-9587-518a6439dc55",
+      "class": "physiology",
+      "group": "headPain",
+      "text": "Болит голова",
+      "level": 1
+    },
+    {
+      "id": "mindEffect",
+      "mID": "21c14f8e-3708-4b07-808c-cf28da92956f",
+      "class": "mind",
+      "text": "Тоска",
+      "details": "Кажется, никто вас не любит."
+    }
+  ],
+  "insurance": {
+    "CorpName1VIP": "Корпорация #1 VIP-страховка"
+  },
+  "modifiers": [
+    {
+      "mID": "26267ae6-0f6c-4efd-8f98-37c2e09a42a2",
+      "name": "HeartHealthBooster",
+      "displayName": "Имплант для сердца +2 HP",
+      "class": "mechanical",
+      "system": "CardioSystem",
+      "enabled": true,
+      "effects": [
+        {
+          "enabled": true,
+          "name": "Plus2HP",
+          "class": "physiology",
+          "type": "normal",
+          "handler": "effectPlus2HP"
+        },
+        {
+          "enabled": true,
+          "name": "ZeroA2",
+          "class": "mind",
+          "type": "normal",
+          "handler": "effectZeroA2"
+        }
+      ]
+    }
+  ],
+  "age": 30,
+  "timers": {}
+}
