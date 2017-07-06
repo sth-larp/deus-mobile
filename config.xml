@@ -1,6 +1,6 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="digital.alice.app.prod" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Deus LARP</name>
+    <name>Deus LARP 2017</name>
     <description>Deus Ex Machina LARP Mobile Application.</description>
     <author email="info@deus.rpg.ru/" href="http://deus.rpg.ru/">Stairway to Heaven</author>
     <content src="index.html" />
@@ -77,7 +77,7 @@
     <plugin name="cordova-custom-config" spec="^4.0.2" />
     <plugin name="cordova-plugin-console" spec="^1.0.7" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
-    <plugin name="cordova-plugin-firebase" spec="^0.1.21" />
+    <plugin name="cordova-plugin-firebase" spec="^0.1.22" />
     <plugin name="cordova-plugin-nativestorage" spec="^2.2.2" />
     <plugin name="cordova-plugin-splashscreen" spec="^4.0.3" />
     <plugin name="cordova-plugin-statusbar" spec="^2.2.3" />
