@@ -24,7 +24,7 @@ export class QuickActions implements ILoginListener {
   public hpIcon: string = null;
   public hpText: string = null;
   public hpTextColor: string = null;
-  public maxSecondsInVr: number = 60 * 20;  // TODO(Andrei): Read from ViewModel
+  public maxSecondsInVr: number = null;
   public vrIcon: string = null;
   public vrTimer: string = null;
   public vrTimerColor: string = null;
@@ -62,7 +62,10 @@ export class QuickActions implements ILoginListener {
 
   public onSuccessfulLogin(_username: string) {
     this._hpSubscription = this._dataService.getData().subscribe(
-      (json) => this.updateHp(json),
+      (json) => {
+        this.updateHp(json);
+        this.updateVrStatus(json);
+      },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
 
@@ -70,7 +73,7 @@ export class QuickActions implements ILoginListener {
       (status) => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
       (error) => console.error('Cannot get update status: ' + error));
 
-    setInterval(() => { this.updateVrStatus(); }, GlobalConfig.recalculateVrTimerEveryMs);
+    setInterval(() => { this.updateVrStatus(null); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
 
   public onLogout() {
@@ -250,7 +253,11 @@ export class QuickActions implements ILoginListener {
       return [this.formatTime2(secondsLeft / 60, ':'), Colors.primary];
   }
 
-  private async updateVrStatus() {
+  // 'json' may be null: means "no change"
+  private async updateVrStatus(json: any) {
+    if (json != null)
+      this.maxSecondsInVr = json.general.maxSecondsInVr;
+
     let maxSecondsInVr = this.maxSecondsInVr;
     if (maxSecondsInVr % 60 == 0)
       maxSecondsInVr++;  // Let the user see initial time first
@@ -267,6 +274,6 @@ export class QuickActions implements ILoginListener {
   private async doToggleVr() {
     this._dataService.pushEvent(this._localDataService.inVr() ? 'exitVr' : 'enterVr', {});
     await this._localDataService.toggleVr();
-    await this.updateVrStatus();
+    await this.updateVrStatus(null);
   }
 }
