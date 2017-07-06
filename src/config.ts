@@ -1,7 +1,7 @@
 // tslint:disable-next-line:variable-name
 export const GlobalConfig = {
-  getViewmodelBaseUrl: 'http://dev.alice.digital:8157/viewmodel',
-  sendEventsBaseUrl: 'http://dev.alice.digital:8157/events',
+  getViewmodelBaseUrl: 'https://alice.digital/api/viewmodel',
+  sendEventsBaseUrl: 'https://alice.digital/api/events',
 
   // TODO: Use seconds instead of milliseconds
   recalculateVrTimerEveryMs: 500,
@@ -12,17 +12,17 @@ export const GlobalConfig = {
 
   numHpQuickActionIcons: 12,
 
-  remoteLoggingDbUrl: 'http://dev.alice.digital:5984/logging-dev',
+  remoteLoggingDbUrl: 'no-logging-in-prod',
 
-  timeServerUrl: 'http://dev.alice.digital:8157/time',
+  timeServerUrl: 'https://alice.digital/api/time',
   fetchTimeFromServerEveryMs: 60000,
 
   passportQrLifespan: 60000, // 1 min
   transactionQrLifespan: 300000, // 5 min
 
-  economyGetBalanceBaseUrl: 'http://deus2017economy.azurewebsites.net/api/accounts/profile?login=',
-  economyTransferMoneyUrl: 'http://deus2017economy.azurewebsites.net/api/transfer',
-  economyTransactionsUrl: 'http://deus2017economy.azurewebsites.net/api/transactions',
+  economyGetBalanceBaseUrl: 'https://alice.digital/econ/api/accounts/profile?login=',
+  economyTransferMoneyUrl: 'https://alice.digital/econ/api/transfer',
+  economyTransactionsUrl: 'https://alice.digital/econ/api/transactions',
 };
 
 // Apparently, SCSS variables cannot be used in typescript, so copying here.

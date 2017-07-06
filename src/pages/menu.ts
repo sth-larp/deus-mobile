@@ -57,7 +57,7 @@ export class MenuPage implements ILoginListener {
   public ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe(
       (json) => {
-        this.characterName = json.menu ? json.menu.characterName : null;
+        this.characterName = json.menu.characterName;
         this.pages = [];
         for (const p of json.pages)
           this.pages.push({ root: this._pageTypeToPage.get(p.pageType), menuTitle: p.menuTitle });

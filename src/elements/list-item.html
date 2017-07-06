@@ -3,7 +3,7 @@
   <img style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' item-left>
   <h2>{{data.text}}</h2>
   <p>{{data.subtext}}</p>
-  <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': getProgressBarColor()}">
+  <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}">
   </div>
   <ion-note item-right [ngStyle]="{'color': getValueColor()}"><b>{{data.value}}</b></ion-note>
 </button>
@@ -11,7 +11,7 @@
   <img style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' item-left>
   <h2>{{data.text}}</h2>
   <p>{{data.subtext}}</p>
-  <div class="backgroundprogressbar" [ngStyle]="{'width':data.percent+'%', 'background-color': getProgressBarColor()}">
+  <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}">
   </div>
   <ion-note item-right [ngStyle]="{'color': getValueColor()}"><b>{{data.value}}</b></ion-note>
 </ion-item>

@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Keyboard } from '@ionic-native/keyboard';
-import { ActionSheetController, AlertController, ModalController, Platform, Config } from 'ionic-angular';
+import { ActionSheetController, AlertController, Config, ModalController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 import { Colors, GlobalConfig } from '../config';
@@ -11,7 +11,7 @@ import { LocalDataService } from '../services/local-data.service';
 import { LoggingService } from '../services/logging.service';
 import { ILoginListener } from '../services/login-listener';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
-import { fixAlertTransitions, fixActionSheettTransitions } from './deus-alert-transitions';
+import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-transitions';
 
 @Component({
   selector: 'quick-actions',
@@ -24,6 +24,7 @@ export class QuickActions implements ILoginListener {
   public hpIcon: string = null;
   public hpText: string = null;
   public hpTextColor: string = null;
+  public maxSecondsInVr: number = null;
   public vrIcon: string = null;
   public vrTimer: string = null;
   public vrTimerColor: string = null;
@@ -61,7 +62,10 @@ export class QuickActions implements ILoginListener {
 
   public onSuccessfulLogin(_username: string) {
     this._hpSubscription = this._dataService.getData().subscribe(
-      (json) => this.updateHp(json),
+      (json) => {
+        this.updateHp(json);
+        this.updateVrStatus(json);
+      },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
 
@@ -69,7 +73,7 @@ export class QuickActions implements ILoginListener {
       (status) => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
       (error) => console.error('Cannot get update status: ' + error));
 
-    setInterval(() => { this.updateVrStatus(); }, GlobalConfig.recalculateVrTimerEveryMs);
+    setInterval(() => { this.updateVrStatus(null); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
 
   public onLogout() {
@@ -116,7 +120,7 @@ export class QuickActions implements ILoginListener {
       buttons,
     });
 
-    fixActionSheettTransitions(this._config);
+    fixActionSheetTransitions(this._config);
 
     const unregisterFn = this._platform.registerBackButtonAction(() => {
       actionSheet.dismiss();
@@ -133,12 +137,19 @@ export class QuickActions implements ILoginListener {
     },
     {
       text: inVr ? 'Выйти из VR' : 'Войти в VR',
+      cssClass: inVr ? null : 'destructive-button',
       handler: () => this.doToggleVr(),
     }];
+
+    const maxTimeInVar = this.formatTime3(this.maxSecondsInVr, ':');
     const alert = this._alertController.create({
+      title: inVr
+        ? 'Выход из VR'
+        : 'Вход в VR',
       message: inVr
-        ? 'Подтвердить выход из VR?'
-        : 'Подтвердить вход в VR?',
+        ? 'Вы действительно хотите покинуть VR?'
+        : 'Вы действительно хотите войти в VR?<br/>' +
+          `Ваше максимальное время нахождения в VR составляет <b>${maxTimeInVar}</b>.`,
       buttons,
     });
 
@@ -172,11 +183,23 @@ export class QuickActions implements ILoginListener {
 
   // TODO: Add tests
   // Prints "H:MM" or "M:SS" with a given separator.
-  private formatTime(value: number, separator: string): string {
+  private formatTime2(value: number, separator: string): string {
     value = Math.floor(value);
     const high = Math.floor(value / 60);
     const low = value % 60;
     return this.formatInteger(high, 1) + separator + this.formatInteger(low, 2);
+  }
+
+  // TODO: Add tests
+  // Prints "H:MM:SS" with a given separator.
+  private formatTime3(value: number, separator: string): string {
+    value = Math.floor(value);
+    const hour = Math.floor(value / 3600);
+    const min = Math.floor(value / 60) % 60;
+    const sec = value % 60;
+    return this.formatInteger(hour, 1) + separator +
+           this.formatInteger(min, 2) + separator +
+           this.formatInteger(sec, 2);
   }
 
   private updateHp(modelViewJson: any) {
@@ -200,11 +223,13 @@ export class QuickActions implements ILoginListener {
       role: 'cancel',
     },
     {
-      text: 'Снять ' + hpLost.toString() + ' HP',
+      text: 'Снять HP',
+      cssClass: 'destructive-button',
       handler: () => this.doSubtractHp(hpLost),
     }];
     const alert = this._alertController.create({
-      message: `Подтвердить снятие ${hpLost} HP?`,
+      title: 'Подтверждение урона',
+      message: `Вы действительно потеряли <b>${hpLost}&nbspHP</b>?`,
       buttons,
     });
 
@@ -221,20 +246,24 @@ export class QuickActions implements ILoginListener {
   private getVrTimerWithColor(secondsLeft: number): string[] {
     if (secondsLeft < 0) {
       const separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
-      return [this.formatTime(0, separator), Colors.red];
+      return [this.formatTime2(0, separator), Colors.red];
     } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
-      return [this.formatTime(secondsLeft, '.'), Colors.yellow];
+      return [this.formatTime2(secondsLeft, '.'), Colors.yellow];
     else
-      return [this.formatTime(secondsLeft / 60, ':'), Colors.primary];
+      return [this.formatTime2(secondsLeft / 60, ':'), Colors.primary];
   }
 
-  private async updateVrStatus() {
-    // TODO(Andrei): Read maxSecondsInVr from ViewModel
-    const maxSecondsInVr = 60 * 20 + 1;
+  // 'json' may be null: means "no change"
+  private async updateVrStatus(json: any) {
+    if (json != null)
+      this.maxSecondsInVr = json.general.maxSecondsInVr;
+
+    let maxSecondsInVr = this.maxSecondsInVr;
+    if (maxSecondsInVr % 60 == 0)
+      maxSecondsInVr++;  // Let the user see initial time first
     this.vrIcon = (await this._localDataService.inVr())
       ? 'virtual-reality-on.svg'
       : 'virtual-reality-off.svg';
-    // TODO(Andrei): Change text color
     const secondsInVr = await this._localDataService.secondsInVr();
     [this.vrTimer, this.vrTimerColor] =
       (secondsInVr == null)
@@ -245,6 +274,6 @@ export class QuickActions implements ILoginListener {
   private async doToggleVr() {
     this._dataService.pushEvent(this._localDataService.inVr() ? 'exitVr' : 'enterVr', {});
     await this._localDataService.toggleVr();
-    await this.updateVrStatus();
+    await this.updateVrStatus(null);
   }
 }

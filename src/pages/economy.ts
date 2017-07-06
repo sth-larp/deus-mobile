@@ -7,6 +7,7 @@ import { ListItemData } from '../elements/list-item';
 import { AuthService } from '../services/auth.service';
 import { EconomyService } from '../services/economy.service';
 import { BillPage } from './bill';
+import { fixAlertTransitions } from '../elements/deus-alert-transitions';
 
 @Component({
   selector: 'page-economy',
@@ -20,7 +21,7 @@ export class EconomyPage {
 
   public history: ListItemData[];
 
-  public tab: string = "main";
+  public tab: string = 'main';
 
   constructor(private _http: Http,
               private _authService: AuthService,
