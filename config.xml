@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <widget id="digital.alice.app.dev" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>deus-larp-2017</name>
-    <description>DeusEx LARP Mobile Application.</description>
+    <name>Deus LARP</name>
+    <description>Deus Ex Machina LARP Mobile Application.</description>
     <author email="info@deus.rpg.ru/" href="http://deus.rpg.ru/">Stairway to Heaven</author>
     <content src="index.html" />
     <access origin="*" />
