@@ -16,11 +16,16 @@ export class LocalDataService {
   public setItem(key: string, value: any): Promise<any> {
     return this._nativeStorage.setItem(this.makeGlobalKey(key), value);
   }
-
   public getItem(key: string): Promise<any> {
     return this._nativeStorage.getItem(this.makeGlobalKey(key));
   }
-
+  public async getItemOrNull(key: string): Promise<any> {
+    try {
+      return await this.getItem(key);
+    } catch (e) {
+      return null;
+    }
+  }
   public remove(key: string): Promise<any> {
     return this._nativeStorage.remove(this.makeGlobalKey(key));
   }
@@ -34,20 +39,13 @@ export class LocalDataService {
     }
   }
   public async inVr(): Promise<boolean> {
-    try {
-      await this.getItem('vrEnterTime');
-      return true;
-    } catch (e) {
-      return false;
-    }
+    return (await this.secondsInVr()) != null;
   }
   public async secondsInVr(): Promise<number> {
-    try {
-      const vrEnterTime = await this.getItem('vrEnterTime');
-      return (this._time.getUnixTimeMs() - vrEnterTime) / 1000.;
-    } catch (e) {
-      return null;
-    }
+    const vrEnterTime = await this.getItemOrNull('vrEnterTime');
+    return vrEnterTime != null
+      ? (this._time.getUnixTimeMs() - vrEnterTime) / 1000.
+      : null;
   }
 
   // Helper functions
