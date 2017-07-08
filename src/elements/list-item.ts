@@ -15,7 +15,11 @@ export class ListItemData {
 
   public details?: DetailsData;
 
+  public vid?: string;
   public tag?: string;
+
+  // Internal fields. MUST NOT be set in ViewModel
+  public unread?: boolean;
 }
 
 @Component({

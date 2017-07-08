@@ -1,7 +1,7 @@
-<div *ngIf="!filter || filter == data.tag">
+<div *ngIf="!filter || filter == data.tag" [ngClass]="{'unread-container': data.unread}">
 <button ion-item *ngIf="data.details" (click)="openDetails(data.details)">
   <img style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' item-left>
-  <h2>{{data.text}}</h2>
+  <h2 [ngClass]="{'unread-text': data.unread}">{{data.text}}</h2>
   <p>{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}">
   </div>
@@ -9,7 +9,7 @@
 </button>
 <ion-item *ngIf="!data.details">
   <img style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' item-left>
-  <h2>{{data.text}}</h2>
+  <h2 [ngClass]="{'unread-text': data.unread}">{{data.text}}</h2>
   <p>{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}">
   </div>
