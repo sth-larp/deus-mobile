@@ -11,6 +11,7 @@ import { LocalDataService } from '../services/local-data.service';
 import { LoggingService } from '../services/logging.service';
 import { ILoginListener } from '../services/login-listener';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
+import { formatInteger, formatTime2, formatTime3} from '../utils/string-utils';
 import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-transitions';
 
 @Component({
@@ -141,7 +142,7 @@ export class QuickActions implements ILoginListener {
       handler: () => this.doToggleVr(),
     }];
 
-    const maxTimeInVar = this.formatTime3(this.maxSecondsInVr, ':');
+    const maxTimeInVar = formatTime3(this.maxSecondsInVr, ':');
     const alert = this._alertController.create({
       title: inVr
         ? 'Выход из VR'
@@ -175,40 +176,13 @@ export class QuickActions implements ILoginListener {
     return null;
   }
 
-  // TODO: Add tests
-  private formatInteger(value: number, padding: number): string {
-    const str = value.toFixed(0);
-    return (str.length >= padding) ? str : ('0000000000000000' + str).slice(-padding);
-  }
-
-  // TODO: Add tests
-  // Prints "H:MM" or "M:SS" with a given separator.
-  private formatTime2(value: number, separator: string): string {
-    value = Math.floor(value);
-    const high = Math.floor(value / 60);
-    const low = value % 60;
-    return this.formatInteger(high, 1) + separator + this.formatInteger(low, 2);
-  }
-
-  // TODO: Add tests
-  // Prints "H:MM:SS" with a given separator.
-  private formatTime3(value: number, separator: string): string {
-    value = Math.floor(value);
-    const hour = Math.floor(value / 3600);
-    const min = Math.floor(value / 60) % 60;
-    const sec = value % 60;
-    return this.formatInteger(hour, 1) + separator +
-           this.formatInteger(min, 2) + separator +
-           this.formatInteger(sec, 2);
-  }
-
   private updateHp(modelViewJson: any) {
     this.hp = modelViewJson.toolbar.hitPoints;
     const maxHp: number = modelViewJson.toolbar.maxHitPoints;
     let hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * this.hp / maxHp);
     if (this.hp > 0) hpIconIndex = Math.max(hpIconIndex, 1);
     if (this.hp < maxHp) hpIconIndex = Math.min(hpIconIndex, GlobalConfig.numHpQuickActionIcons - 1);
-    this.hpIcon = 'hit-points-' + this.formatInteger(hpIconIndex, 2) + '.svg';
+    this.hpIcon = 'hit-points-' + formatInteger(hpIconIndex, 2) + '.svg';
     this.hpText = this.hp.toString();
     this.hpTextColor = (this.hp == 0) ? Colors.red : Colors.primary;
   }
@@ -246,11 +220,11 @@ export class QuickActions implements ILoginListener {
   private getVrTimerWithColor(secondsLeft: number): string[] {
     if (secondsLeft < 0) {
       const separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
-      return [this.formatTime2(0, separator), Colors.red];
+      return [formatTime2(0, separator), Colors.red];
     } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
-      return [this.formatTime2(secondsLeft, '.'), Colors.yellow];
+      return [formatTime2(secondsLeft, '.'), Colors.yellow];
     else
-      return [this.formatTime2(secondsLeft / 60, ':'), Colors.primary];
+      return [formatTime2(secondsLeft / 60, ':'), Colors.primary];
   }
 
   // 'json' may be null: means "no change"
