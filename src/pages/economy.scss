@@ -1,13 +1,15 @@
 page-economy {
-  h4 {
-    color: $section-header-color;
-  }
-
-  .sectionHeader{
-    color: $section-header-color;
+  .sectionHeader {
     font-weight: normal;
-    font-size: 1.7rem;
     margin-bottom: 1rem;
+  }
+  .content-md .sectionHeader {
+    font-size: 2rem;
+    color: $md-section-header-color;
+  }
+  .content-ios .sectionHeader {
+    font-size: 1.7rem;
+    color: $ios-section-header-color;
   }
 
   .sectionSeparator {
@@ -40,5 +42,5 @@ page-economy {
   .text-input::-webkit-input-placeholder {
     color: lighten($background-color, 8%);
     font-weight: normal;
-  } 
+  }
 }
