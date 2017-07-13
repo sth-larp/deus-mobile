@@ -12,6 +12,7 @@
  import { LoginPage } from './login';
  import { PlainTextPage } from './plain-text';
  import { TechnicalInfoPage } from './technical-info';
+ import { list } from "../services/viewmodel.types";
 
  class PageData {
   public root: any;

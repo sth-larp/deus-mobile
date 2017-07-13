@@ -3,18 +3,7 @@ import { ActionSheetController, Config, NavController, NavParams, Platform } fro
 
 import { fixActionSheetTransitions } from '../elements/deus-alert-transitions';
 import { DataService } from '../services/data.service';
-
-export class ActionData {
-  public text: string;
-  public eventType: string;
-  public data: any;
-}
-
-export class DetailsData {
-  public header: string;
-  public text: string;
-  public actions: ActionData[];
-}
+import { DetailsData } from '../services/viewmodel.types';
 
 @Component({
   selector: 'page-details',

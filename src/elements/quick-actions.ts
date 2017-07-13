@@ -13,6 +13,7 @@ import { ILoginListener } from '../services/login-listener';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
 import { formatInteger, formatTime2, formatTime3} from '../utils/string-utils';
 import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-transitions';
+import { ApplicationViewModel } from "../services/viewmodel.types";
 
 @Component({
   selector: 'quick-actions',
@@ -176,7 +177,7 @@ export class QuickActions implements ILoginListener {
     return null;
   }
 
-  private updateHp(modelViewJson: any) {
+  private updateHp(modelViewJson: ApplicationViewModel) {
     this.hp = modelViewJson.toolbar.hitPoints;
     const maxHp: number = modelViewJson.toolbar.maxHitPoints;
     let hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * this.hp / maxHp);
@@ -228,7 +229,7 @@ export class QuickActions implements ILoginListener {
   }
 
   // 'json' may be null: means "no change"
-  private async updateVrStatus(json: any) {
+  private async updateVrStatus(json: ApplicationViewModel) {
     if (json != null)
       this.maxSecondsInVr = json.general.maxSecondsInVr;
 

@@ -5,7 +5,7 @@ import {} from 'jasmine';
 import { Observable } from 'rxjs/Rx';
 import * as TypeMoq from 'typemoq';
 import { DataService } from '../services/data.service';
-import { UpdatablePage, UpdatablePageData } from './updatable';
+import { UpdatablePage } from './updatable';
 
 class TestUpdatablePage extends UpdatablePage {
   public body: any = null;
@@ -19,25 +19,25 @@ describe('Updatable Page', () => {
   const mockDataService: TypeMoq.IMock<DataService> = TypeMoq.Mock.ofType<DataService>();
   const mockNavCtrl: TypeMoq.IMock<NavController> = TypeMoq.Mock.ofType<NavController>();
 
-  const myPageData1: UpdatablePageData = {
+  const myPageData1 = {
     pageType: 'Test',
     menuTitle: 'Test Title',
     body: 'body1',
   };
 
-  const myPageData2: UpdatablePageData = {
+  const myPageData2 = {
     pageType: 'Test',
     menuTitle: 'Test Title',
     body: 'body2',
   };
 
-  const someOtherPageData1: UpdatablePageData = {
+  const someOtherPageData1 = {
     pageType: 'Other1',
     menuTitle: 'Other1 title',
     body: {},
   };
 
-  const someOtherPageData2: UpdatablePageData = {
+  const someOtherPageData2 = {
     pageType: 'Other2',
     menuTitle: 'Other2 title dafuw',
     body: {},

@@ -5,12 +5,15 @@
 
  import { Http } from '@angular/http';
  import { Subscription } from 'rxjs/Subscription';
+ import { TypedJSON } from 'typedjson/js/typed-json';
+
  import { GlobalConfig } from '../config';
  import { upsert } from '../utils/pouchdb-utils';
  import { AuthService } from './auth.service';
  import { LoggingService } from './logging.service';
  import { ILoginListener } from './login-listener';
  import { MonotonicTimeService } from './monotonic-time.service';
+ import { ApplicationViewModel, list } from './viewmodel.types';
 
  export enum UpdateStatus {
   Green,
@@ -20,11 +23,11 @@
 
  @Injectable()
 export class DataService implements ILoginListener {
-  private _inMemoryViewmodel: any = null;
+  private _inMemoryViewmodel: ApplicationViewModel = null;
 
   private _refreshModelUpdateSubscription: Subscription = null;
   private _eventsDb: PouchDB.Database<{ eventType: string; data: any; }> = null;
-  private _viewModelDb: PouchDB.Database<{ timestamp: number }> = null;
+  private _viewModelDb: PouchDB.Database<ApplicationViewModel> = null;
 
   constructor(private _logging: LoggingService,
               private _time: MonotonicTimeService,
@@ -56,8 +59,8 @@ export class DataService implements ILoginListener {
     this._inMemoryViewmodel = null;
   }
 
-  public getData(): Observable<any> {
-    const persistantAndFutureData: Observable<any> = Observable.create((observer) => {
+  public getData(): Observable<ApplicationViewModel> {
+    const persistantAndFutureData: Observable<ApplicationViewModel> = Observable.create((observer) => {
       const changesStream = this._viewModelDb.changes(
         { live: true, include_docs: true, doc_ids: [this._authService.getUsername()] });
       changesStream.on('change', (change) => {
@@ -73,7 +76,7 @@ export class DataService implements ILoginListener {
       return persistantAndFutureData;
   }
 
-  public getCurrentData(): Promise<any> {
+  public getCurrentData(): Promise<ApplicationViewModel> {
     return this._viewModelDb.get(this._authService.getUsername());
   }
 
@@ -153,8 +156,11 @@ export class DataService implements ILoginListener {
 
   public async setViewModel(viewModel: any) {
     viewModel._id = this._authService.getUsername();
-    upsert(this._viewModelDb, viewModel);
-    this._inMemoryViewmodel = viewModel;
+    const viewModelTyped = TypedJSON.parse(JSON.stringify(viewModel), ApplicationViewModel);
+    for (const pageViewModel of viewModelTyped.pages)
+      pageViewModel.pageType = pageViewModel.constructor.name;
+    upsert(this._viewModelDb, viewModelTyped);
+    this._inMemoryViewmodel = viewModelTyped;
   }
 
   private pushRefreshModelEvent(): Promise<PouchDB.Core.Response> {

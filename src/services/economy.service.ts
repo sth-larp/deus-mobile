@@ -4,8 +4,8 @@ import { AlertController, Config } from 'ionic-angular';
 
 import { GlobalConfig } from '../config';
 import { fixAlertTransitions } from '../elements/deus-alert-transitions';
-import { ListItemData } from '../elements/list-item';
 import { AuthService } from './auth.service';
+import { ListItemData } from './viewmodel.types';
 
 @Injectable()
 export class EconomyService {

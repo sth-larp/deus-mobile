@@ -1,16 +1,9 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams, Refresher, Segment, ToastController } from 'ionic-angular';
-import { ListItemData } from '../elements/list-item';
 import { DataService } from '../services/data.service';
 import { LocalDataService } from '../services/local-data.service';
+import { ListBody } from '../services/viewmodel.types';
 import { UpdatablePage } from './updatable';
-
-class ListBody {
-  public pageId: string;  // TODO: Move up in the JSON tree
-  public title: string;
-  public items: ListItemData[];
-  public filters: string[];
-}
 
 @Component({
   selector: 'page-list',

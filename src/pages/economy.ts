@@ -3,9 +3,9 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn,
 import { Http } from '@angular/http';
 import { AlertController, ModalController, Refresher } from 'ionic-angular';
 import { CustomValidators } from 'ng2-validation';
-import { ListItemData } from '../elements/list-item';
 import { AuthService } from '../services/auth.service';
 import { EconomyService } from '../services/economy.service';
+import { ListItemData } from '../services/viewmodel.types';
 import { BillPage } from './bill';
 
 @Component({

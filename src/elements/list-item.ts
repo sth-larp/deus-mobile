@@ -1,26 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { ModalController } from 'ionic-angular';
-import { DetailsData, DetailsPage } from '../pages/details';
-
-export class ListItemData {
-  public text: string;
-  public subtext?: string;
-  public value?: string;
-  public percent?: number;
-  public progressBarColor?: string;
-  public valueColor?: string;
-
-  public hasIcon?: boolean;
-  public icon?: string;
-
-  public details?: DetailsData;
-
-  public vid?: string;
-  public tag?: string;
-
-  // Internal fields. MUST NOT be set in ViewModel
-  public unread?: boolean;
-}
+import { DetailsPage } from '../pages/details';
+import { DetailsData, ListItemData } from '../services/viewmodel.types';
 
 @Component({
   selector: 'list-item',

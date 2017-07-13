@@ -1,15 +1,7 @@
 import { NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Rx';
 import { DataService } from '../services/data.service';
-
-// Needs to be in sync with json, which uses snake case.
-// tslint:disable:variable-name
-export class UpdatablePageData {
-  public pageType: string;
-  public menuTitle: string;
-  public body: any;
-}
-// tslint:enable:variable-name
+import { PageViewModel } from '../services/viewmodel.types';
 
 export abstract class UpdatablePage {
   private _subscription: Subscription = null;
@@ -21,10 +13,9 @@ export abstract class UpdatablePage {
   // tslint:disable-next-line:no-unused-variable
   public ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe((json) => {
-      const pagesTyped: UpdatablePageData[] = json.pages;
-      const thisPageData = pagesTyped.find((p: UpdatablePageData) => p.menuTitle == this._title);
+      const thisPageData = json.pages.find((p: PageViewModel) => p.menuTitle == this._title);
       if (thisPageData)
-        this.setBody(thisPageData.body);
+        this.setBody((thisPageData as any).body);
       else {
         // this._navCtrl.setRoot(ListPage);
       }
