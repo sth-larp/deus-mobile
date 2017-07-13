@@ -20,7 +20,6 @@ export class BillPage {
   constructor(navParams: NavParams,
               private _clock: MonotonicTimeService) {
     this.billPageData = navParams.data.value;
-    console.warn(this.billPageData);
     this.qrContent = encode({
       type: QrType.Bill, kind: 0,
       // TODO: add helper for expiring QR generation
