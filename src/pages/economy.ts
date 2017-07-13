@@ -39,7 +39,8 @@ export class EconomyPage {
     });
 
     this.receiveForm = this._formBuilder.group({
-      amount: ['', Validators.compose([Validators.required, CustomValidators.digits])],
+      amount: ['', Validators.compose([Validators.required, CustomValidators.digits,
+        CustomValidators.lt(1000000000000000000000000)])],
     });
 
     this.refreshData();
