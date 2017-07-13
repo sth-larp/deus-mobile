@@ -1,5 +1,5 @@
 import { Component, ViewChild } from '@angular/core';
-import { Content, NavController, NavParams, Refresher, Segment } from 'ionic-angular';
+import { Content, NavController, NavParams, Refresher, Segment, ToastController } from 'ionic-angular';
 import { ListItemData } from '../elements/list-item';
 import { DataService } from '../services/data.service';
 import { LocalDataService } from '../services/local-data.service';
@@ -29,7 +29,8 @@ export class ListPage extends UpdatablePage {
   constructor(dataService: DataService,
               navCtrl: NavController,
               navParams: NavParams,
-              private _localDataService: LocalDataService) {
+              private _localDataService: LocalDataService,
+              private _toastCtrl: ToastController) {
     super(navParams.data.id, dataService, navCtrl);
   }
 
@@ -37,7 +38,13 @@ export class ListPage extends UpdatablePage {
     // TODO: error indication?
     this._dataService.trySendEvents()
     .then(() => refresher.complete())
-    .catch(() => refresher.complete());
+    .catch(() => {
+      refresher.complete();
+      this._toastCtrl.create({
+        message: 'Ошибка обращения к серверу, повторите попытку позже',
+        duration: 3000,
+      }).present();
+    });
   }
 
   public onFilter(filter: string) {

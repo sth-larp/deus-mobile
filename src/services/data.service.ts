@@ -146,6 +146,8 @@ export class DataService implements ILoginListener {
     } catch (e) {
       if (e.status && (e.status == 401 || e.status == 404))
         await this._authService.logout();
+      else
+        throw e;
     }
   }
 
