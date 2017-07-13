@@ -1,7 +1,7 @@
 // tslint:disable-next-line:variable-name
 export const GlobalConfig = {
-  getViewmodelBaseUrl: 'https://alice.digital/api/viewmodel',
-  sendEventsBaseUrl: 'https://alice.digital/api/events',
+  getViewmodelBaseUrl: 'http://dev.alice.digital:8157/viewmodel',
+  sendEventsBaseUrl: 'http://dev.alice.digital:8157/events',
 
   // TODO: Use seconds instead of milliseconds
   recalculateVrTimerEveryMs: 500,
@@ -14,7 +14,7 @@ export const GlobalConfig = {
 
   remoteLoggingDbUrl: 'no-logging-in-prod',
 
-  timeServerUrl: 'https://alice.digital/api/time',
+  timeServerUrl: 'http://dev.alice.digital:8157/time',
   fetchTimeFromServerEveryMs: 60000,
 
   passportQrLifespan: 60000, // 1 min
