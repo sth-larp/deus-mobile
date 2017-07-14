@@ -1,7 +1,4 @@
-import { JsonMember, JsonObject, TypedJSON } from 'typedjson';
-
-// TODO(Alexey): Rename pageType to __type in viewmodel generation and get rid of it
-TypedJSON.config({typeHintPropertyKey: 'pageType'});
+import { JsonMember, JsonObject } from 'typedjson';
 
 @JsonObject
 export class GeneralInformation {
@@ -44,7 +41,9 @@ export class PageViewModel {
   @JsonMember({isRequired: true})
   public menuTitle: string;
 
-  public pageType: string;
+  @JsonMember({isRequired: true})
+  // tslint:disable-next-line:variable-name
+  public __type: string;
 }
 
 @JsonObject
@@ -129,26 +128,20 @@ export class ListBody {
 }
 
 @JsonObject
-// TODO(Alexey) Rename to ListPageViewModel
-// tslint:disable-next-line:class-name
-export class list extends PageViewModel {
+export class ListPageViewModel extends PageViewModel {
   @JsonMember({isRequired: true})
   public body: ListBody;
 }
 
 @JsonObject
-// TODO(Alexey) Rename to EconomyPageViewModel
-// tslint:disable-next-line:class-name
-export class economy extends PageViewModel {
+export class EconomyPageViewModel extends PageViewModel {
 }
 
 @JsonObject
-// TODO(Alexey) Rename to TechnicalInfoPageViewModel
-// tslint:disable-next-line:class-name
-export class technical_info extends PageViewModel {
+export class TechnicalInfoPageViewModel extends PageViewModel {
 }
 
-@JsonObject({knownTypes: [economy, list, technical_info]})
+@JsonObject({knownTypes: [EconomyPageViewModel, ListPageViewModel, TechnicalInfoPageViewModel]})
 export class ApplicationViewModel {
   @JsonMember({isRequired: true})
   public _id: string;

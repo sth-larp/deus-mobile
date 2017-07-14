@@ -1,8 +1,8 @@
 import {} from 'jasmine';
 import { TypedJSON } from 'typedjson';
 
-import { ApplicationViewModel, economy, GeneralInformation,
-  list, MenuViewModel, technical_info } from './viewmodel.types';
+import { ApplicationViewModel, EconomyPageViewModel, GeneralInformation,
+  ListPageViewModel, MenuViewModel, TechnicalInfoPageViewModel } from './viewmodel.types';
 
 describe('ViewModel subtypes parsing from JSON', () => {
 
@@ -61,7 +61,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
       },
       "pages": [
         {
-          "pageType": "list",
+          "__type": "ListPageViewModel",
           "menuTitle": "Общая информация",
           "body": {
             "title": "Общая информация",
@@ -99,7 +99,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
           }
         },
         {
-          "pageType": "list",
+          "__type": "ListPageViewModel",
           "menuTitle": "Воспоминания",
           "body": {
             "title": "Воспоминания",
@@ -122,7 +122,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
           }
         },
         {
-          "pageType": "list",
+          "__type": "ListPageViewModel",
           "menuTitle": "Состояния",
           "body": {
             "title": "Ваши состояния",
@@ -162,7 +162,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
           }
         },
         {
-          "pageType": "list",
+          "__type": "ListPageViewModel",
           "menuTitle": "Импланты",
           "body": {
             "title": "Импланты",
@@ -225,11 +225,11 @@ describe('ViewModel subtypes parsing from JSON', () => {
           }
         },
         {
-          "pageType": "economy",
+          "__type": "EconomyPageViewModel",
           "menuTitle": "Экономика"
         },
         {
-          "pageType": "technical_info",
+          "__type": "TechnicalInfoPageViewModel",
           "menuTitle": "Техническая инфа"
         }
       ]
@@ -239,11 +239,15 @@ describe('ViewModel subtypes parsing from JSON', () => {
       const applicationViewModel = TypedJSON.parse(exampleApplicationViewModel, ApplicationViewModel);
       expect(applicationViewModel).toBeTruthy();
       expect(applicationViewModel.pages.length).toEqual(6);
-      for (let i = 0; i < 4; ++i)
-        expect(applicationViewModel.pages[i] instanceof list).toBeTruthy();
-      expect(applicationViewModel.pages[4] instanceof economy).toBeTruthy();
-      expect(applicationViewModel.pages[5] instanceof technical_info).toBeTruthy();
-      const listPageViewModel = applicationViewModel.pages[0] as list;
+      for (let i = 0; i < 4; ++i) {
+        expect(applicationViewModel.pages[i] instanceof ListPageViewModel).toBeTruthy();
+        expect(applicationViewModel.pages[i].__type).toEqual('ListPageViewModel');
+      }
+      expect(applicationViewModel.pages[4] instanceof EconomyPageViewModel).toBeTruthy();
+      expect(applicationViewModel.pages[4].__type).toEqual('EconomyPageViewModel');
+      expect(applicationViewModel.pages[5] instanceof TechnicalInfoPageViewModel).toBeTruthy();
+      expect(applicationViewModel.pages[5].__type).toEqual('TechnicalInfoPageViewModel');
+      const listPageViewModel = applicationViewModel.pages[0] as ListPageViewModel;
       expect(listPageViewModel).toBeTruthy();
       expect(listPageViewModel.body).toBeTruthy();
     });
@@ -271,7 +275,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
       },
       "pages": [
         {
-          "pageType": "list",
+          "__type": "ListPageViewModel",
           "menuTitle": "Импланты",
           "body": {
             "title": "Импланты",

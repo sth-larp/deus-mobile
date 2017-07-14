@@ -13,7 +13,7 @@
  import { LoggingService } from './logging.service';
  import { ILoginListener } from './login-listener';
  import { MonotonicTimeService } from './monotonic-time.service';
- import { ApplicationViewModel, list } from './viewmodel.types';
+ import { ApplicationViewModel } from './viewmodel.types';
 
  export enum UpdateStatus {
   Green,
@@ -157,8 +157,6 @@ export class DataService implements ILoginListener {
   public async setViewModel(viewModel: any) {
     viewModel._id = this._authService.getUsername();
     const viewModelTyped = TypedJSON.parse(JSON.stringify(viewModel), ApplicationViewModel);
-    for (const pageViewModel of viewModelTyped.pages)
-      pageViewModel.pageType = pageViewModel.constructor.name;
     upsert(this._viewModelDb, viewModelTyped);
     this._inMemoryViewmodel = viewModelTyped;
   }
