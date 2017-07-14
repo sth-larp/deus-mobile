@@ -156,9 +156,14 @@ export class DataService implements ILoginListener {
 
   public async setViewModel(viewModel: any) {
     viewModel._id = this._authService.getUsername();
-    const viewModelTyped = TypedJSON.parse(JSON.stringify(viewModel), ApplicationViewModel);
-    upsert(this._viewModelDb, viewModelTyped);
-    this._inMemoryViewmodel = viewModelTyped;
+    try {
+      const viewModelTyped: ApplicationViewModel = TypedJSON.parse(JSON.stringify(viewModel), ApplicationViewModel);
+      upsert(this._viewModelDb, viewModelTyped);
+      this._inMemoryViewmodel = viewModelTyped;
+    } catch (e) {
+      // TODO: Show alert?
+      this._logging.error(`Can't parse or save ApplicationViewModel: ${e}`);
+    }
   }
 
   private pushRefreshModelEvent(): Promise<PouchDB.Core.Response> {
