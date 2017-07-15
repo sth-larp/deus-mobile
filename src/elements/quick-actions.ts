@@ -6,14 +6,14 @@ import { Subscription } from 'rxjs';
 import { Colors, GlobalConfig } from '../config';
 import { PassportPage } from '../pages/passport';
 import { AuthService } from '../services/auth.service';
-import { DataService, UpdateStatus } from '../services/data.service';
+import { DataService } from '../services/data.service';
 import { LocalDataService } from '../services/local-data.service';
 import { LoggingService } from '../services/logging.service';
 import { ILoginListener } from '../services/login-listener';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
+import { ApplicationViewModel } from '../services/viewmodel.types';
 import { formatInteger, formatTime2, formatTime3} from '../utils/string-utils';
 import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-transitions';
-import { ApplicationViewModel } from "../services/viewmodel.types";
 
 @Component({
   selector: 'quick-actions',
