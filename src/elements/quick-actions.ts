@@ -21,7 +21,6 @@ import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-tra
 })
 export class QuickActions implements ILoginListener {
   public hidden: boolean = false;
-  public updateStatusIcon: string = null;
   public hp: number = null;
   public hpIcon: string = null;
   public hpText: string = null;
@@ -32,7 +31,6 @@ export class QuickActions implements ILoginListener {
   public vrTimerColor: string = null;
 
   private _hpSubscription: Subscription = null;
-  private _updateStatusSubscription: Subscription = null;
 
   private _keyboardShowSubscription: Subscription = null;
   private _keyboardHideSubscription: Subscription = null;
@@ -70,11 +68,6 @@ export class QuickActions implements ILoginListener {
       },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
-
-    this._updateStatusSubscription = this._hpSubscription = this._dataService.getUpdateStatus().subscribe(
-      (status) => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
-      (error) => console.error('Cannot get update status: ' + error));
-
     setInterval(() => { this.updateVrStatus(null); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
 
@@ -82,11 +75,6 @@ export class QuickActions implements ILoginListener {
     if (this._hpSubscription) {
       this._hpSubscription.unsubscribe();
       this._hpSubscription = null;
-    }
-
-    if (this._updateStatusSubscription) {
-      this._updateStatusSubscription.unsubscribe();
-      this._updateStatusSubscription = null;
     }
   }
 
@@ -162,19 +150,6 @@ export class QuickActions implements ILoginListener {
     }, 0);
     alert.onWillDismiss(unregisterFn);
     alert.present();
-  }
-
-  public onRefresh() {
-    this._dataService.trySendEvents();
-  }
-
-  private getUpdateStatusIcon(status: UpdateStatus): string {
-    switch (status) {
-      case UpdateStatus.Green: return 'sync-green.svg';
-      case UpdateStatus.Yellow: return 'sync-green.svg';
-      case UpdateStatus.Red: return 'sync-green.svg';
-    }
-    return null;
   }
 
   private updateHp(modelViewJson: ApplicationViewModel) {

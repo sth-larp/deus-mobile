@@ -14,6 +14,7 @@
  import { PlainTextPage } from '../pages/plain-text';
 
  import { ListItem } from '../elements/list-item';
+ import { SyncButton } from '../elements/sync-button';
 
  import { FormsModule, ReactiveFormsModule } from '@angular/forms';
  import { BrowserModule } from '@angular/platform-browser';
@@ -54,6 +55,7 @@
     PassportPage,
     QuickActionButton,
     QuickActions,
+    SyncButton,
   ],
   imports: [
     IonicModule.forRoot(MyApp),
