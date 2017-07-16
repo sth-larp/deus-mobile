@@ -26,7 +26,7 @@ export class SyncButton implements ILoginListener {
     this._authService.removeListener(this);
   }
 
-  public onSuccessfulLogin(_username: string) {
+  public onSuccessfulLogin(_id: string) {
     this._updateStatusSubscription = this._dataService.getUpdateStatus().subscribe(
       (status) => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
       (error) => console.error('Cannot get update status: ' + error));

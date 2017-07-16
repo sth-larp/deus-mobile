@@ -70,7 +70,7 @@ export class EconomyPage {
     this._modalController.create(BillPage, {
       value: {
         amount: this.receiveForm.value.amount,
-        receiverAccount: this._authService.getUsername(),
+        receiverAccount: this._authService.getUserId(),
       },
     }).present();
   }

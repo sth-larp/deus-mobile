@@ -60,7 +60,7 @@ export class QuickActions implements ILoginListener {
     this._keyboardShowSubscription.unsubscribe();
   }
 
-  public onSuccessfulLogin(_username: string) {
+  public onSuccessfulLogin(_id: string) {
     this._hpSubscription = this._dataService.getData().subscribe(
       (json) => {
         this.updateHp(json);

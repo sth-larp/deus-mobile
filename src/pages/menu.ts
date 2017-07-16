@@ -79,7 +79,7 @@ export class MenuPage implements ILoginListener {
       .catch((err) => this._logging.error(JSON.stringify(err)));
   }
 
-  public onSuccessfulLogin(_username: string) {}
+  public onSuccessfulLogin(_id: string) {}
 
   public onLogout() {
     this._navCtrl.setRoot(LoginPage);

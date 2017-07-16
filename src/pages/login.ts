@@ -21,7 +21,7 @@ export class LoginPage {
               private _logging: LoggingService) {
     this.loginForm = this._formBuilder.group({
       // TODO: remove credentials before public testing
-      username: ['vasya', Validators.required],
+      loginOrId: ['vasya', Validators.required],
       password: ['vasya', Validators.required],
     });
   }
@@ -29,7 +29,7 @@ export class LoginPage {
   public login() {
     this._showLoader();
     this._authService.tryLoginAndGetViewmodel(
-      this.loginForm.value.username,
+      this.loginForm.value.loginOrId,
       this.loginForm.value.password).then(
       (viewModel) => {
         this._hideLoader();
@@ -62,12 +62,11 @@ export class LoginPage {
   private _checkIfAlreadyAuthentificated() {
     this._showLoader();
     this._authService.checkExistingCredentials().then(() => {
-      this._logging.info('Found saved token and username, skipping authentification');
+      this._logging.info('Found saved id, skipping authentification');
       this._hideLoader();
       this._goToLoggedInArea();
-    }, (err) => {
-      this._logging.error(JSON.stringify(err));
-      this._logging.info('No token/username found, need to authentificate');
+    }, () => {
+      this._logging.info('No saved id found, need to authentificate');
       this._hideLoader();
     });
   }

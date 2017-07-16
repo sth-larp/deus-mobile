@@ -16,7 +16,7 @@ export class NoOpLoggingService {
 export class LoggingService implements LoggingService, ILoginListener {
   private _loggingDb: PouchDB.Database<{ character: string, level: string, msg: string, timestamp: number }> = null;
   private _loggingDbReplication: PouchDB.Replication.Replication<{}> = null;
-  private _username: string = null;
+  private _userId: string = null;
 
   constructor(private _monotonicTimeService: MonotonicTimeService) {
     // authService.addListener(this);
@@ -45,9 +45,9 @@ export class LoggingService implements LoggingService, ILoginListener {
 
   public getLoggingDb() { return this._loggingDb; }
 
-  public onSuccessfulLogin(username: string) {
-    this._username = username;
-    const localDbName = `${this._username}_logging-dev`;
+  public onSuccessfulLogin(userId: string) {
+    this._userId = userId;
+    const localDbName = `${this._userId}_logging-dev`;
     this._loggingDb = new PouchDB(localDbName);
     this._setUpLoggingDb();
     const replicationOptions: any = {
@@ -60,7 +60,7 @@ export class LoggingService implements LoggingService, ILoginListener {
   }
 
   public onLogout() {
-    this._username = null;
+    this._userId = null;
     if (this._loggingDb) {
       this._loggingDbReplication.cancel();
       this._loggingDbReplication = null;
@@ -69,9 +69,9 @@ export class LoggingService implements LoggingService, ILoginListener {
   }
 
   private _log(msg: string, level: string) {
-    if (this._username) {
+    if (this._userId) {
       this._loggingDb.post(
-        { character: this._username, level, msg, timestamp: this._monotonicTimeService.getUnixTimeMs() },
+        { character: this._userId, level, msg, timestamp: this._monotonicTimeService.getUnixTimeMs() },
       )
         .then((resp) => {
           if (!resp.ok)

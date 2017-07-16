@@ -36,11 +36,11 @@ export class DataService implements ILoginListener {
 
     this._authService.addListener(this);
   }
-  public onSuccessfulLogin(username: string) {
+  public onSuccessfulLogin(userId: string) {
     // TODO: adjust event frequency
     // this._refreshModelUpdateSubscription = Observable.timer(0, 20000).subscribe(() => this.trySendEvents());
-    this._eventsDb = new PouchDB(username + '_events');
-    this._viewModelDb = new PouchDB(username + '_viewmodel');
+    this._eventsDb = new PouchDB(userId + '_events');
+    this._viewModelDb = new PouchDB(userId + '_viewmodel');
   }
 
   public onLogout() {
@@ -62,7 +62,7 @@ export class DataService implements ILoginListener {
   public getData(): Observable<ApplicationViewModel> {
     const persistantAndFutureData: Observable<ApplicationViewModel> = Observable.create((observer) => {
       const changesStream = this._viewModelDb.changes(
-        { live: true, include_docs: true, doc_ids: [this._authService.getUsername()] });
+        { live: true, include_docs: true, doc_ids: [this._authService.getUserId()] });
       changesStream.on('change', (change) => {
         observer.next(change.doc);
       });
@@ -77,14 +77,14 @@ export class DataService implements ILoginListener {
   }
 
   public getCurrentData(): Promise<ApplicationViewModel> {
-    return this._viewModelDb.get(this._authService.getUsername());
+    return this._viewModelDb.get(this._authService.getUserId());
   }
 
   public getUpdateStatus(): Observable<UpdateStatus> {
     return Observable.create((observer) => {
       let lastUpdateTime = 0;
       const changesStream = this._viewModelDb.changes(
-        { live: true, since: 'now', include_docs: true, doc_ids: [this._authService.getUsername()] });
+        { live: true, since: 'now', include_docs: true, doc_ids: [this._authService.getUserId()] });
       changesStream.on('change', (change) => lastUpdateTime = change.doc.timestamp);
 
       const subscription = Observable.timer(0, GlobalConfig.recalculateUpdateStatusEveryMs)
@@ -124,7 +124,7 @@ export class DataService implements ILoginListener {
     const events = alldocsResponse.rows.map((row) => {
       return {
         timestamp: Number(row.doc._id),
-        characterId: this._authService.getUsername(),
+        characterId: this._authService.getUserId(),
         eventType: row.doc.eventType,
         data: row.doc.data,
       };
@@ -132,7 +132,7 @@ export class DataService implements ILoginListener {
     console.info(`Sending ${events.length} events to server`);
     console.debug(JSON.stringify(events));
     const requestBody = JSON.stringify({ events });
-    const fullUrl = GlobalConfig.sendEventsBaseUrl + '/' + this._authService.getUsername();
+    const fullUrl = GlobalConfig.sendEventsBaseUrl + '/' + this._authService.getUserId();
     try {
       const response = await this._http.post(fullUrl, requestBody,
         this._authService.getRequestOptionsWithSavedCredentials()).toPromise();
@@ -155,7 +155,7 @@ export class DataService implements ILoginListener {
   }
 
   public async setViewModel(viewModel: any) {
-    viewModel._id = this._authService.getUsername();
+    viewModel._id = this._authService.getUserId();
     try {
       const viewModelTyped: ApplicationViewModel = TypedJSON.parse(JSON.stringify(viewModel), ApplicationViewModel);
       upsert(this._viewModelDb, viewModelTyped);
@@ -173,7 +173,7 @@ export class DataService implements ILoginListener {
   private makeRefreshModelEvent() {
     return {
       _id: this._time.getUnixTimeMs().toString(),
-      characterId: this._authService.getUsername(),
+      characterId: this._authService.getUserId(),
       eventType: '_RefreshModel',
       data: {},
     };

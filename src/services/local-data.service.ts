@@ -50,6 +50,6 @@ export class LocalDataService {
 
   // Helper functions
   private makeGlobalKey(localKey: string): string {
-    return this._authService.getUsername() + '/' + localKey;
+    return this._authService.getUserId() + '/' + localKey;
   }
 }
