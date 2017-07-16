@@ -1,27 +1,27 @@
-﻿ import * as PouchDB from 'pouchdb';
+﻿import * as PouchDB from 'pouchdb';
 
- import { Injectable } from '@angular/core';
- import { Observable } from 'rxjs/Rx';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
- import { Http } from '@angular/http';
- import { Subscription } from 'rxjs/Subscription';
- import { TypedJSON } from 'typedjson/js/typed-json';
+import { Http } from '@angular/http';
+import { Subscription } from 'rxjs/Subscription';
+import { TypedJSON } from 'typedjson/js/typed-json';
 
- import { GlobalConfig } from '../config';
- import { upsert } from '../utils/pouchdb-utils';
- import { AuthService } from './auth.service';
- import { LoggingService } from './logging.service';
- import { ILoginListener } from './login-listener';
- import { MonotonicTimeService } from './monotonic-time.service';
- import { ApplicationViewModel } from './viewmodel.types';
+import { GlobalConfig } from '../config';
+import { upsert } from '../utils/pouchdb-utils';
+import { AuthService } from './auth.service';
+import { LoggingService } from './logging.service';
+import { ILoginListener } from './login-listener';
+import { MonotonicTimeService } from './monotonic-time.service';
+import { ApplicationViewModel, ListPageViewModel } from './viewmodel.types';
 
- export enum UpdateStatus {
+export enum UpdateStatus {
   Green,
   Yellow,
   Red,
 }
 
- @Injectable()
+@Injectable()
 export class DataService implements ILoginListener {
   private _inMemoryViewmodel: ApplicationViewModel = null;
 
@@ -68,8 +68,8 @@ export class DataService implements ILoginListener {
       });
       return () => { changesStream.cancel(); };
     });
-     // TODO: Rework code to make sure that this._inMemoryViewmodel is always populated
-     // (currently it isn't in case of offline login).
+    // TODO: Rework code to make sure that this._inMemoryViewmodel is always populated
+    // (currently it isn't in case of offline login).
     if (this._inMemoryViewmodel)
       return Observable.of(this._inMemoryViewmodel).concat(persistantAndFutureData);
     else
