@@ -29,7 +29,7 @@ export class LoginPage {
   public login() {
     this._showLoader();
     this._authService.tryLoginAndGetViewmodel(
-      this.loginForm.value.loginOrId,
+      this.loginForm.value.loginOrId.toLowerCase(),
       this.loginForm.value.password).then(
       (viewModel) => {
         this._hideLoader();
