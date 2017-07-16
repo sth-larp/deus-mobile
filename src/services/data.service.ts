@@ -161,8 +161,11 @@ export class DataService implements ILoginListener {
       upsert(this._viewModelDb, viewModelTyped);
       this._inMemoryViewmodel = viewModelTyped;
     } catch (e) {
-      // TODO: Show alert?
       this._logging.error(`Can't parse or save ApplicationViewModel: ${e}`);
+      this._logging.debug(`ViewModel received from server: ${JSON.stringify(viewModel)}`);
+      const errorViewModel = this.makeErrorApplicationViewModel();
+      upsert(this._viewModelDb, errorViewModel);
+      this._inMemoryViewmodel = errorViewModel;
     }
   }
 
@@ -188,5 +191,35 @@ export class DataService implements ILoginListener {
     });
 
     await Promise.all(alldocsBeforeResponse.rows.map((row) => this._eventsDb.remove(row.doc._id, row.value.rev)));
+  }
+
+  private makeErrorApplicationViewModel(): ApplicationViewModel {
+    const errorPage: ListPageViewModel = {
+      __type: 'ListPageViewModel',
+      menuTitle: 'Общая информация',
+      body: {
+        title: 'Ошибка',
+        items: [
+          { text: 'Получены некоректные данные с сервера.' },
+          { text: 'Пожалуйста, обратитесь к МГ.' },
+        ],
+      },
+    };
+
+    return {
+      _id: this._authService.getUserId(),
+      timestamp: this._time.getUnixTimeMs(),
+      general: {maxSecondsInVr: 0},
+      menu: { characterName: this._authService.getUserId() },
+      toolbar: { hitPoints: 9000, maxHitPoints: 9000 },
+      passportScreen: { corporation: 'Ошибка', email: 'Ошибка', fullName: 'Ошибка', id: this._authService.getUserId() },
+      pages: [
+        errorPage,
+        {
+          __type: 'TechnicalInfoPageViewModel',
+          menuTitle: 'Техническая информация',
+        },
+      ],
+    };
   }
 }
