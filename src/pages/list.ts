@@ -1,9 +1,41 @@
 import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams, Refresher, Segment, ToastController } from 'ionic-angular';
+import { Subscription } from 'rxjs/Rx';
+
 import { DataService } from '../services/data.service';
 import { LocalDataService } from '../services/local-data.service';
-import { ListBody } from '../services/viewmodel.types';
-import { UpdatablePage } from './updatable';
+import { ListBody, PageViewModel } from '../services/viewmodel.types';
+
+export abstract class UpdatablePage {
+  private _subscription: Subscription = null;
+  constructor(protected _title: string,
+              protected _dataService: DataService,
+              protected _navCtrl: NavController) {
+  }
+
+  // tslint:disable-next-line:no-unused-variable
+  public ionViewWillEnter() {
+    this._subscription = this._dataService.getData().subscribe((json) => {
+      const thisPageData = json.pages.find((p: PageViewModel) => p.menuTitle == this._title);
+      if (thisPageData)
+        this.setBody((thisPageData as any).body);
+      else {
+        console.error('ААААААА');
+        this._navCtrl.setRoot(ListPage, {id: 'Общая информация'});
+      }
+    });
+  }
+
+  // tslint:disable-next-line:no-unused-variable
+  public ionViewDidLeave() {
+    if (this._subscription) {
+      this._subscription.unsubscribe();
+      this._subscription = null;
+    }
+  }
+
+  protected abstract setBody(body: any);
+}
 
 @Component({
   selector: 'page-list',
@@ -89,3 +121,4 @@ export class ListPage extends UpdatablePage {
     this._localDataService.setItem(storageKey, modelIds);
   }
 }
+

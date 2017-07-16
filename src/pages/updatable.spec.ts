@@ -5,7 +5,7 @@ import {} from 'jasmine';
 import { Observable } from 'rxjs/Rx';
 import * as TypeMoq from 'typemoq';
 import { DataService } from '../services/data.service';
-import { UpdatablePage } from './updatable';
+import { ListPage, UpdatablePage } from './list';
 
 class TestUpdatablePage extends UpdatablePage {
   public body: any = null;
@@ -114,20 +114,16 @@ describe('Updatable Page', () => {
     expect(page.body).toEqual('body1');
   }));
 
-  // TODO: Understand what to do with circular dependency
-  // ListPage <---> UpdatablePage and fix it.
-  /*
-  it("Redirectes to start page if current page is deleted", fakeAsync(() => {
-    let page = new TestUpdatablePage(mockDataService.object, mockNavCtrl.object);
-    let observable = Observable.interval(1).take(2).map(i => statesDeletion[i]);
-    mockDataService.setup(x => x.getData()).returns(() => observable);
+  it('Redirectes to start page if current page is deleted', fakeAsync(() => {
+    const page = new TestUpdatablePage(mockDataService.object, mockNavCtrl.object);
+    const observable = Observable.interval(1).take(2).map((i) => statesDeletion[i]);
+    mockDataService.setup((x) => x.getData()).returns(() => observable);
     expect(page.body).toBeNull();
     page.ionViewWillEnter();
     tick(1); // went to state 1
-    expect(page.body).toEqual("body1");
+    expect(page.body).toEqual('body1');
     tick(1); // went to state 2, page deleted, expected to go to start page
-    mockNavCtrl.verify(x => x.setRoot(PlaygroundPage), TypeMoq.Times.once());
+    mockNavCtrl.verify((x) => x.setRoot(ListPage, TypeMoq.It.isValue({id: 'Общая информация'})), TypeMoq.Times.once());
     page.ionViewDidLeave();
   }));
-  */
 });
