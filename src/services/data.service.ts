@@ -29,6 +29,8 @@ export class DataService implements ILoginListener {
   private _eventsDb: PouchDB.Database<{ eventType: string; data: any; }> = null;
   private _viewModelDb: PouchDB.Database<ApplicationViewModel> = null;
 
+  private _getDataObservable: Observable<ApplicationViewModel>;
+
   constructor(private _logging: LoggingService,
               private _time: MonotonicTimeService,
               private _authService: AuthService,
@@ -41,6 +43,16 @@ export class DataService implements ILoginListener {
     // this._refreshModelUpdateSubscription = Observable.timer(0, 20000).subscribe(() => this.trySendEvents());
     this._eventsDb = new PouchDB(userId + '_events');
     this._viewModelDb = new PouchDB(userId + '_viewmodel');
+    this._getDataObservable = Observable.create((observer) => {
+      if (this._inMemoryViewmodel)
+        observer.next(this._inMemoryViewmodel);
+      const changesStream = this._viewModelDb.changes(
+        { live: true, include_docs: true, doc_ids: [this._authService.getUserId()] });
+      changesStream.on('change', (change) => {
+        observer.next(change.doc);
+      });
+      return () => { changesStream.cancel(); };
+    });
   }
 
   public onLogout() {
@@ -57,23 +69,11 @@ export class DataService implements ILoginListener {
       this._refreshModelUpdateSubscription = null;
     }
     this._inMemoryViewmodel = null;
+    this._getDataObservable = null;
   }
 
   public getData(): Observable<ApplicationViewModel> {
-    const persistantAndFutureData: Observable<ApplicationViewModel> = Observable.create((observer) => {
-      const changesStream = this._viewModelDb.changes(
-        { live: true, include_docs: true, doc_ids: [this._authService.getUserId()] });
-      changesStream.on('change', (change) => {
-        observer.next(change.doc);
-      });
-      return () => { changesStream.cancel(); };
-    });
-    // TODO: Rework code to make sure that this._inMemoryViewmodel is always populated
-    // (currently it isn't in case of offline login).
-    if (this._inMemoryViewmodel)
-      return Observable.of(this._inMemoryViewmodel).concat(persistantAndFutureData);
-    else
-      return persistantAndFutureData;
+    return this._getDataObservable;
   }
 
   public getCurrentData(): Promise<ApplicationViewModel> {
