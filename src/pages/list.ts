@@ -106,9 +106,9 @@ export class ListPage extends UpdatablePage {
     const readIds: Set<string> = readIdsArray != null ? new Set(readIdsArray) : new Set();
     const modelIds: string[] = [];
     this.body.items.forEach((item) => {
-      if (item.vid) {
-        modelIds.push(item.vid);
-        if (!readIds.has(item.vid)) {
+      if (item.viewId) {
+        modelIds.push(item.viewId);
+        if (!readIds.has(item.viewId)) {
           item.unread = true;
           this.hasUnread = true;
         }
@@ -121,4 +121,3 @@ export class ListPage extends UpdatablePage {
     this._localDataService.setItem(storageKey, modelIds);
   }
 }
-

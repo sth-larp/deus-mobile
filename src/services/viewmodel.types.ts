@@ -44,6 +44,9 @@ export class PageViewModel {
   @JsonMember({isRequired: true})
   // tslint:disable-next-line:variable-name
   public __type: string;
+
+  @JsonMember
+  public viewId?: string;
 }
 
 @JsonObject
@@ -100,7 +103,7 @@ export class ListItemData {
   public details?: DetailsData;
 
   @JsonMember
-  public vid?: string;
+  public viewId?: string;
 
   @JsonMember
   public tag?: string;
