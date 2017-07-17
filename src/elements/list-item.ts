@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
 import { DetailsPage } from '../pages/details';
 import { DetailsData, ListItemData } from '../services/viewmodel.types';
@@ -12,6 +12,8 @@ export class ListItem {
   public data: ListItemData;
   @Input()
   public filter: string;
+  @Output()
+  public deleteMe: EventEmitter<string> = new EventEmitter();
 
   constructor(private _modalCtrl: ModalController) { }
 
@@ -36,5 +38,9 @@ export class ListItem {
   public openDetails(details: DetailsData) {
     const accessModal = this._modalCtrl.create(DetailsPage, { value: details });
     accessModal.present();
+  }
+
+  public onDelete() {
+    this.deleteMe.emit(this.data.viewId);
   }
 }

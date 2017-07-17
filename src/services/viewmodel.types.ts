@@ -99,8 +99,13 @@ export class ListItemData {
   @JsonMember
   public icon?: string;
 
+  // Only for normal lists (not sublists)
   @JsonMember
   public details?: DetailsData;
+
+  // Only for sublists
+  @JsonMember
+  public deletable?: boolean;
 
   @JsonMember
   public viewId?: string;

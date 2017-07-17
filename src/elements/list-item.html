@@ -3,16 +3,17 @@
   <img style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' item-left>
   <h2 [ngClass]="{'unread-text': data.unread}">{{data.text}}</h2>
   <p>{{data.subtext}}</p>
-  <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}">
-  </div>
+  <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}"></div>
   <ion-note item-right [ngStyle]="{'color': getValueColor()}"><b>{{data.value}}</b></ion-note>
 </button>
 <ion-item *ngIf="!data.details">
   <img style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' item-left>
   <h2 [ngClass]="{'unread-text': data.unread}">{{data.text}}</h2>
   <p>{{data.subtext}}</p>
-  <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}">
-  </div>
+  <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}"></div>
   <ion-note item-right [ngStyle]="{'color': getValueColor()}"><b>{{data.value}}</b></ion-note>
+  <button *ngIf="data.deletable" ion-button item-right icon-only clear color="standard" (click)="onDelete()">
+    <ion-icon name="trash"></ion-icon>
+  </button>
 </ion-item>
 </div>
