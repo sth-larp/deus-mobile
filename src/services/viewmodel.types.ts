@@ -45,8 +45,8 @@ export class PageViewModel {
   // tslint:disable-next-line:variable-name
   public __type: string;
 
-  @JsonMember
-  public viewId?: string;
+  @JsonMember({isRequired: true})
+  public viewId: string;
 }
 
 @JsonObject

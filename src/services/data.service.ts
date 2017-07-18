@@ -197,6 +197,7 @@ export class DataService implements ILoginListener {
     const errorPage: ListPageViewModel = {
       __type: 'ListPageViewModel',
       menuTitle: 'Общая информация',
+      viewId: 'page:General',
       body: {
         title: 'Ошибка',
         items: [
@@ -217,6 +218,7 @@ export class DataService implements ILoginListener {
         errorPage,
         {
           __type: 'TechnicalInfoPageViewModel',
+          viewId: 'page:Error',
           menuTitle: 'Техническая информация',
         },
       ],
