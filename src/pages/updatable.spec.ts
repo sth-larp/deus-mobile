@@ -12,7 +12,7 @@ class TestUpdatablePage extends UpdatablePage {
   constructor(dataService: DataService, navCtrl: NavController) {
     super('Test Title', dataService, navCtrl);
   }
-  public setBody(body: any) { this.body = body; }
+  public setBody(viewId: string, body: any) { this.body = body; }
 }
 
 describe('Updatable Page', () => {
