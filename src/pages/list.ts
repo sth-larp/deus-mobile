@@ -18,7 +18,7 @@ export abstract class UpdatablePage {
     this._subscription = this._dataService.getData().subscribe((json) => {
       const thisPageData = json.pages.find((p: PageViewModel) => p.menuTitle == this._title);
       if (thisPageData)
-        this.setBody(thisPageData.viewId, (thisPageData as any).body);
+        this.setBody((thisPageData as any).body);
       else {
         console.error('ААААААА');
         this._navCtrl.setRoot(ListPage, {id: 'Общая информация'});
@@ -34,7 +34,7 @@ export abstract class UpdatablePage {
     }
   }
 
-  protected abstract setBody(viewId: string, body: any);
+  protected abstract setBody(body: any);
 }
 
 @Component({
@@ -42,8 +42,7 @@ export abstract class UpdatablePage {
   templateUrl: 'list.html',
 })
 export class ListPage extends UpdatablePage {
-  public pageId: string = null;
-  public body: ListBody = { title: '', items: [], filters: [] };
+  public body: ListBody = { pageId: '', title: '', items: [], filters: [] };
   public currentFilter = '';
   public filters: string[] = [];
   // TODO: Highlight pages that has unread item in the menu
@@ -58,12 +57,6 @@ export class ListPage extends UpdatablePage {
               private _localDataService: LocalDataService,
               private _toastCtrl: ToastController) {
     super(navParams.data.id, dataService, navCtrl);
-  }
-
-  // tslint:disable-next-line:no-unused-variable
-  public ionViewDidLeave() {
-    super.ionViewDidLeave();
-    this.markAllRead();
   }
 
   public doRefresh(refresher: Refresher) {
@@ -83,11 +76,10 @@ export class ListPage extends UpdatablePage {
     this.currentFilter = filter;
   }
 
-  protected setBody(viewId: string, body: any) {
-    this.body = body;
-    this.pageId = viewId;
+  protected setBody(body: any) {
     // If any of items has icon, we want to shift all of them
     // by setting hasIcon to every one of them.
+    this.body = body;
     const hasIcon = this.body.items.some((item) => item.icon && item.icon.length > 0);
     this.body.items.forEach((item) => item.hasIcon = hasIcon);
     this.updateUnread();
@@ -107,29 +99,25 @@ export class ListPage extends UpdatablePage {
 
   private async updateUnread() {
     this.hasUnread = false;
-    // TODO: Also highlight changes. Use map viewId->revision instead.
-    const storageKey = 'unread/' + this.pageId;
+    // TODO: Also highlight changes. Use map vid->revision instead.
+    const pageId = this.body.pageId;
+    const storageKey = 'unread/' + pageId;
     const readIdsArray: string[] = await this._localDataService.getItemOrNull(storageKey);
     const readIds: Set<string> = readIdsArray != null ? new Set(readIdsArray) : new Set();
-    this.body.items.forEach((item) => {
-      if (item.viewId) {
-        item.unread = !readIds.has(item.viewId);
-        if (item.unread)
-          item.unread = true;
-      }
-      // item.unread = (Math.random() > 0.5);  // for UI testing
-    });
-  }
-
-  private async markAllRead() {
-    const storageKey = 'unread/' + this.pageId;
     const modelIds: string[] = [];
     this.body.items.forEach((item) => {
-      if (item.viewId)
+      if (item.viewId) {
         modelIds.push(item.viewId);
+        if (!readIds.has(item.viewId)) {
+          item.unread = true;
+          this.hasUnread = true;
+        }
+      }
+      // item.unread = (Math.random() > 0.5);  // for UI testing
     });
     // It's by design that IDs removed from the model are also removed
     // form the list of read. If a condition is removed and then re-added,
     // user should be notified again.
-    this._localDataService.setItem(storageKey, modelIds);  }
+    this._localDataService.setItem(storageKey, modelIds);
+  }
 }

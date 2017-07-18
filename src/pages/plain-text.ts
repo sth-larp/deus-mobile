@@ -20,7 +20,7 @@ export class PlainTextPage extends UpdatablePage {
     super(navParams.data.id, dataService, navCtrl);
   }
 
-  protected setBody(viewId: string, body: any) {
+  protected setBody(body: any) {
     this.body = body;
   }
 }
