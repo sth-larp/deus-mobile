@@ -4,7 +4,7 @@ set -e
 changes=$(git log -1 --pretty=%B)
 
 if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
-  file_to_upload="platforms/ios/build/device/Deus LARP.ipa"
+  file_to_upload="platforms/ios/build/device/Deus LARP 2017.ipa"
 fi
 
 if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
