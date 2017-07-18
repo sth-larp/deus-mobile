@@ -8,7 +8,7 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 fi
 
 if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
-  file_to_upload="platforms/android/build/outputs/apk/android-release.apk"
+  file_to_upload="platforms/android/build/outputs/apk/android-armv7-release.apk"
 fi
 
 curl \
@@ -16,7 +16,7 @@ curl \
   -F "notes=$changes" \
   -F "notes_type=0" \
   -F "status=2" \
-  -F "release_type=3" \
+  -F "release_type=2" \
   -H "X-HockeyAppToken: $HOCKEY_APP_TOKEN" \
   https://rink.hockeyapp.net/api/2/apps/upload
 

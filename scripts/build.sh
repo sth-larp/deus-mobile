@@ -13,5 +13,6 @@ if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
   echo "key.alias=deus-larp" >> ./platforms/android/release-signing.properties
   echo key.store.password=$CERT_PASSWORD >> ./platforms/android/release-signing.properties
   echo key.alias.password=$CERT_PASSWORD >> ./platforms/android/release-signing.properties
+  ionic cordova plugin add cordova-plugin-crosswalk-webview
   ionic cordova build android --device --release
 fi
