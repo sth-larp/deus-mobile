@@ -11,7 +11,6 @@
  import { ListPage } from '../pages/list';
  import { LoginPage } from '../pages/login';
  import { MenuPage } from '../pages/menu';
- import { PlainTextPage } from '../pages/plain-text';
 
  import { ListItem } from '../elements/list-item';
  import { SyncButton } from '../elements/sync-button';
@@ -45,7 +44,6 @@
     ListItem,
     QrCode,
     LoginPage,
-    PlainTextPage,
     EconomyPage,
     BillPage,
     MenuPage,
@@ -69,7 +67,6 @@
     MyApp,
     ListPage,
     LoginPage,
-    PlainTextPage,
     EconomyPage,
     BillPage,
     MenuPage,

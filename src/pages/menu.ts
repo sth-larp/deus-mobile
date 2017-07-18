@@ -10,19 +10,19 @@
  import { EconomyPage } from './economy';
  import { ListPage } from './list';
  import { LoginPage } from './login';
- import { PlainTextPage } from './plain-text';
  import { TechnicalInfoPage } from './technical-info';
 
  class PageData {
   public root: any;
   public menuTitle: string;
+  public viewId: string;
 }
 
  @Component({
   templateUrl: 'menu.html',
 })
 export class MenuPage implements ILoginListener {
-  public pages: PageData[] = [{root: ListPage, menuTitle: ''}];
+  public pages: PageData[] = [{root: ListPage, menuTitle: '', viewId: ''}];
   public characterName: string = null;
 
   @ViewChild(Nav) private _nav: Nav;
@@ -37,7 +37,6 @@ export class MenuPage implements ILoginListener {
               private _firebaseService: FirebaseService,
               navParams: NavParams) {
     this._pageTypeToPage.set('ListPageViewModel', ListPage);
-    this._pageTypeToPage.set('PlainTextPageViewModel', PlainTextPage);
     this._pageTypeToPage.set('EconomyPageViewModel', EconomyPage);
     this._pageTypeToPage.set('TechnicalInfoPageViewModel', TechnicalInfoPage);
     if (navParams.data.viewModel) {
@@ -60,7 +59,7 @@ export class MenuPage implements ILoginListener {
         this.characterName = json.menu.characterName;
         this.pages = [];
         for (const p of json.pages)
-          this.pages.push({ root: this._pageTypeToPage.get(p.__type), menuTitle: p.menuTitle });
+          this.pages.push({ root: this._pageTypeToPage.get(p.__type), menuTitle: p.menuTitle, viewId: p.viewId });
       },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
@@ -75,7 +74,7 @@ export class MenuPage implements ILoginListener {
   }
 
   public openPage(page: PageData) {
-    this._nav.setRoot(page.root, { id: page.menuTitle })
+    this._nav.setRoot(page.root, { id: page.viewId })
       .catch((err) => this._logging.error(JSON.stringify(err)));
   }
 

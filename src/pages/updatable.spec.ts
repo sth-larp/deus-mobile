@@ -12,7 +12,7 @@ class TestUpdatablePage extends UpdatablePage {
   constructor(dataService: DataService, navCtrl: NavController) {
     super('Test Title', dataService, navCtrl);
   }
-  public setBody(viewId: string, body: any) { this.body = body; }
+  public setBody(body: any) { this.body = body; }
 }
 
 describe('Updatable Page', () => {
@@ -22,24 +22,28 @@ describe('Updatable Page', () => {
   const myPageData1 = {
     pageType: 'Test',
     menuTitle: 'Test Title',
+    viewId: 'Test Title',
     body: 'body1',
   };
 
   const myPageData2 = {
     pageType: 'Test',
     menuTitle: 'Test Title',
+    viewId: 'Test Title',
     body: 'body2',
   };
 
   const someOtherPageData1 = {
     pageType: 'Other1',
     menuTitle: 'Other1 title',
+    viewId: 'Other1 title',
     body: {},
   };
 
   const someOtherPageData2 = {
     pageType: 'Other2',
     menuTitle: 'Other2 title dafuw',
+    viewId: 'Other2 title dafuw',
     body: {},
   };
 
@@ -123,7 +127,7 @@ describe('Updatable Page', () => {
     tick(1); // went to state 1
     expect(page.body).toEqual('body1');
     tick(1); // went to state 2, page deleted, expected to go to start page
-    mockNavCtrl.verify((x) => x.setRoot(ListPage, TypeMoq.It.isValue({id: 'Общая информация'})), TypeMoq.Times.once());
+    mockNavCtrl.verify((x) => x.setRoot(ListPage, TypeMoq.It.isValue({id: 'page:general'})), TypeMoq.Times.once());
     page.ionViewDidLeave();
   }));
 });

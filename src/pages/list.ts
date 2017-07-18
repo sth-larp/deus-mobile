@@ -8,7 +8,7 @@ import { ListBody, PageViewModel } from '../services/viewmodel.types';
 
 export abstract class UpdatablePage {
   private _subscription: Subscription = null;
-  constructor(protected _title: string,
+  constructor(protected _viewId: string,
               protected _dataService: DataService,
               protected _navCtrl: NavController) {
   }
@@ -16,11 +16,11 @@ export abstract class UpdatablePage {
   // tslint:disable-next-line:no-unused-variable
   public ionViewWillEnter() {
     this._subscription = this._dataService.getData().subscribe((json) => {
-      const thisPageData = json.pages.find((p: PageViewModel) => p.menuTitle == this._title);
+      const thisPageData = json.pages.find((p: PageViewModel) => p.viewId == this._viewId);
       if (thisPageData)
-        this.setBody(thisPageData.viewId, (thisPageData as any).body);
+        this.setBody((thisPageData as any).body);
       else {
-        this._navCtrl.setRoot(ListPage, {id: 'Общая информация'});
+        this._navCtrl.setRoot(ListPage, {id: 'page:general'});
       }
     });
   }
@@ -33,7 +33,7 @@ export abstract class UpdatablePage {
     }
   }
 
-  protected abstract setBody(viewId: string, body: any);
+  protected abstract setBody(body: any);
 }
 
 @Component({
@@ -41,7 +41,6 @@ export abstract class UpdatablePage {
   templateUrl: 'list.html',
 })
 export class ListPage extends UpdatablePage {
-  public pageId: string = null;
   public body: ListBody = { title: '', items: [], filters: [] };
   public currentFilter = '';
   public filters: string[] = [];
@@ -82,9 +81,8 @@ export class ListPage extends UpdatablePage {
     this.currentFilter = filter;
   }
 
-  protected setBody(viewId: string, body: any) {
+  protected setBody(body: any) {
     this.body = body;
-    this.pageId = viewId;
     // If any of items has icon, we want to shift all of them
     // by setting hasIcon to every one of them.
     const hasIcon = this.body.items.some((item) => item.icon && item.icon.length > 0);
@@ -107,7 +105,7 @@ export class ListPage extends UpdatablePage {
   private async updateUnread() {
     this.hasUnread = false;
     // TODO: Also highlight changes. Use map viewId->revision instead.
-    const storageKey = 'unread/' + this.pageId;
+    const storageKey = 'unread/' + this._viewId;
     const readIdsArray: string[] = await this._localDataService.getItemOrNull(storageKey);
     const readIds: Set<string> = readIdsArray != null ? new Set(readIdsArray) : new Set();
     this.body.items.forEach((item) => {
@@ -121,7 +119,7 @@ export class ListPage extends UpdatablePage {
   }
 
   private async markAllRead() {
-    const storageKey = 'unread/' + this.pageId;
+    const storageKey = 'unread/' + this._viewId;
     const modelIds: string[] = [];
     this.body.items.forEach((item) => {
       if (item.viewId)
@@ -130,5 +128,6 @@ export class ListPage extends UpdatablePage {
     // It's by design that IDs removed from the model are also removed
     // form the list of read. If a condition is removed and then re-added,
     // user should be notified again.
-    this._localDataService.setItem(storageKey, modelIds);  }
+    this._localDataService.setItem(storageKey, modelIds);
+  }
 }
