@@ -1,24 +1,23 @@
 <!-- TODO(Andrei): Is it a good idea to use svg directly? -->
-<ion-footer *ngIf="!hidden">
-  <ion-toolbar>
-    <ion-grid no-padding class="button-group">
-      <ion-row>
-        <ion-col>
-          <quick-action-button icon="scan-qr-code.svg" (click)="onBarcode()"></quick-action-button>
-        </ion-col>
-        <ion-col>
-          <quick-action-button icon="generate-id-qr-code.svg" (click)="onId()"></quick-action-button>
-        </ion-col>
-        <ion-col>
-          <quick-action-button [icon]="hpIcon" [text]="hpText" [textColor]="hpTextColor" (click)="onHp()"></quick-action-button>
-        </ion-col>
-        <ion-col>
-          <quick-action-button [icon]="vrIcon" [text]="vrTimer" [textColor]="vrTimerColor" (click)="onVr()"></quick-action-button>
-        </ion-col>
-        <ion-col>
-          <quick-action-button icon="notify-none.svg"></quick-action-button>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </ion-toolbar>
-</ion-footer>
+<ion-toolbar *ngIf="!hidden">
+  <ion-grid no-padding class="button-group">
+    <ion-row>
+      <ion-col>
+        <quick-action-button icon="scan-qr-code.svg" (click)="onBarcode()"></quick-action-button>
+      </ion-col>
+      <ion-col>
+        <quick-action-button icon="generate-id-qr-code.svg" (click)="onId()"></quick-action-button>
+      </ion-col>
+      <ion-col>
+        <quick-action-button [icon]="hpIcon" [text]="hpText" [textColor]="hpTextColor" (click)="onHp()"></quick-action-button>
+      </ion-col>
+      <ion-col>
+        <quick-action-button [icon]="vrIcon" [text]="vrTimer" [textColor]="vrTimerColor" (click)="onVr()"></quick-action-button>
+      </ion-col>
+      <ion-col>
+        <quick-action-button icon="notify-none.svg"></quick-action-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-toolbar>
+
