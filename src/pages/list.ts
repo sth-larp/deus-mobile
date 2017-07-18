@@ -20,7 +20,6 @@ export abstract class UpdatablePage {
       if (thisPageData)
         this.setBody((thisPageData as any).body);
       else {
-        console.error('ААААААА');
         this._navCtrl.setRoot(ListPage, {id: 'Общая информация'});
       }
     });
