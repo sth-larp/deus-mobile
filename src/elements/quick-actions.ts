@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { Keyboard } from '@ionic-native/keyboard';
-import { ActionSheetController, AlertController, Config, ModalController, Platform } from 'ionic-angular';
+import { ActionSheetController, AlertController, Config,
+  ModalController, NavController, Platform } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 import { Colors, GlobalConfig } from '../config';
+import { ListPage } from '../pages/list';
 import { PassportPage } from '../pages/passport';
 import { AuthService } from '../services/auth.service';
 import { DataService } from '../services/data.service';
@@ -43,6 +45,7 @@ export class QuickActions implements ILoginListener {
               private _platform: Platform,
               private _actionSheetController: ActionSheetController,
               private _alertController: AlertController,
+              private _navController: NavController,
               private _logging: LoggingService,
               private _keyboard: Keyboard,
               private _config: Config) {
@@ -150,6 +153,10 @@ export class QuickActions implements ILoginListener {
     }, 0);
     alert.onWillDismiss(unregisterFn);
     alert.present();
+  }
+
+  public onNotifications() {
+    this._navController.setRoot(ListPage, { id: 'page:changes' });
   }
 
   private updateHp(modelViewJson: ApplicationViewModel) {

@@ -45,8 +45,8 @@ export class PageViewModel {
   // tslint:disable-next-line:variable-name
   public __type: string;
 
-  @JsonMember
-  public viewId?: string;
+  @JsonMember({isRequired: true})
+  public viewId: string;
 }
 
 @JsonObject
@@ -121,10 +121,6 @@ export class ListItemData {
 
 @JsonObject
 export class ListBody {
-  // TODO(Andrei): Make required
-  @JsonMember
-  public pageId?: string;
-
   @JsonMember({isRequired: true})
   public title: string;
 

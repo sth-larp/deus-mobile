@@ -62,6 +62,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
       "pages": [
         {
           "__type": "ListPageViewModel",
+          "viewId": "page:general",
           "menuTitle": "Общая информация",
           "body": {
             "title": "Общая информация",
@@ -100,6 +101,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
         },
         {
           "__type": "ListPageViewModel",
+          "viewId": "page:memory",
           "menuTitle": "Воспоминания",
           "body": {
             "title": "Воспоминания",
@@ -123,6 +125,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
         },
         {
           "__type": "ListPageViewModel",
+          "viewId": "page:conditions",
           "menuTitle": "Состояния",
           "body": {
             "title": "Ваши состояния",
@@ -163,6 +166,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
         },
         {
           "__type": "ListPageViewModel",
+          "viewId": "page:implants",
           "menuTitle": "Импланты",
           "body": {
             "title": "Импланты",
@@ -226,10 +230,12 @@ describe('ViewModel subtypes parsing from JSON', () => {
         },
         {
           "__type": "EconomyPageViewModel",
+          "viewId": "page:economy",
           "menuTitle": "Экономика"
         },
         {
           "__type": "TechnicalInfoPageViewModel",
+          "viewId": "page:technicalinfo",
           "menuTitle": "Техническая инфа"
         }
       ]
