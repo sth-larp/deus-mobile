@@ -1,30 +1,35 @@
-﻿ import * as PouchDB from 'pouchdb';
+﻿import * as PouchDB from 'pouchdb';
 
- import { Injectable } from '@angular/core';
- import { Observable } from 'rxjs/Rx';
+import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs/Rx';
 
- import { Http } from '@angular/http';
- import { Subscription } from 'rxjs/Subscription';
- import { GlobalConfig } from '../config';
- import { upsert } from '../utils/pouchdb-utils';
- import { AuthService } from './auth.service';
- import { LoggingService } from './logging.service';
- import { ILoginListener } from './login-listener';
- import { MonotonicTimeService } from './monotonic-time.service';
+import { Http } from '@angular/http';
+import { Subscription } from 'rxjs/Subscription';
+import { TypedJSON } from 'typedjson/js/typed-json';
 
- export enum UpdateStatus {
+import { GlobalConfig } from '../config';
+import { upsert } from '../utils/pouchdb-utils';
+import { AuthService } from './auth.service';
+import { LoggingService } from './logging.service';
+import { ILoginListener } from './login-listener';
+import { MonotonicTimeService } from './monotonic-time.service';
+import { ApplicationViewModel, ListPageViewModel } from './viewmodel.types';
+
+export enum UpdateStatus {
   Green,
   Yellow,
   Red,
 }
 
- @Injectable()
+@Injectable()
 export class DataService implements ILoginListener {
-  private _inMemoryViewmodel: any = null;
+  private _inMemoryViewmodel: ApplicationViewModel = null;
 
   private _refreshModelUpdateSubscription: Subscription = null;
   private _eventsDb: PouchDB.Database<{ eventType: string; data: any; }> = null;
-  private _viewModelDb: PouchDB.Database<{ timestamp: number }> = null;
+  private _viewModelDb: PouchDB.Database<ApplicationViewModel> = null;
+
+  private _getDataObservable: Observable<ApplicationViewModel>;
 
   constructor(private _logging: LoggingService,
               private _time: MonotonicTimeService,
@@ -33,11 +38,21 @@ export class DataService implements ILoginListener {
 
     this._authService.addListener(this);
   }
-  public onSuccessfulLogin(username: string) {
+  public onSuccessfulLogin(userId: string) {
     // TODO: adjust event frequency
     // this._refreshModelUpdateSubscription = Observable.timer(0, 20000).subscribe(() => this.trySendEvents());
-    this._eventsDb = new PouchDB(username + '_events');
-    this._viewModelDb = new PouchDB(username + '_viewmodel');
+    this._eventsDb = new PouchDB(userId + '_events');
+    this._viewModelDb = new PouchDB(userId + '_viewmodel');
+    this._getDataObservable = Observable.create((observer) => {
+      if (this._inMemoryViewmodel)
+        observer.next(this._inMemoryViewmodel);
+      const changesStream = this._viewModelDb.changes(
+        { live: true, include_docs: true, doc_ids: [this._authService.getUserId()] });
+      changesStream.on('change', (change) => {
+        observer.next(change.doc);
+      });
+      return () => { changesStream.cancel(); };
+    });
   }
 
   public onLogout() {
@@ -54,34 +69,22 @@ export class DataService implements ILoginListener {
       this._refreshModelUpdateSubscription = null;
     }
     this._inMemoryViewmodel = null;
+    this._getDataObservable = null;
   }
 
-  public getData(): Observable<any> {
-    const persistantAndFutureData: Observable<any> = Observable.create((observer) => {
-      const changesStream = this._viewModelDb.changes(
-        { live: true, include_docs: true, doc_ids: [this._authService.getUsername()] });
-      changesStream.on('change', (change) => {
-        observer.next(change.doc);
-      });
-      return () => { changesStream.cancel(); };
-    });
-     // TODO: Rework code to make sure that this._inMemoryViewmodel is always populated
-     // (currently it isn't in case of offline login).
-    if (this._inMemoryViewmodel)
-      return Observable.of(this._inMemoryViewmodel).concat(persistantAndFutureData);
-    else
-      return persistantAndFutureData;
+  public getData(): Observable<ApplicationViewModel> {
+    return this._getDataObservable;
   }
 
-  public getCurrentData(): Promise<any> {
-    return this._viewModelDb.get(this._authService.getUsername());
+  public getCurrentData(): Promise<ApplicationViewModel> {
+    return this._viewModelDb.get(this._authService.getUserId());
   }
 
   public getUpdateStatus(): Observable<UpdateStatus> {
     return Observable.create((observer) => {
       let lastUpdateTime = 0;
       const changesStream = this._viewModelDb.changes(
-        { live: true, since: 'now', include_docs: true, doc_ids: [this._authService.getUsername()] });
+        { live: true, since: 'now', include_docs: true, doc_ids: [this._authService.getUserId()] });
       changesStream.on('change', (change) => lastUpdateTime = change.doc.timestamp);
 
       const subscription = Observable.timer(0, GlobalConfig.recalculateUpdateStatusEveryMs)
@@ -121,7 +124,7 @@ export class DataService implements ILoginListener {
     const events = alldocsResponse.rows.map((row) => {
       return {
         timestamp: Number(row.doc._id),
-        characterId: this._authService.getUsername(),
+        characterId: this._authService.getUserId(),
         eventType: row.doc.eventType,
         data: row.doc.data,
       };
@@ -129,7 +132,7 @@ export class DataService implements ILoginListener {
     console.info(`Sending ${events.length} events to server`);
     console.debug(JSON.stringify(events));
     const requestBody = JSON.stringify({ events });
-    const fullUrl = GlobalConfig.sendEventsBaseUrl + '/' + this._authService.getUsername();
+    const fullUrl = GlobalConfig.sendEventsBaseUrl + '/' + this._authService.getUserId();
     try {
       const response = await this._http.post(fullUrl, requestBody,
         this._authService.getRequestOptionsWithSavedCredentials()).toPromise();
@@ -146,13 +149,24 @@ export class DataService implements ILoginListener {
     } catch (e) {
       if (e.status && (e.status == 401 || e.status == 404))
         await this._authService.logout();
+      else
+        throw e;
     }
   }
 
   public async setViewModel(viewModel: any) {
-    viewModel._id = this._authService.getUsername();
-    upsert(this._viewModelDb, viewModel);
-    this._inMemoryViewmodel = viewModel;
+    viewModel._id = this._authService.getUserId();
+    try {
+      const viewModelTyped: ApplicationViewModel = TypedJSON.parse(JSON.stringify(viewModel), ApplicationViewModel);
+      upsert(this._viewModelDb, viewModelTyped);
+      this._inMemoryViewmodel = viewModelTyped;
+    } catch (e) {
+      this._logging.error(`Can't parse or save ApplicationViewModel: ${e}`);
+      this._logging.debug(`ViewModel received from server: ${JSON.stringify(viewModel)}`);
+      const errorViewModel = this.makeErrorApplicationViewModel();
+      upsert(this._viewModelDb, errorViewModel);
+      this._inMemoryViewmodel = errorViewModel;
+    }
   }
 
   private pushRefreshModelEvent(): Promise<PouchDB.Core.Response> {
@@ -162,7 +176,7 @@ export class DataService implements ILoginListener {
   private makeRefreshModelEvent() {
     return {
       _id: this._time.getUnixTimeMs().toString(),
-      characterId: this._authService.getUsername(),
+      characterId: this._authService.getUserId(),
       eventType: '_RefreshModel',
       data: {},
     };
@@ -177,5 +191,35 @@ export class DataService implements ILoginListener {
     });
 
     await Promise.all(alldocsBeforeResponse.rows.map((row) => this._eventsDb.remove(row.doc._id, row.value.rev)));
+  }
+
+  private makeErrorApplicationViewModel(): ApplicationViewModel {
+    const errorPage: ListPageViewModel = {
+      __type: 'ListPageViewModel',
+      menuTitle: 'Общая информация',
+      body: {
+        title: 'Ошибка',
+        items: [
+          { text: 'Получены некоректные данные с сервера.' },
+          { text: 'Пожалуйста, обратитесь к МГ.' },
+        ],
+      },
+    };
+
+    return {
+      _id: this._authService.getUserId(),
+      timestamp: this._time.getUnixTimeMs(),
+      general: {maxSecondsInVr: 0},
+      menu: { characterName: this._authService.getUserId() },
+      toolbar: { hitPoints: 9000, maxHitPoints: 9000 },
+      passportScreen: { corporation: 'Ошибка', email: 'Ошибка', fullName: 'Ошибка', id: this._authService.getUserId() },
+      pages: [
+        errorPage,
+        {
+          __type: 'TechnicalInfoPageViewModel',
+          menuTitle: 'Техническая информация',
+        },
+      ],
+    };
   }
 }

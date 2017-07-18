@@ -1,22 +1,7 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
-import { DetailsData, DetailsPage } from '../pages/details';
-
-export class ListItemData {
-  public text: string;
-  public subtext?: string;
-  public value?: string;
-  public percent?: number;
-  public progressBarColor?: string;
-  public valueColor?: string;
-
-  public hasIcon?: boolean;
-  public icon?: string;
-
-  public details?: DetailsData;
-
-  public tag?: string;
-}
+import { DetailsPage } from '../pages/details';
+import { DetailsData, ListItemData } from '../services/viewmodel.types';
 
 @Component({
   selector: 'list-item',
@@ -27,6 +12,8 @@ export class ListItem {
   public data: ListItemData;
   @Input()
   public filter: string;
+  @Output()
+  public deleteMe: EventEmitter<string> = new EventEmitter();
 
   constructor(private _modalCtrl: ModalController) { }
 
@@ -51,5 +38,9 @@ export class ListItem {
   public openDetails(details: DetailsData) {
     const accessModal = this._modalCtrl.create(DetailsPage, { value: details });
     accessModal.present();
+  }
+
+  public onDelete() {
+    this.deleteMe.emit(this.data.viewId);
   }
 }

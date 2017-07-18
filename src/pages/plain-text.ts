@@ -1,7 +1,7 @@
 import { Component, Input } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
 import { DataService } from '../services/data.service';
-import { UpdatablePage } from './updatable';
+import { UpdatablePage } from './list';
 
 class PlainTextData {
   public title: string;

@@ -9,7 +9,7 @@ import { NativeStorageService } from './native-storage.service';
 
 @Injectable()
 export class AuthService {
-  private _username: string = null;
+  private _userId: string = null;
   private _password: string = null;
   private _listeners = new Array<ILoginListener>();
 
@@ -19,8 +19,8 @@ export class AuthService {
 
   public addListener(listener: ILoginListener) {
     this._listeners.push(listener);
-    if (this._username) {
-      listener.onSuccessfulLogin(this._username);
+    if (this._userId) {
+      listener.onSuccessfulLogin(this._userId);
     }
   }
 
@@ -28,58 +28,58 @@ export class AuthService {
     this._listeners = this._listeners.filter((elt) => elt != listener);
   }
 
-  public getUsername(): string {
-    return this._username;
+  public getUserId(): string {
+    return this._userId;
   }
 
-  public async tryLoginAndGetViewmodel(username: string, password: string): Promise<any> {
-    const fullUrl = GlobalConfig.getViewmodelBaseUrl + '/' + username + '?type=mobile';
+  public async tryLoginAndGetViewmodel(loginOrUserId: string, password: string): Promise<any> {
+    const fullUrl = GlobalConfig.getViewmodelBaseUrl + '/' + loginOrUserId + '?type=mobile';
     const response = await this._http.get(fullUrl,
-      this.getRequestOptionsWithCredentials(username, password)).toPromise();
-    await this._saveCredentials(username, password);
+      this.getRequestOptionsWithCredentials(loginOrUserId, password)).toPromise();
+    await this._saveCredentials(response.json().id, password);
     return response.json().viewModel;
   }
 
   public async checkExistingCredentials() {
-    const username = await this._nativeStorage.getItem('username');
+    const userId = await this._nativeStorage.getItem('userid');
     const password = await this._nativeStorage.getItem('password');
-    await this._saveCredentials(username, password);
+    await this._saveCredentials(userId, password);
   }
 
   public async logout() {
-    await this._nativeStorage.remove('username');
+    await this._nativeStorage.remove('userid');
     await this._nativeStorage.remove('password');
     for (const listener of this._listeners) {
       listener.onLogout();
     }
-    this._username = null;
+    this._userId = null;
     this._password = null;
   }
 
   public getRequestOptionsWithSavedCredentials(): RequestOptionsArgs {
-    return this.getRequestOptionsWithCredentials(this._username, this._password);
+    return this.getRequestOptionsWithCredentials(this._userId, this._password);
   }
 
-  private async _saveCredentials(username: string, password: string) {
-    this._username = username;
+  private async _saveCredentials(userId: string, password: string) {
+    this._userId = userId;
     this._password = password;
-    await this._nativeStorage.setItem('username', username);
+    await this._nativeStorage.setItem('userid', userId);
     await this._nativeStorage.setItem('password', password);
     this.notifyListenersOnLogin();
   }
 
   private notifyListenersOnLogin() {
     for (const listener of this._listeners) {
-      listener.onSuccessfulLogin(this._username);
+      listener.onSuccessfulLogin(this._userId);
     }
   }
 
-  private getRequestOptionsWithCredentials(username: string, password: string): RequestOptionsArgs {
+  private getRequestOptionsWithCredentials(userId: string, password: string): RequestOptionsArgs {
     return {
       headers: new Headers({
         'Content-Type': 'application/json',
         'Accept': 'application/json',
-        'Authorization': BasicAuthorizationHeader(username, password),
+        'Authorization': BasicAuthorizationHeader(userId, password),
       }),
     };
   }

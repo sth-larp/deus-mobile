@@ -3,8 +3,8 @@ import { encode } from 'deus-qr-lib/lib/qr';
 import { QrType } from 'deus-qr-lib/lib/qr.type';
 import { NavParams } from 'ionic-angular';
 import { GlobalConfig } from '../config';
-import { ListItemData } from '../elements/list-item';
 import { MonotonicTimeService } from '../services/monotonic-time.service';
+import { ListItemData, PassportScreenViewModel } from '../services/viewmodel.types';
 
 @Component({
   selector: 'page-passport',
@@ -21,7 +21,7 @@ export class PassportPage {
 
   constructor(navParams: NavParams,
               private _clock: MonotonicTimeService) {
-    const passportScreenData = navParams.data.value;
+    const passportScreenData = navParams.data.value as PassportScreenViewModel;
     this.id = {text: 'ID', value: passportScreenData.id };
     this.fullName = {text: 'Имя', value: passportScreenData.fullName };
     this.email = {text: 'e-mail', value: passportScreenData.email };

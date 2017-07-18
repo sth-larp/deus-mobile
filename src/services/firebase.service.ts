@@ -21,7 +21,7 @@ export class FirebaseService implements ILoginListener {
     this._logging.debug('FirebaseService constructor run');
   }
 
-  public onSuccessfulLogin(_username: string) {
+  public onSuccessfulLogin(_userId: string) {
     this._logging.info('Subscribing to Firebase');
     this.tokenSubscription = this._subscribeToTokenChange().subscribe(
       (token) => {

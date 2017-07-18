@@ -6,6 +6,16 @@ list-item {
     left:0px;
     height:100%;
   }
+
+  .unread-container {
+    border-style: solid;
+    border-width: 0 0 0 4px;
+    border-color: color($colors, light-blue);
+  }
+  .unread-text {
+    font-weight: bold;
+  }
+
   .label-md {
     margin: 0px 8px 0px 0;
   }
@@ -14,15 +24,12 @@ list-item {
     margin-bottom: 0;
     margin-left: 0px;
   }
-
   .item-md ion-icon[item-left] + .item-inner {
-    margin-left: 0px;    
+    margin-left: 0px;
   }
-
   .item-md [item-left] {
     margin-right: 8px;
   }
-
   .item-md {
     padding-left: 8px;
   }
@@ -35,15 +42,12 @@ list-item {
     margin-bottom: 0;
     margin-left: 0px;
   }
-
   .item-ios ion-icon[item-left] + .item-inner {
-    margin-left: 0px;    
+    margin-left: 0px;
   }
-  
   .item-ios [item-left] {
     margin-right: 8px;
   }
-
   .item-ios {
     padding-left: 8px;
   }

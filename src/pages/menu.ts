@@ -36,10 +36,10 @@ export class MenuPage implements ILoginListener {
     // Hack to instantiate it)
               private _firebaseService: FirebaseService,
               navParams: NavParams) {
-    this._pageTypeToPage.set('list', ListPage);
-    this._pageTypeToPage.set('plain_text', PlainTextPage);
-    this._pageTypeToPage.set('economy', EconomyPage);
-    this._pageTypeToPage.set('technical_info', TechnicalInfoPage);
+    this._pageTypeToPage.set('ListPageViewModel', ListPage);
+    this._pageTypeToPage.set('PlainTextPageViewModel', PlainTextPage);
+    this._pageTypeToPage.set('EconomyPageViewModel', EconomyPage);
+    this._pageTypeToPage.set('TechnicalInfoPageViewModel', TechnicalInfoPage);
     if (navParams.data.viewModel) {
       this._dataService.setViewModel(navParams.data.viewModel);
     }
@@ -60,7 +60,7 @@ export class MenuPage implements ILoginListener {
         this.characterName = json.menu.characterName;
         this.pages = [];
         for (const p of json.pages)
-          this.pages.push({ root: this._pageTypeToPage.get(p.pageType), menuTitle: p.menuTitle });
+          this.pages.push({ root: this._pageTypeToPage.get(p.__type), menuTitle: p.menuTitle });
       },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
@@ -79,7 +79,7 @@ export class MenuPage implements ILoginListener {
       .catch((err) => this._logging.error(JSON.stringify(err)));
   }
 
-  public onSuccessfulLogin(_username: string) {}
+  public onSuccessfulLogin(_id: string) {}
 
   public onLogout() {
     this._navCtrl.setRoot(LoginPage);

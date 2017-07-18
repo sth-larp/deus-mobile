@@ -3,18 +3,7 @@ import { ActionSheetController, Config, NavController, NavParams, Platform } fro
 
 import { fixActionSheetTransitions } from '../elements/deus-alert-transitions';
 import { DataService } from '../services/data.service';
-
-export class ActionData {
-  public text: string;
-  public eventType: string;
-  public data: any;
-}
-
-export class DetailsData {
-  public header: string;
-  public text: string;
-  public actions: ActionData[];
-}
+import { DetailsData } from '../services/viewmodel.types';
 
 @Component({
   selector: 'page-details',
@@ -29,6 +18,7 @@ export class DetailsPage {
               private _platform: Platform,
               private _config: Config) {
     this.data = navParams.data.value;
+    this.preprocessText();
   }
 
   public showActions() {
@@ -58,5 +48,12 @@ export class DetailsPage {
     }, 0);
     actionSheet.onWillDismiss(unregisterFn);
     actionSheet.present();
+  }
+
+  private preprocessText() {
+    // TODO(Andrei): Sanitize HTML.
+    // TODO(Andrei): Highlight links only when necessary.
+    const urlRegexp = /\b(https?:\/\/\S+)\b/g;
+    this.data.text = this.data.text.replace(urlRegexp, '<a href="$1">$1</a>');
   }
 }

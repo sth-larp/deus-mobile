@@ -3,9 +3,9 @@ import { Http } from '@angular/http';
 import { AlertController, Config } from 'ionic-angular';
 
 import { GlobalConfig } from '../config';
-import { ListItemData } from '../elements/list-item';
-import { AuthService } from './auth.service';
 import { fixAlertTransitions } from '../elements/deus-alert-transitions';
+import { AuthService } from './auth.service';
+import { ListItemData } from './viewmodel.types';
 
 @Injectable()
 export class EconomyService {
@@ -15,14 +15,14 @@ export class EconomyService {
               private _config: Config) { }
 
   public getBalance(): Promise<number> {
-    return this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUsername(),
+    return this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUserId(),
       this._authService.getRequestOptionsWithSavedCredentials())
       .map((response) => response.json().Cash).toPromise();
   }
 
   public getShortTransactionHistory(): Promise<ListItemData[]> {
     return this._http.get(GlobalConfig.economyTransactionsUrl +
-      '?login=' + this._authService.getUsername() + '&take=10&skip=0',
+      '?login=' + this._authService.getUserId() + '&take=10&skip=0',
       this._authService.getRequestOptionsWithSavedCredentials())
       .map((response) => {
         const entries: any[] = response.json();
@@ -98,7 +98,7 @@ export class EconomyService {
 
   private _makeTransaction(receiver: string, amount: number) {
     const requestBody = JSON.stringify({
-      Sender: this._authService.getUsername(),
+      Sender: this._authService.getUserId(),
       Receiver: receiver,
       Amount: amount,
     });

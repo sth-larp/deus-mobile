@@ -6,11 +6,13 @@ import { Subscription } from 'rxjs';
 import { Colors, GlobalConfig } from '../config';
 import { PassportPage } from '../pages/passport';
 import { AuthService } from '../services/auth.service';
-import { DataService, UpdateStatus } from '../services/data.service';
+import { DataService } from '../services/data.service';
 import { LocalDataService } from '../services/local-data.service';
 import { LoggingService } from '../services/logging.service';
 import { ILoginListener } from '../services/login-listener';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
+import { ApplicationViewModel } from '../services/viewmodel.types';
+import { formatInteger, formatTime2, formatTime3} from '../utils/string-utils';
 import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-transitions';
 
 @Component({
@@ -19,7 +21,6 @@ import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-tra
 })
 export class QuickActions implements ILoginListener {
   public hidden: boolean = false;
-  public updateStatusIcon: string = null;
   public hp: number = null;
   public hpIcon: string = null;
   public hpText: string = null;
@@ -30,7 +31,6 @@ export class QuickActions implements ILoginListener {
   public vrTimerColor: string = null;
 
   private _hpSubscription: Subscription = null;
-  private _updateStatusSubscription: Subscription = null;
 
   private _keyboardShowSubscription: Subscription = null;
   private _keyboardHideSubscription: Subscription = null;
@@ -60,7 +60,7 @@ export class QuickActions implements ILoginListener {
     this._keyboardShowSubscription.unsubscribe();
   }
 
-  public onSuccessfulLogin(_username: string) {
+  public onSuccessfulLogin(_id: string) {
     this._hpSubscription = this._dataService.getData().subscribe(
       (json) => {
         this.updateHp(json);
@@ -68,11 +68,6 @@ export class QuickActions implements ILoginListener {
       },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
-
-    this._updateStatusSubscription = this._hpSubscription = this._dataService.getUpdateStatus().subscribe(
-      (status) => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
-      (error) => console.error('Cannot get update status: ' + error));
-
     setInterval(() => { this.updateVrStatus(null); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
 
@@ -80,11 +75,6 @@ export class QuickActions implements ILoginListener {
     if (this._hpSubscription) {
       this._hpSubscription.unsubscribe();
       this._hpSubscription = null;
-    }
-
-    if (this._updateStatusSubscription) {
-      this._updateStatusSubscription.unsubscribe();
-      this._updateStatusSubscription = null;
     }
   }
 
@@ -141,7 +131,7 @@ export class QuickActions implements ILoginListener {
       handler: () => this.doToggleVr(),
     }];
 
-    const maxTimeInVar = this.formatTime3(this.maxSecondsInVr, ':');
+    const maxTimeInVar = formatTime3(this.maxSecondsInVr, ':');
     const alert = this._alertController.create({
       title: inVr
         ? 'Выход из VR'
@@ -162,53 +152,13 @@ export class QuickActions implements ILoginListener {
     alert.present();
   }
 
-  public onRefresh() {
-    this._dataService.trySendEvents();
-  }
-
-  private getUpdateStatusIcon(status: UpdateStatus): string {
-    switch (status) {
-      case UpdateStatus.Green: return 'sync-green.svg';
-      case UpdateStatus.Yellow: return 'sync-green.svg';
-      case UpdateStatus.Red: return 'sync-green.svg';
-    }
-    return null;
-  }
-
-  // TODO: Add tests
-  private formatInteger(value: number, padding: number): string {
-    const str = value.toFixed(0);
-    return (str.length >= padding) ? str : ('0000000000000000' + str).slice(-padding);
-  }
-
-  // TODO: Add tests
-  // Prints "H:MM" or "M:SS" with a given separator.
-  private formatTime2(value: number, separator: string): string {
-    value = Math.floor(value);
-    const high = Math.floor(value / 60);
-    const low = value % 60;
-    return this.formatInteger(high, 1) + separator + this.formatInteger(low, 2);
-  }
-
-  // TODO: Add tests
-  // Prints "H:MM:SS" with a given separator.
-  private formatTime3(value: number, separator: string): string {
-    value = Math.floor(value);
-    const hour = Math.floor(value / 3600);
-    const min = Math.floor(value / 60) % 60;
-    const sec = value % 60;
-    return this.formatInteger(hour, 1) + separator +
-           this.formatInteger(min, 2) + separator +
-           this.formatInteger(sec, 2);
-  }
-
-  private updateHp(modelViewJson: any) {
+  private updateHp(modelViewJson: ApplicationViewModel) {
     this.hp = modelViewJson.toolbar.hitPoints;
     const maxHp: number = modelViewJson.toolbar.maxHitPoints;
     let hpIconIndex = Math.round(GlobalConfig.numHpQuickActionIcons * this.hp / maxHp);
     if (this.hp > 0) hpIconIndex = Math.max(hpIconIndex, 1);
     if (this.hp < maxHp) hpIconIndex = Math.min(hpIconIndex, GlobalConfig.numHpQuickActionIcons - 1);
-    this.hpIcon = 'hit-points-' + this.formatInteger(hpIconIndex, 2) + '.svg';
+    this.hpIcon = 'hit-points-' + formatInteger(hpIconIndex, 2) + '.svg';
     this.hpText = this.hp.toString();
     this.hpTextColor = (this.hp == 0) ? Colors.red : Colors.primary;
   }
@@ -246,15 +196,15 @@ export class QuickActions implements ILoginListener {
   private getVrTimerWithColor(secondsLeft: number): string[] {
     if (secondsLeft < 0) {
       const separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
-      return [this.formatTime2(0, separator), Colors.red];
+      return [formatTime2(0, separator), Colors.red];
     } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
-      return [this.formatTime2(secondsLeft, '.'), Colors.yellow];
+      return [formatTime2(secondsLeft, '.'), Colors.yellow];
     else
-      return [this.formatTime2(secondsLeft / 60, ':'), Colors.primary];
+      return [formatTime2(secondsLeft / 60, ':'), Colors.primary];
   }
 
   // 'json' may be null: means "no change"
-  private async updateVrStatus(json: any) {
+  private async updateVrStatus(json: ApplicationViewModel) {
     if (json != null)
       this.maxSecondsInVr = json.general.maxSecondsInVr;
 

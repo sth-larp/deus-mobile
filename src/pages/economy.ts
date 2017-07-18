@@ -3,11 +3,10 @@ import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn,
 import { Http } from '@angular/http';
 import { AlertController, ModalController, Refresher } from 'ionic-angular';
 import { CustomValidators } from 'ng2-validation';
-import { ListItemData } from '../elements/list-item';
 import { AuthService } from '../services/auth.service';
 import { EconomyService } from '../services/economy.service';
+import { ListItemData } from '../services/viewmodel.types';
 import { BillPage } from './bill';
-import { fixAlertTransitions } from '../elements/deus-alert-transitions';
 
 @Component({
   selector: 'page-economy',
@@ -36,11 +35,14 @@ export class EconomyPage {
 
     this.sendForm = this._formBuilder.group({
       receiverId: ['', Validators.required],
-      amount: ['', Validators.compose([Validators.required, CustomValidators.digits, lessThanBalanceValidator])],
+      amount: ['', Validators.compose([Validators.required, CustomValidators.digits,
+        CustomValidators.gt(0), lessThanBalanceValidator])],
     });
 
     this.receiveForm = this._formBuilder.group({
-      amount: ['', Validators.compose([Validators.required, CustomValidators.digits])],
+      amount: ['', Validators.compose([Validators.required, CustomValidators.digits,
+        CustomValidators.gt(0),
+        CustomValidators.lt(1000000000000000000000000)])],
     });
 
     this.refreshData();
@@ -70,7 +72,7 @@ export class EconomyPage {
     this._modalController.create(BillPage, {
       value: {
         amount: this.receiveForm.value.amount,
-        receiverAccount: this._authService.getUsername(),
+        receiverAccount: this._authService.getUserId(),
       },
     }).present();
   }

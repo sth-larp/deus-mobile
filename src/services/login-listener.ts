@@ -1,4 +1,4 @@
 export interface ILoginListener {
-  onSuccessfulLogin(username: string);
+  onSuccessfulLogin(userId: string);
   onLogout();
 }
