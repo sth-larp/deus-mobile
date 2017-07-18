@@ -35,11 +35,13 @@ export class EconomyPage {
 
     this.sendForm = this._formBuilder.group({
       receiverId: ['', Validators.required],
-      amount: ['', Validators.compose([Validators.required, CustomValidators.digits, lessThanBalanceValidator])],
+      amount: ['', Validators.compose([Validators.required, CustomValidators.digits,
+        CustomValidators.gt(0), lessThanBalanceValidator])],
     });
 
     this.receiveForm = this._formBuilder.group({
       amount: ['', Validators.compose([Validators.required, CustomValidators.digits,
+        CustomValidators.gt(0),
         CustomValidators.lt(1000000000000000000000000)])],
     });
 
