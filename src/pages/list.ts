@@ -114,7 +114,6 @@ export class ListPage extends UpdatablePage {
         if (item.unread)
           item.unread = true;
       }
-      // item.unread = (Math.random() > 0.5);  // for UI testing
     });
   }
 
