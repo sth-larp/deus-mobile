@@ -202,8 +202,7 @@ export class QuickActions implements ILoginListener {
   // TODO: Add tests
   private getVrTimerWithColor(secondsLeft: number): string[] {
     if (secondsLeft < 0) {
-      const separator = (secondsLeft % 1.0 > -0.5) ? '.' : ' ';
-      return [formatTime2(0, separator), Colors.red];
+      return [formatTime2(secondsLeft, '.'), Colors.red];
     } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
       return [formatTime2(secondsLeft, '.'), Colors.yellow];
     else
