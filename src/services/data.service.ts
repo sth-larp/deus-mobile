@@ -110,17 +110,14 @@ export class DataService implements ILoginListener {
 
   public async pushEvent(eventType: string, data: any) {
     try {
-      console.warn("Push Event 1");
       await this._eventsDb.put({
         _id: this._time.getUnixTimeMs().toString(),
         eventType,
         data,
       });
-      console.warn("Push Event 2");
       await this.trySendEvents();
     } catch (err) {
       this._logging.debug(JSON.stringify(err));
-      console.warn("Push Event 3");
     }
   }
 
