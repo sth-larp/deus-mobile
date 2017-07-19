@@ -10,13 +10,13 @@ import { ListBody, PageViewModel } from '../services/viewmodel.types';
 export abstract class UpdatablePage {
   private _subscription: Subscription = null;
   constructor(protected _viewId: string,
-              protected _dataService: DataService,
+              protected _unreadService: UnreadService,
               protected _navCtrl: NavController) {
   }
 
   // tslint:disable-next-line:no-unused-variable
   public ionViewWillEnter() {
-    this._subscription = this._dataService.getData().subscribe((json) => {
+    this._subscription = this._unreadService.getDataWithUnreadStatus().subscribe((json) => {
       const thisPageData = json.pages.find((p: PageViewModel) => p.viewId == this._viewId);
       if (thisPageData)
         this.setBody((thisPageData as any).body);
@@ -51,18 +51,17 @@ export class ListPage extends UpdatablePage {
   @ViewChild(Content) private _content: Content;
   @ViewChild(Segment) private _segment: Segment;
 
-  constructor(dataService: DataService,
+  constructor(private _dataService: DataService,
               navCtrl: NavController,
               navParams: NavParams,
               private _localDataService: LocalDataService,
-              private _unreadService: UnreadService,
+              protected _unreadService: UnreadService,
               private _toastCtrl: ToastController) {
-    super(navParams.data.id, dataService, navCtrl);
+    super(navParams.data.id, _unreadService, navCtrl);
   }
 
   // tslint:disable-next-line:no-unused-variable
-  public ionViewDidLeave() {
-    super.ionViewDidLeave();
+  public ionViewWillLeave() {
     this._unreadService.markPageRead(this._viewId, this.body);
   }
 
@@ -89,8 +88,6 @@ export class ListPage extends UpdatablePage {
     // by setting hasIcon to every one of them.
     const hasIcon = this.body.items.some((item) => item.icon && item.icon.length > 0);
     this.body.items.forEach((item) => item.hasIcon = hasIcon);
-
-    this._unreadService.updateUnreadInPage(this._viewId, this.body);
 
     // Dark magic to fix dynamic header height.
     // See https://github.com/driftyco/ionic/issues/9709

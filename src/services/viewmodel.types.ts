@@ -117,7 +117,6 @@ export class ListItemData {
   public tag?: string;
 
   // Internal fields. MUST NOT be set in ViewModel (not validated now)
-  @JsonMember
   public unread?: boolean;
 }
 

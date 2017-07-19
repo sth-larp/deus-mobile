@@ -3,6 +3,7 @@ import { Observable } from 'rxjs/Observable';
 
 import { LocalDataService } from '../services/local-data.service';
 import { ApplicationViewModel, ListBody, ListPageViewModel } from '../services/viewmodel.types';
+import { DataService } from './data.service';
 
 // "Unread" statuses for items and pages
 @Injectable()
@@ -10,38 +11,45 @@ export class UnreadService {
   private _numUnreadChangesEventEmitter: EventEmitter<number> = new EventEmitter();
   private _numUnreadChanges: Observable<number>;
 
-  constructor(private _localDataService: LocalDataService) {
+  constructor(private _localDataService: LocalDataService,
+              private _dataService: DataService) {
+  }
+
+  public async markPageSeen(viewId: string, pageBody: ListBody) {
+    const storageKey = 'unread/' + viewId;
+    const modelIds = pageBody.items.filter((item) => item.viewId).map((item) => item.viewId);
+
+    // It's by design that IDs removed from the model are also removed
+    // from the list of read. If a condition is removed and then re-added,
+    // user should be notified again.
+    await this._localDataService.setItem(storageKey, modelIds);
+  }
+
+  public async markPageRead(viewId: string, pageBody: ListBody) {
+    const storageKey = 'unread/' + viewId;
+    const modelIds = pageBody.items.filter((item) => item.viewId).map((item) => item.viewId);
+
+    // It's by design that IDs removed from the model are also removed
+    // from the list of read. If a condition is removed and then re-added,
+    // user should be notified again.
+    await this._localDataService.setItem(storageKey, modelIds);
   }
 
   public numUnreadChanges(): Observable<number> {
-    return Observable.create((observer) => {
-      this._numUnreadChangesEventEmitter.subscribe((value) => {
-        observer.next(value);
-      });
-      return () => { this._numUnreadChangesEventEmitter.unsubscribe(); };
+    return this.getDataWithUnreadStatus().map((appViewModel: ApplicationViewModel) => {
+      const changesPages = appViewModel.pages.filter((page) => page.viewId == 'page:changes');
+      if (changesPages.length != 1) return 0;
+      const changesPage = (changesPages[0] as ListPageViewModel);
+      return changesPage.body.items.filter((item) => item.unread).length;
     });
   }
 
-  public async updateUnreadInPage(viewId: string, pageBody: ListBody) {
-    let numUnread = 0;
-    const storageKey = 'unread/' + viewId;
-    const readIdsArray: string[] = await this._localDataService.getItemOrNull(storageKey);
-    const readIds: Set<string> = readIdsArray != null ? new Set(readIdsArray) : new Set();
-    pageBody.items.forEach((item) => {
-      if (item.viewId) {
-        item.unread = !readIds.has(item.viewId);
-        if (item.unread)
-          ++numUnread;
-      }
-    });
-    if (viewId == 'page:changes') {
-      this._numUnreadChangesEventEmitter.emit(numUnread);
-    }
-    // if (viewId == 'page:messages')
-    //   TODO: emit unread messaged
+  public getDataWithUnreadStatus(): Observable<ApplicationViewModel> {
+    return this._dataService.getData().concatMap(
+      (appViewModel: ApplicationViewModel) => this.updateUnreadInModel(appViewModel));
   }
 
-  public async updateUnreadInModel(viewModel: ApplicationViewModel) {
+  private async updateUnreadInModel(viewModel: ApplicationViewModel) {
     // TODO: Also highlight changes. Use map viewId->revision instead.
     viewModel.numUnreadChanges = 0;
     viewModel.numUnreadMessages = 0;
@@ -51,20 +59,18 @@ export class UnreadService {
         await this.updateUnreadInPage(listPage.viewId, listPage.body);
       }
     }));
+    return viewModel;
   }
 
-  public async markPageRead(viewId: string, pageBody: ListBody) {
+  private async updateUnreadInPage(viewId: string, pageBody: ListBody) {
     const storageKey = 'unread/' + viewId;
-    const modelIds: string[] = [];
+    const readIdsArray: string[] = await this._localDataService.getItemOrNull(storageKey);
+    const readIds: Set<string> = readIdsArray ? new Set(readIdsArray) : new Set();
+
     pageBody.items.forEach((item) => {
-      if (item.viewId)
-        modelIds.push(item.viewId);
+      if (item.viewId) {
+        item.unread = !readIds.has(item.viewId);
+      }
     });
-    // It's by design that IDs removed from the model are also removed
-    // form the list of read. If a condition is removed and then re-added,
-    // user should be notified again.
-    await this._localDataService.setItem(storageKey, modelIds);
-    // Required to update notification icon
-    await this.updateUnreadInPage(viewId, pageBody);
   }
 }

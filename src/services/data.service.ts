@@ -13,7 +13,6 @@ import { AuthService } from './auth.service';
 import { LoggingService } from './logging.service';
 import { ILoginListener } from './login-listener';
 import { MonotonicTimeService } from './monotonic-time.service';
-import { UnreadService } from './unread.service';
 import { ApplicationViewModel, ListPageViewModel } from './viewmodel.types';
 
 export enum UpdateStatus {
@@ -35,8 +34,7 @@ export class DataService implements ILoginListener {
   constructor(private _logging: LoggingService,
               private _time: MonotonicTimeService,
               private _authService: AuthService,
-              private _http: Http,
-              private _unreadService: UnreadService) {
+              private _http: Http) {
 
     this._authService.addListener(this);
   }
@@ -163,7 +161,6 @@ export class DataService implements ILoginListener {
     try {
       const viewModelTyped: ApplicationViewModel = TypedJSON.parse(JSON.stringify(viewModel), ApplicationViewModel);
       upsert(this._viewModelDb, viewModelTyped);
-      await this._unreadService.updateUnreadInModel(viewModelTyped);
       this._inMemoryViewmodel = viewModelTyped;
     } catch (e) {
       this._logging.error(`Can't parse or save ApplicationViewModel: ${e}`);
