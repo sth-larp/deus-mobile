@@ -106,15 +106,17 @@ export class DataService implements ILoginListener {
     });
   }
 
-  public pushEvent(eventType: string, data: any) {
-    this._eventsDb.put({
-      _id: this._time.getUnixTimeMs().toString(),
-      eventType,
-      data,
-    })
-      .then(() => this.trySendEvents())
-      .then((response) => this._logging.debug(JSON.stringify(response)))
-      .catch((err) => this._logging.debug(JSON.stringify(err)));
+  public async pushEvent(eventType: string, data: any) {
+    try {
+      await this._eventsDb.put({
+        _id: this._time.getUnixTimeMs().toString(),
+        eventType,
+        data,
+      });
+      await this.trySendEvents();
+    } catch (err) {
+      this._logging.debug(JSON.stringify(err));
+    }
   }
 
   public async trySendEvents() {

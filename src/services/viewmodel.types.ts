@@ -57,6 +57,9 @@ export class ActionData {
   @JsonMember({isRequired: true})
   public eventType: string;
 
+  @JsonMember({isRequired: true})
+  public needsQr: boolean;
+
   @JsonMember
   public data: any;
 }
@@ -113,9 +116,7 @@ export class ListItemData {
   @JsonMember
   public tag?: string;
 
-  // Internal fields. MUST NOT be set in ViewModel
-  // (not validated now)
-  @JsonMember
+  // Internal fields. MUST NOT be set in ViewModel (not validated now)
   public unread?: boolean;
 }
 
@@ -167,4 +168,11 @@ export class ApplicationViewModel {
 
   @JsonMember({isRequired: true, elements: PageViewModel, refersAbstractType: true})
   public pages: PageViewModel[];
+
+  // Internal fields. MUST NOT be set in ViewModel (not validated now)
+  @JsonMember
+  public numUnreadChanges?: number;
+
+  @JsonMember
+  public numUnreadMessages?: number;
 }

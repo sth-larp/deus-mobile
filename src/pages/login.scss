@@ -15,4 +15,12 @@ page-login {
     width: 100%;
     margin-top: 2em;
   }
+
+  .versionstring {
+    position: absolute;
+    bottom: 10px;
+    width: 100%;
+    text-align: center;
+    color: $text-color-pale;
+  }
 }

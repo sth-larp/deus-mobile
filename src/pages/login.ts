@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { AppVersion } from '@ionic-native/app-version';
 import { AlertController, Loading, LoadingController, NavController } from 'ionic-angular';
+
 import { AuthService } from '../services/auth.service';
 import { LoggingService } from '../services/logging.service';
 import { MenuPage } from './menu';
@@ -11,6 +13,7 @@ import { MenuPage } from './menu';
 })
 export class LoginPage {
   public loginForm: FormGroup;
+  public version: string;
   private _loading: Loading;
 
   constructor(private _navCtrl: NavController,
@@ -18,12 +21,16 @@ export class LoginPage {
               private _alertCtrl: AlertController,
               private _formBuilder: FormBuilder,
               private _authService: AuthService,
-              private _logging: LoggingService) {
+              private _logging: LoggingService,
+              appVersion: AppVersion) {
     this.loginForm = this._formBuilder.group({
       // TODO: remove credentials before public testing
       username: ['', Validators.required],
       password: ['', Validators.required],
     });
+    appVersion.getVersionNumber()
+      .then((v) => this.version = 'v' + v)
+      .catch(() => this.version = "npm start'ed, no version available");
   }
 
   public login() {

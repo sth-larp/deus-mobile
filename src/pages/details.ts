@@ -1,8 +1,10 @@
 import { Component } from '@angular/core';
 import { ActionSheetController, Config, NavController, NavParams, Platform } from 'ionic-angular';
 
+import { QrData } from 'deus-qr-lib/lib/qr';
 import { fixActionSheetTransitions } from '../elements/deus-alert-transitions';
 import { DataService } from '../services/data.service';
+import { QrCodeScanServiceCustom } from '../services/qrcode-scan.service';
 import { DetailsData } from '../services/viewmodel.types';
 
 @Component({
@@ -16,7 +18,8 @@ export class DetailsPage {
               private _actionSheetCtrl: ActionSheetController,
               private _dataService: DataService,
               private _platform: Platform,
-              private _config: Config) {
+              private _config: Config,
+              private _qrCodeScanner: QrCodeScanServiceCustom) {
     this.data = navParams.data.value;
     this.preprocessText();
   }
@@ -27,7 +30,15 @@ export class DetailsPage {
       buttons.push({
         text: action.text,
         handler: () => {
-          this._dataService.pushEvent(action.eventType, action.data);
+          if (action.needsQr) {
+            this._qrCodeScanner.eventEmitter.subscribe((qrData: QrData) => {
+              action.data.additionalQrData = qrData;
+              this._dataService.pushEvent(action.eventType, action.data);
+            });
+            this._qrCodeScanner.scanQRCode();
+          } else {
+            this._dataService.pushEvent(action.eventType, action.data);
+          }
           this._navCtrl.pop();
         },
       });

@@ -1,8 +1,9 @@
 ﻿ import { NgModule } from '@angular/core';
  import { HttpModule } from '@angular/http';
+ import { AppVersion } from '@ionic-native/app-version';
  import { BarcodeScanner } from '@ionic-native/barcode-scanner';
- import { Firebase } from '@ionic-native/firebase';
  import { Keyboard } from '@ionic-native/keyboard';
+ import { Push } from '@ionic-native/push';
  import { IonicApp, IonicModule } from 'ionic-angular';
 
  import { MyApp } from './app.component';
@@ -34,8 +35,9 @@
  import { LoggingService } from '../services/logging.service';
  import { MonotonicTimeService } from '../services/monotonic-time.service';
  import { NativeStorageService } from '../services/native-storage.service';
- import { QrCodeScanService } from '../services/qrcode-scan.service';
+ import { QrCodeScanService, QrCodeScanServiceCustom } from '../services/qrcode-scan.service';
  import { ServerTimeService } from '../services/server-time.service';
+ import { UnreadService } from '../services/unread.service';
 
  @NgModule({
   declarations: [
@@ -77,19 +79,22 @@
     QrCode,
   ],
   providers: [
+    AppVersion,
     AuthService,
     NativeStorageService,
     DataService,
     LocalDataService,
     QrCodeScanService,
+    QrCodeScanServiceCustom,
     LoggingService,
-    Firebase,
+    Push,
     FirebaseService,
     BarcodeScanner,
     LocalTimeService,
     ServerTimeService,
     MonotonicTimeService,
     EconomyService,
+    UnreadService,
     Keyboard,
   ],
 })
