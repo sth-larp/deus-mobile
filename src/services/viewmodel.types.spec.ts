@@ -182,6 +182,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
                     {
                       "text": "Включить",
                       "eventType": "enableImplant",
+                      "needsQr": false,
                       "data": {
                         "mID": "26267ae6-0f6c-4efd-8f98-37c2e09a42a2"
                       }
@@ -200,6 +201,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
                     {
                       "text": "Включить",
                       "eventType": "enableImplant",
+                      "needsQr": false,
                       "data": {
                         "mID": "cj3qwkjfc0002lwjsjkb226gm"
                       }
@@ -218,6 +220,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
                     {
                       "text": "Выключить",
                       "eventType": "disableImplant",
+                      "needsQr": false,
                       "data": {
                         "mID": "cj3qwks1p0000lqjsm7dk519d"
                       }

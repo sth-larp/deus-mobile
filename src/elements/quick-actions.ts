@@ -13,6 +13,7 @@ import { LocalDataService } from '../services/local-data.service';
 import { LoggingService } from '../services/logging.service';
 import { ILoginListener } from '../services/login-listener';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
+import { UnreadService } from '../services/unread.service';
 import { ApplicationViewModel } from '../services/viewmodel.types';
 import { formatInteger, formatTime2, formatTime3} from '../utils/string-utils';
 import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-transitions';
@@ -31,8 +32,10 @@ export class QuickActions implements ILoginListener {
   public vrIcon: string = null;
   public vrTimer: string = null;
   public vrTimerColor: string = null;
+  public notificationIcon: string = null;
 
   private _hpSubscription: Subscription = null;
+  private _unreadSubscription: Subscription = null;
 
   private _keyboardShowSubscription: Subscription = null;
   private _keyboardHideSubscription: Subscription = null;
@@ -41,6 +44,7 @@ export class QuickActions implements ILoginListener {
               private _qrCodeScanService: QrCodeScanService,
               private _dataService: DataService,
               private _localDataService: LocalDataService,
+              private _unreadService: UnreadService,
               private _authService: AuthService,
               private _platform: Platform,
               private _actionSheetController: ActionSheetController,
@@ -71,6 +75,11 @@ export class QuickActions implements ILoginListener {
       },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
+    this._unreadSubscription = this._unreadService.numUnreadChanges().subscribe(
+      (value) => {
+        this.notificationIcon = (value == 0) ? 'notify-none.svg' : 'notify-changes.svg';
+      },
+    );
     setInterval(() => { this.updateVrStatus(null); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
 
@@ -78,6 +87,10 @@ export class QuickActions implements ILoginListener {
     if (this._hpSubscription) {
       this._hpSubscription.unsubscribe();
       this._hpSubscription = null;
+    }
+    if (this._unreadSubscription) {
+      this._unreadSubscription.unsubscribe();
+      this._unreadSubscription = null;
     }
   }
 

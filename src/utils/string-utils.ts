@@ -1,7 +1,7 @@
 // TODO: Add tests
 
 function signCharacter(value: number): string {
-  return value < 0 ? '− ' /* U+2212 U+202F */ : '';
+  return value < 0 ? '−' /* U+2212 */ : '';
 }
 
 // Prints an integer padded with leading zeroes
