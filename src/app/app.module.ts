@@ -1,5 +1,6 @@
 ﻿ import { NgModule } from '@angular/core';
  import { HttpModule } from '@angular/http';
+ import { AppVersion } from '@ionic-native/app-version';
  import { BarcodeScanner } from '@ionic-native/barcode-scanner';
  import { Firebase } from '@ionic-native/firebase';
  import { Keyboard } from '@ionic-native/keyboard';
@@ -77,6 +78,7 @@
     QrCode,
   ],
   providers: [
+    AppVersion,
     AuthService,
     NativeStorageService,
     DataService,

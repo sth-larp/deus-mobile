@@ -76,6 +76,7 @@
     <engine name="browser" spec="^4.1.0" />
     <engine name="ios" spec="^4.4.0" />
     <plugin name="cordova-custom-config" spec="^4.0.2" />
+    <plugin name="cordova-plugin-app-version" spec="^0.1.9" />
     <plugin name="cordova-plugin-console" spec="^1.0.7" />
     <plugin name="cordova-plugin-device" spec="^1.1.6" />
     <plugin name="cordova-plugin-firebase" spec="^0.1.21" />

@@ -20,6 +20,7 @@
         "@angular/platform-browser-dynamic": "4.0.0",
         "@angular/platform-server": "4.0.0",
         "@angular/router": "4.1.0-beta.1",
+        "@ionic-native/app-version": "^4.0.1",
         "@ionic-native/barcode-scanner": "3.4.4",
         "@ionic-native/core": "^3.12.1",
         "@ionic-native/firebase": "3.4.4",
@@ -32,6 +33,7 @@
         "cordova-browser": "^4.1.0",
         "cordova-custom-config": "^4.0.2",
         "cordova-ios": "^4.4.0",
+        "cordova-plugin-app-version": "^0.1.9",
         "cordova-plugin-compat": "^1.0.0",
         "cordova-plugin-console": "^1.0.7",
         "cordova-plugin-device": "^1.1.6",
@@ -46,14 +48,18 @@
         "ionic-plugin-keyboard": "^2.2.1",
         "ionicons": "3.0.0",
         "ng2-validation": "^4.2.0",
+        "os-name": "^2.0.1",
         "phonegap-plugin-barcodescanner": "^6.0.6",
         "pouchdb": "6.2.0",
+        "proxy-middleware": "^0.15.0",
         "qrcode-generator-ts": "0.0.4",
+        "rollup-pluginutils": "^2.0.1",
         "rxjs": "5.1.1",
         "sw-toolbox": "3.6.0",
         "typedjson": "git+https://github.com/sth-larp/TypedJSON.git",
         "typescript": "2.3.4",
         "typescript-map": "0.0.4",
+        "ws": "^3.0.0",
         "zone.js": "0.8.5"
     },
     "devDependencies": {
@@ -102,7 +108,8 @@
             "phonegap-plugin-barcodescanner": {
                 "CAMERA_USAGE_DESCRIPTION": " "
             },
-            "cordova-custom-config": {}
+            "cordova-custom-config": {},
+            "cordova-plugin-app-version": {}
         },
         "platforms": [
             "android",
