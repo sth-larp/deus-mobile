@@ -2,8 +2,8 @@
  import { HttpModule } from '@angular/http';
  import { AppVersion } from '@ionic-native/app-version';
  import { BarcodeScanner } from '@ionic-native/barcode-scanner';
- import { Firebase } from '@ionic-native/firebase';
  import { Keyboard } from '@ionic-native/keyboard';
+ import { Push } from '@ionic-native/push';
  import { IonicApp, IonicModule } from 'ionic-angular';
 
  import { MyApp } from './app.component';
@@ -87,7 +87,7 @@
     QrCodeScanService,
     QrCodeScanServiceCustom,
     LoggingService,
-    Firebase,
+    Push,
     FirebaseService,
     BarcodeScanner,
     LocalTimeService,

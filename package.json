@@ -23,9 +23,9 @@
         "@ionic-native/app-version": "^4.0.1",
         "@ionic-native/barcode-scanner": "3.4.4",
         "@ionic-native/core": "^3.12.1",
-        "@ionic-native/firebase": "3.4.4",
         "@ionic-native/keyboard": "^3.12.1",
         "@ionic-native/native-storage": "3.4.4",
+        "@ionic-native/push": "^4.0.1",
         "@ionic/storage": "2.0.1",
         "@types/pouchdb": "5.4.28",
         "basic-authorization-header": "^0.2.7",
@@ -37,7 +37,6 @@
         "cordova-plugin-compat": "^1.0.0",
         "cordova-plugin-console": "^1.0.7",
         "cordova-plugin-device": "^1.1.6",
-        "cordova-plugin-firebase": "^0.1.21",
         "cordova-plugin-nativestorage": "^2.2.2",
         "cordova-plugin-splashscreen": "^4.0.3",
         "cordova-plugin-statusbar": "^2.2.3",
@@ -50,6 +49,7 @@
         "ng2-validation": "^4.2.0",
         "os-name": "^2.0.1",
         "phonegap-plugin-barcodescanner": "^6.0.6",
+        "phonegap-plugin-push": "^1.10.5",
         "pouchdb": "6.2.0",
         "proxy-middleware": "^0.15.0",
         "qrcode-generator-ts": "0.0.4",
@@ -99,7 +99,6 @@
         "plugins": {
             "cordova-plugin-console": {},
             "cordova-plugin-device": {},
-            "cordova-plugin-firebase": {},
             "cordova-plugin-nativestorage": {},
             "cordova-plugin-splashscreen": {},
             "cordova-plugin-statusbar": {},
@@ -109,7 +108,10 @@
                 "CAMERA_USAGE_DESCRIPTION": " "
             },
             "cordova-custom-config": {},
-            "cordova-plugin-app-version": {}
+            "cordova-plugin-app-version": {},
+            "phonegap-plugin-push": {
+                "SENDER_ID": "786784916655"
+            }
         },
         "platforms": [
             "android",
