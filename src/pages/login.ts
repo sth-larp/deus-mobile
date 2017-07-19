@@ -7,7 +7,6 @@ import { AuthService } from '../services/auth.service';
 import { LoggingService } from '../services/logging.service';
 import { MenuPage } from './menu';
 
-
 @Component({
   selector: 'page-login',
   templateUrl: 'login.html',

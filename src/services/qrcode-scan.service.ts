@@ -142,7 +142,6 @@ export class QrCodeScanServiceCustom extends QrCodeScanServiceBase {
     super(barcodeScanner, alertController, logging, monotonicClock);
   }
 
-
   protected onQrParsed(data: QrData) {
     this.eventEmitter.emit(data);
   }
