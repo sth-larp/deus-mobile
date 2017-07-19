@@ -37,6 +37,7 @@
  import { NativeStorageService } from '../services/native-storage.service';
  import { QrCodeScanService, QrCodeScanServiceCustom } from '../services/qrcode-scan.service';
  import { ServerTimeService } from '../services/server-time.service';
+ import { UnreadService } from '../services/unread.service';
 
  @NgModule({
   declarations: [
@@ -93,6 +94,7 @@
     ServerTimeService,
     MonotonicTimeService,
     EconomyService,
+    UnreadService,
     Keyboard,
   ],
 })

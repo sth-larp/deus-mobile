@@ -4,6 +4,7 @@ import { Subscription } from 'rxjs/Rx';
 
 import { DataService } from '../services/data.service';
 import { LocalDataService } from '../services/local-data.service';
+import { UnreadService } from '../services/unread.service';
 import { ListBody, PageViewModel } from '../services/viewmodel.types';
 
 export abstract class UpdatablePage {
@@ -54,6 +55,7 @@ export class ListPage extends UpdatablePage {
               navCtrl: NavController,
               navParams: NavParams,
               private _localDataService: LocalDataService,
+              private _unreadService: UnreadService,
               private _toastCtrl: ToastController) {
     super(navParams.data.id, dataService, navCtrl);
   }
@@ -61,7 +63,7 @@ export class ListPage extends UpdatablePage {
   // tslint:disable-next-line:no-unused-variable
   public ionViewDidLeave() {
     super.ionViewDidLeave();
-    this.markAllRead();
+    this._unreadService.markPageRead(this._viewId, this.body);
   }
 
   public doRefresh(refresher: Refresher) {
@@ -87,7 +89,8 @@ export class ListPage extends UpdatablePage {
     // by setting hasIcon to every one of them.
     const hasIcon = this.body.items.some((item) => item.icon && item.icon.length > 0);
     this.body.items.forEach((item) => item.hasIcon = hasIcon);
-    this.updateUnread();
+
+    this._unreadService.updateUnreadInPage(this._viewId, this.body);
 
     // Dark magic to fix dynamic header height.
     // See https://github.com/driftyco/ionic/issues/9709
@@ -100,33 +103,5 @@ export class ListPage extends UpdatablePage {
         this._segment.ngAfterViewInit();
       }
     });
-  }
-
-  private async updateUnread() {
-    this.hasUnread = false;
-    // TODO: Also highlight changes. Use map viewId->revision instead.
-    const storageKey = 'unread/' + this._viewId;
-    const readIdsArray: string[] = await this._localDataService.getItemOrNull(storageKey);
-    const readIds: Set<string> = readIdsArray != null ? new Set(readIdsArray) : new Set();
-    this.body.items.forEach((item) => {
-      if (item.viewId) {
-        item.unread = !readIds.has(item.viewId);
-        if (item.unread)
-          item.unread = true;
-      }
-    });
-  }
-
-  private async markAllRead() {
-    const storageKey = 'unread/' + this._viewId;
-    const modelIds: string[] = [];
-    this.body.items.forEach((item) => {
-      if (item.viewId)
-        modelIds.push(item.viewId);
-    });
-    // It's by design that IDs removed from the model are also removed
-    // form the list of read. If a condition is removed and then re-added,
-    // user should be notified again.
-    this._localDataService.setItem(storageKey, modelIds);
   }
 }

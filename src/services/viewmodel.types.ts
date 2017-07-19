@@ -116,8 +116,7 @@ export class ListItemData {
   @JsonMember
   public tag?: string;
 
-  // Internal fields. MUST NOT be set in ViewModel
-  // (not validated now)
+  // Internal fields. MUST NOT be set in ViewModel (not validated now)
   @JsonMember
   public unread?: boolean;
 }
@@ -170,4 +169,11 @@ export class ApplicationViewModel {
 
   @JsonMember({isRequired: true, elements: PageViewModel, refersAbstractType: true})
   public pages: PageViewModel[];
+
+  // Internal fields. MUST NOT be set in ViewModel (not validated now)
+  @JsonMember
+  public numUnreadChanges?: number;
+
+  @JsonMember
+  public numUnreadMessages?: number;
 }
