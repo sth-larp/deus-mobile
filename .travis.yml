@@ -37,7 +37,7 @@ script:
 - mkdir www
 - karma start karma.conf.js --single-run --browsers Firefox
 - "./scripts/update-app-version.sh"
-- "./scripts/build.sh"
+- travis_wait 50 "./scripts/build.sh"
 after_success:
 - "./scripts/upload-to-hockeyapp.sh"
 env:
