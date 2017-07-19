@@ -35,7 +35,7 @@
  import { LoggingService } from '../services/logging.service';
  import { MonotonicTimeService } from '../services/monotonic-time.service';
  import { NativeStorageService } from '../services/native-storage.service';
- import { QrCodeScanService } from '../services/qrcode-scan.service';
+ import { QrCodeScanService, QrCodeScanServiceCustom } from '../services/qrcode-scan.service';
  import { ServerTimeService } from '../services/server-time.service';
 
  @NgModule({
@@ -84,6 +84,7 @@
     DataService,
     LocalDataService,
     QrCodeScanService,
+    QrCodeScanServiceCustom,
     LoggingService,
     Firebase,
     FirebaseService,

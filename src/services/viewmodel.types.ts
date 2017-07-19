@@ -57,6 +57,9 @@ export class ActionData {
   @JsonMember({isRequired: true})
   public eventType: string;
 
+  @JsonMember({isRequired: true})
+  public needsQr: boolean;
+
   @JsonMember
   public data: any;
 }

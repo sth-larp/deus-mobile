@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { EventEmitter, Injectable } from '@angular/core';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
 import { AlertController, ModalController } from 'ionic-angular';
 import { TSMap } from 'typescript-map';
@@ -15,11 +15,7 @@ class QrExpiredError extends Error {
 
 type QrCallback = ((data: QrData) => void);
 
-@Injectable()
-export class QrCodeScanService {
-  private _qrTypeToCallback = new TSMap<QrType, QrCallback>();
-  private _defaultCallback: QrCallback;
-
+abstract class QrCodeScanServiceBase {
   private _qrScanningOptions = {
     preferFrontCamera: false,
     showFlipCameraButton: false,
@@ -34,24 +30,8 @@ export class QrCodeScanService {
 
   constructor(private _barcodeScanner: BarcodeScanner,
               private _alertController: AlertController,
-              private _modalController: ModalController,
               private _logging: LoggingService,
-              private _monotonicClock: MonotonicTimeService,
-              private _economyService: EconomyService) {
-
-    this._defaultCallback = (data: QrData) => {
-      const modal = this._modalController.create(GeneralQRCodePage, { value: data });
-      modal.present();
-    };
-
-    this.registerCallback(QrType.Bill, (data) => {
-      const splitPayload = data.payload.split(',');
-      this._economyService.makeTransaction(splitPayload[0], Number(splitPayload[1]));
-    });
-  }
-
-  public registerCallback(type: QrType, callback: QrCallback) {
-    this._qrTypeToCallback.set(type, callback);
+              private _monotonicClock: MonotonicTimeService) {
   }
 
   public scanQRCode(): void {
@@ -67,16 +47,15 @@ export class QrCodeScanService {
     });
   }
 
+  protected abstract onQrParsed(data: QrData);
+
   private onQRScanned(qr: string) {
     try {
       const data: QrData = decode(qr);
       this._logging.info('Decoded QR code: ' + JSON.stringify(data));
       if (data.validUntil < this._monotonicClock.getUnixTimeMs() / 1000)
         throw new QrExpiredError('QR code expired');
-      if (this._qrTypeToCallback.has(data.type))
-        this._qrTypeToCallback.get(data.type)(data);
-      else
-        this._defaultCallback(data);
+      this.onQrParsed(data);
     } catch (e) {
       this._logging.warning('Unsupported QR code scanned, error: ' + e);
       if (e instanceof QrExpiredError)
@@ -113,5 +92,58 @@ export class QrCodeScanService {
       'с описанием ситуации на адрес support@alice.digital.',
       buttons: ['Ок'],
     }).present();
+  }
+}
+
+@Injectable()
+export class QrCodeScanService extends QrCodeScanServiceBase {
+  private _qrTypeToCallback = new TSMap<QrType, QrCallback>();
+  private _defaultCallback: QrCallback;
+
+  constructor(barcodeScanner: BarcodeScanner,
+              alertController: AlertController,
+              logging: LoggingService,
+              monotonicClock: MonotonicTimeService,
+              private _modalController: ModalController,
+              private _economyService: EconomyService) {
+    super(barcodeScanner, alertController, logging, monotonicClock);
+    this._defaultCallback = (data: QrData) => {
+      const modal = this._modalController.create(GeneralQRCodePage, { value: data });
+      modal.present();
+    };
+
+    this.registerCallback(QrType.Bill, (data) => {
+      const splitPayload = data.payload.split(',');
+      this._economyService.makeTransaction(splitPayload[0], Number(splitPayload[1]));
+    });
+  }
+
+  protected onQrParsed(data: QrData) {
+    if (this._qrTypeToCallback.has(data.type))
+      this._qrTypeToCallback.get(data.type)(data);
+    else
+      this._defaultCallback(data);
+  }
+
+  private registerCallback(type: QrType, callback: QrCallback) {
+    this._qrTypeToCallback.set(type, callback);
+  }
+
+}
+
+@Injectable()
+export class QrCodeScanServiceCustom extends QrCodeScanServiceBase {
+  public eventEmitter = new EventEmitter<QrData>();
+
+  constructor(barcodeScanner: BarcodeScanner,
+              alertController: AlertController,
+              logging: LoggingService,
+              monotonicClock: MonotonicTimeService) {
+    super(barcodeScanner, alertController, logging, monotonicClock);
+  }
+
+
+  protected onQrParsed(data: QrData) {
+    this.eventEmitter.emit(data);
   }
 }
