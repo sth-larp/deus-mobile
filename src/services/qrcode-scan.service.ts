@@ -15,7 +15,7 @@ class QrExpiredError extends Error {
 
 type QrCallback = ((data: QrData) => void);
 
-abstract class QrCodeScanServiceBase {
+export abstract class QrCodeScanServiceBase {
   private _qrScanningOptions = {
     preferFrontCamera: false,
     showFlipCameraButton: false,
