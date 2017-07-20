@@ -25,7 +25,7 @@ export class LoginPage {
               appVersion: AppVersion) {
     this.loginForm = this._formBuilder.group({
       // TODO: remove credentials before public testing
-      username: ['', Validators.required],
+      loginOrId: ['', Validators.required],
       password: ['', Validators.required],
     });
     appVersion.getVersionNumber()
