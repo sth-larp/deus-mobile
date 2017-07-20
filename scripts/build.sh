@@ -18,5 +18,5 @@ if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
   echo key.store.password=$CERT_PASSWORD >> ./platforms/android/release-signing.properties
   echo key.alias.password=$CERT_PASSWORD >> ./platforms/android/release-signing.properties
   ionic cordova plugin add cordova-plugin-crosswalk-webview --no-interactive
-  ionic cordova build android --device --release --no-interactive
+  ionic cordova build android --device --release --no-interactive --prod
 fi
