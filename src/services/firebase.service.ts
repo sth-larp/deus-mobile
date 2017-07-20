@@ -32,6 +32,8 @@ export class FirebaseService implements ILoginListener {
       },
       ios: {
         senderID: '786784916655 ',
+        alert: true,
+        gcmSandbox: true,
         topics: ['all'],
       },
     };
