@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AppVersion } from '@ionic-native/app-version';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
 import { Subscription } from 'rxjs/Rx';
+import { GlobalConfig } from '../config';
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
 import { LoggingService } from './logging.service';
@@ -37,7 +38,7 @@ export class FirebaseService implements ILoginListener {
         ios: {
           senderID: '786784916655 ',
           alert: true,
-          gcmSandbox: true,
+          gcmSandbox: !GlobalConfig.useProductionAPNSChannel,
           topics: ['all'],
         },
       };
