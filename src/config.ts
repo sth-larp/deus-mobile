@@ -24,7 +24,7 @@ export const GlobalConfig = {
   economyTransferMoneyUrl: 'https://alice.digital/econ/api/transfer',
   economyTransactionsUrl: 'https://alice.digital/econ/api/transactions',
 
-  useProductionAPNSChannel: false,
+  useProductionAPNSChannel: true,
 };
 
 // Apparently, SCSS variables cannot be used in typescript, so copying here.
