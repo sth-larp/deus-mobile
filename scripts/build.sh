@@ -17,5 +17,5 @@ if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
   echo "key.alias=deus-larp" >> ./platforms/android/release-signing.properties
   echo key.store.password=$CERT_PASSWORD >> ./platforms/android/release-signing.properties
   echo key.alias.password=$CERT_PASSWORD >> ./platforms/android/release-signing.properties
-  ionic cordova build android --device --release --no-interactive --prod
+  ionic cordova build android --device --release --no-interactive
 fi
