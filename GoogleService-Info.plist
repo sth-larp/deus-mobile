@@ -7,9 +7,9 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>786784916655-v717vs58lik12vfu88q23oinpci1lf07.apps.googleusercontent.com</string>
+	<string>786784916655-m9a9jdvt8b7738dg14gb7cj6io1ef0b5.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.786784916655-v717vs58lik12vfu88q23oinpci1lf07</string>
+	<string>com.googleusercontent.apps.786784916655-m9a9jdvt8b7738dg14gb7cj6io1ef0b5</string>
 	<key>API_KEY</key>
 	<string>AIzaSyCqXtEn0oCwif5Q-klretY69k8LkLJ9u20</string>
 	<key>GCM_SENDER_ID</key>
@@ -17,7 +17,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>digital.alice.app.dev</string>
+	<string>digital.alice.app.prod</string>
 	<key>PROJECT_ID</key>
 	<string>deus-larp</string>
 	<key>STORAGE_BUCKET</key>
@@ -33,7 +33,7 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true/>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:786784916655:ios:3221f1d942e744f8</string>
+	<string>1:786784916655:ios:820fc157621d2da8</string>
 	<key>DATABASE_URL</key>
 	<string>https://deus-larp.firebaseio.com</string>
 </dict>

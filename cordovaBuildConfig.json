@@ -2,13 +2,13 @@
 		"ios": {
 			"debug": {
 				"codeSignIdentity": "iPhone Developer: andy@mechanus.ru (6EJQ8293GA)",
-				"provisioningProfile": "3b8e7193-a3f0-49df-91a7-37b4dfb59d5b",
+				"provisioningProfile": "4d823e71-5ff3-4b23-99fb-6d5ba7ffd783",
 				"developmentTeam": "EFJP4MU829",
 				"packageType": "development"
 			},
 			"release": {
-				"codeSignIdentity": "iPhone Developer: andy@mechanus.ru (6EJQ8293GA)",
-				"provisioningProfile": "3b8e7193-a3f0-49df-91a7-37b4dfb59d5b",
+				"codeSignIdentity": "iPhone Distribution: ANDREY KRIVTSOV (EFJP4MU829)",
+				"provisioningProfile": "726b2b5a-5873-4088-896f-161f7e5700b2",
 				"developmentTeam": "EFJP4MU829",
 				"packageType": "app-store"
 			}
