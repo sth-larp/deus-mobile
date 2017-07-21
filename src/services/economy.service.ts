@@ -32,7 +32,7 @@ export class EconomyService {
             value: `${entry.Amount} кр.`,
             details: {
               header: 'Детали операции',
-              text: JSON.stringify(entry, null, 2),
+              text: '<div class="pre">' + JSON.stringify(entry, null, 2) + '</div>',
               actions: null,
             },
           };

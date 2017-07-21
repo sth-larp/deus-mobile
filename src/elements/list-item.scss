@@ -1,11 +1,25 @@
 list-item {
-  .backgroundprogressbar {
+  .item-md .backgroundprogressbar {
     z-index:-1;
     position:absolute;
     top:0px;
     left:0px;
     height:100%;
   }
+
+  .item-ios .backgroundprogressbar {
+    z-index:1;
+    position:absolute;
+    top:0px;
+    left:0px;
+    height:100%;
+  }
+
+  .item-ios .overProgressBar, .note-ios .overProgressBar{
+    z-index: 10;
+    position: relative;
+  }
+
 
   .unread-container {
     border-style: solid;

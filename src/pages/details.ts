@@ -21,7 +21,6 @@ export class DetailsPage {
               private _config: Config,
               private _qrCodeScanner: QrCodeScanServiceCustom) {
     this.data = navParams.data.value;
-    this.preprocessText();
   }
 
   public showActions() {
@@ -64,7 +63,7 @@ export class DetailsPage {
   private preprocessText() {
     // TODO(Andrei): Sanitize HTML.
     // TODO(Andrei): Highlight links only when necessary.
-    const urlRegexp = /\b(https?:\/\/\S+)\b/g;
-    this.data.text = this.data.text.replace(urlRegexp, '<a href="$1">$1</a>');
+    //const urlRegexp = /\b(https?:\/\/\S+)\b/g;
+    //this.data.text = this.data.text.replace(urlRegexp, '<a href="$1">$1</a>');
   }
 }
