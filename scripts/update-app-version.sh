@@ -23,4 +23,4 @@ else
 fi
 
 version="${tag_version}.${num_commits}"
-sed -i -e "s/version=\"0\\.0\\.1\"/version=\"${version}\"/" config.xml
+sed -i -r -e "s/version=\"[0-9]+\\.[0-9]+\\.[0-9]+\"/version=\"${version}\"/" config.xml
