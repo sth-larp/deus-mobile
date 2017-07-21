@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Try to extract latest version tag from the current branch.
 tag_and_revision=`git describe --tags --first-parent --candidates=1 --match=v* 2> /dev/null`
 
@@ -24,3 +26,4 @@ fi
 
 version="${tag_version}.${num_commits}"
 sed -i -r -e "s/version=\"[0-9]+\\.[0-9]+\\.[0-9]+\"/version=\"${version}\"/" config.xml
+sed -i -r -e "s/ios-CFBundleVersion=\"[0-9]+\\.[0-9]+\\.[0-9]+\"/ios-CFBundleVersion=\"${version}\"/" config.xml
