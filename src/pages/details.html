@@ -10,7 +10,7 @@
 
 <ion-content padding>
   <h2>{{data.header}}</h2>
-  <p class="pre" [innerHTML]="data.text"></p>
+  <div [innerHTML]="data.text"></div>
 </ion-content>
 
 <ion-footer *ngIf="data.actions" no-shadow>
