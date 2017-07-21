@@ -1,4 +1,4 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
 import { LocalDataService } from '../services/local-data.service';
@@ -8,9 +8,6 @@ import { DataService } from './data.service';
 // "Unread" statuses for items and pages
 @Injectable()
 export class UnreadService {
-  private _numUnreadChangesEventEmitter: EventEmitter<number> = new EventEmitter();
-  private _numUnreadChanges: Observable<number>;
-
   constructor(private _localDataService: LocalDataService,
               private _dataService: DataService) {
   }
@@ -41,8 +38,6 @@ export class UnreadService {
 
   private async updateUnreadInModel(viewModel: ApplicationViewModel) {
     // TODO: Also highlight changes. Use map viewId->revision instead.
-    viewModel.numUnreadChanges = 0;
-    viewModel.numUnreadMessages = 0;
     await Promise.all(viewModel.pages.map(async (page) => {
       if (page.__type == 'ListPageViewModel') {
         const listPage = page as ListPageViewModel;
