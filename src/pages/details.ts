@@ -62,8 +62,5 @@ export class DetailsPage {
 
   private preprocessText() {
     // TODO(Andrei): Sanitize HTML.
-    // TODO(Andrei): Highlight links only when necessary.
-    //const urlRegexp = /\b(https?:\/\/\S+)\b/g;
-    //this.data.text = this.data.text.replace(urlRegexp, '<a href="$1">$1</a>');
   }
 }
