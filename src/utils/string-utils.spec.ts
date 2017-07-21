@@ -22,6 +22,7 @@ describe('String utils', () => {
     expect(formatTime2(0, ':')).toEqual('0:00');
     expect(formatTime2(-1, ':')).toEqual('−0:01');  // Note: Unicode minus
     expect(formatTime2(1, '//')).toEqual('0//01');
+    expect(formatTime2(1000000, ':')).toEqual('∞');
   });
 
   it('formatTime3', () => {
@@ -33,5 +34,6 @@ describe('String utils', () => {
     expect(formatTime3(0, ':')).toEqual('0:00:00');
     expect(formatTime3(-1, ':')).toEqual('−0:00:01');  // Note: Unicode minus
     expect(formatTime3(1, '//')).toEqual('0//00//01');
+    expect(formatTime3(1000000, ':')).toEqual('∞');
   });
 });

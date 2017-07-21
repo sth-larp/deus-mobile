@@ -1,3 +1,5 @@
+const infinity = 864000;
+
 function signCharacter(value: number): string {
   return value < 0 ? '−' /* U+2212 */ : '';
 }
@@ -12,6 +14,8 @@ export function formatInteger(value: number, padding: number): string {
 
 // Prints "H:MM" or "M:SS" with a given separator.
 export function formatTime2(value: number, separator: string): string {
+  if (value >= infinity)
+    return '∞';
   const sign = signCharacter(value);
   value = Math.abs(value);
   value = Math.floor(value);
@@ -22,6 +26,8 @@ export function formatTime2(value: number, separator: string): string {
 
 // Prints "H:MM:SS" with a given separator.
 export function formatTime3(value: number, separator: string): string {
+  if (value >= infinity)
+    return '∞';
   const sign = signCharacter(value);
   value = Math.abs(value);
   value = Math.floor(value);
