@@ -8,9 +8,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:786784916655:android:3221f1d942e744f8",
+        "mobilesdk_app_id": "1:786784916655:android:2fe45ab0c5325cec",
         "android_client_info": {
-          "package_name": "digital.alice.app.dev"
+          "package_name": "alice.digital.app.prod"
         }
       },
       "oauth_client": [
