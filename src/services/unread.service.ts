@@ -15,16 +15,6 @@ export class UnreadService {
               private _dataService: DataService) {
   }
 
-  public async markPageSeen(viewId: string, pageBody: ListBody) {
-    const storageKey = 'unread/' + viewId;
-    const modelIds = pageBody.items.filter((item) => item.viewId).map((item) => item.viewId);
-
-    // It's by design that IDs removed from the model are also removed
-    // from the list of read. If a condition is removed and then re-added,
-    // user should be notified again.
-    await this._localDataService.setItem(storageKey, modelIds);
-  }
-
   public async markPageRead(viewId: string, pageBody: ListBody) {
     const storageKey = 'unread/' + viewId;
     const modelIds = pageBody.items.filter((item) => item.viewId).map((item) => item.viewId);
