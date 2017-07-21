@@ -1,13 +1,13 @@
-// TODO: Add tests
-
 function signCharacter(value: number): string {
   return value < 0 ? '−' /* U+2212 */ : '';
 }
 
 // Prints an integer padded with leading zeroes
 export function formatInteger(value: number, padding: number): string {
-  const str = value.toFixed(0);
-  return (str.length >= padding) ? str : ('0000000000000000' + str).slice(-padding);
+  const sign = signCharacter(value);
+  const str = Math.abs(value).toFixed(0);
+  const padded = (str.length >= padding) ? str : ('0000000000000000' + str).slice(-padding);
+  return sign + padded;
 }
 
 // Prints "H:MM" or "M:SS" with a given separator.
