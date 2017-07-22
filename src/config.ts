@@ -31,7 +31,7 @@ export const GlobalConfig = {
 // Must stay in sync with variables.scss!
 // tslint:disable-next-line:variable-name
 export const Colors = {
-  standard: '#F3F5F8',
+  standard: '#F0F2F4',
   primary:  '#4990E2',
   green:    '#68BB0D',
   yellow:   '#B2901D',
