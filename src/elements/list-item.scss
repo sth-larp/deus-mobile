@@ -31,10 +31,13 @@ list-item {
     font-weight: bold;
   }
 
-  .itemvalue {
+  .itemText, .itemSubtext, .itemValue {
     white-space: nowrap;
-    font-weight: bold;
     overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .itemValue {
+    font-weight: bold;
     max-width: 70%;
   }
 
