@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 
 import { AuthService } from './auth.service';
 import { MonotonicTimeService } from './monotonic-time.service';
-import { NativeStorageService } from './native-storage.service';
+import { InMemoryNativeStorageService, NativeStorageService } from './native-storage.service';
 
 // Permanent storage of per-account data
 @Injectable()
@@ -49,7 +49,20 @@ export class LocalDataService {
   }
 
   // Helper functions
-  private makeGlobalKey(localKey: string): string {
+  protected makeGlobalKey(localKey: string): string {
     return this._authService.getUserId() + '/' + localKey;
+  }
+}
+
+// Implements only function currently used in test
+export class FakeLocalDataService extends LocalDataService {
+  constructor() {
+    super(null,  // MonotonicTimeService: function relying on it are not called in tests
+          null,  // AuthService: all usages are overridden
+          new InMemoryNativeStorageService());
+  }
+
+  protected makeGlobalKey(localKey: string): string {
+    return 'testuser' + '/' + localKey;
   }
 }

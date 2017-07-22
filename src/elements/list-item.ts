@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
+import { Colors } from '../config'
 import { DetailsPage } from '../pages/details';
 import { DetailsData, ListItemData } from '../services/viewmodel.types';
 
@@ -18,13 +19,11 @@ export class ListItem {
   constructor(private _modalCtrl: ModalController) { }
 
   public getValueColor(): string {
-    // TODO: Get color from variables.scss instead
-    return this.data.valueColor ? this.data.valueColor : '#F3F5F8';
+    return this.data.valueColor ? this.data.valueColor : Colors.standard;
   }
 
   public getProgressBarColor(): string {
-    // TODO: Add color to variables.scss instead
-    return this.data.progressBarColor ? this.data.progressBarColor : '#6987A4';
+    return this.data.progressBarColor ? this.data.progressBarColor : Colors.progressBarDefault;
   }
 
   public getProgressBarWidth(): string {

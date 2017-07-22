@@ -27,6 +27,7 @@ list-item {
     border-color: color($colors, light-blue);
   }
   .unread-text {
+    color: $text-color-bright;
     font-weight: bold;
   }
 

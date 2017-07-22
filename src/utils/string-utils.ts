@@ -1,4 +1,4 @@
-// TODO: Add tests
+const infinity = 864000;
 
 function signCharacter(value: number): string {
   return value < 0 ? '−' /* U+2212 */ : '';
@@ -6,12 +6,16 @@ function signCharacter(value: number): string {
 
 // Prints an integer padded with leading zeroes
 export function formatInteger(value: number, padding: number): string {
-  const str = value.toFixed(0);
-  return (str.length >= padding) ? str : ('0000000000000000' + str).slice(-padding);
+  const sign = signCharacter(value);
+  const str = Math.abs(value).toFixed(0);
+  const padded = (str.length >= padding) ? str : ('0000000000000000' + str).slice(-padding);
+  return sign + padded;
 }
 
 // Prints "H:MM" or "M:SS" with a given separator.
 export function formatTime2(value: number, separator: string): string {
+  if (value >= infinity)
+    return '∞';
   const sign = signCharacter(value);
   value = Math.abs(value);
   value = Math.floor(value);
@@ -22,6 +26,8 @@ export function formatTime2(value: number, separator: string): string {
 
 // Prints "H:MM:SS" with a given separator.
 export function formatTime3(value: number, separator: string): string {
+  if (value >= infinity)
+    return '∞';
   const sign = signCharacter(value);
   value = Math.abs(value);
   value = Math.floor(value);
