@@ -89,6 +89,10 @@ $action-sheet-md-button-background: $background-color;
 $action-sheet-md-button-background-activated: $background-color-activated;
 $action-sheet-md-button-text-color: color($colors, standard);
 
+.action-sheet-md .action-sheet-button {
+  min-height: 5.2rem !important;  // default: 4.8
+}
+
 $alert-md-message-text-color: $text-color;
 $alert-md-background-color: $background-color;
 $alert-md-button-background-color-activated: $background-color-activated;
