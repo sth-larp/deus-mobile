@@ -24,7 +24,6 @@ export class LoginPage {
               private _logging: LoggingService,
               appVersion: AppVersion) {
     this.loginForm = this._formBuilder.group({
-      // TODO: remove credentials before public testing
       loginOrId: ['vasya', Validators.required],
       password: ['vasya', Validators.required],
     });

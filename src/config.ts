@@ -36,4 +36,6 @@ export const Colors = {
   green:    '#68BB0D',
   yellow:   '#B2901D',
   red:      '#FF373F',
+
+  progressBarDefault: '#6987A4',
 };

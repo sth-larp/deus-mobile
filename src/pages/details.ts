@@ -59,8 +59,4 @@ export class DetailsPage {
     actionSheet.onWillDismiss(unregisterFn);
     actionSheet.present();
   }
-
-  private preprocessText() {
-    // TODO(Andrei): Sanitize HTML.
-  }
 }
