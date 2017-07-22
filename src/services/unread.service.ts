@@ -44,7 +44,7 @@ export class UnreadService {
 
   private observeReadViewIds(): Observable<any> {
     return Observable.fromPromise(this.getReadViewIds())
-    .concat(Observable.fromEvent(this._readStatusChangeEmitter, 'change', (v) => v));
+      .concat(Observable.fromEvent(this._readStatusChangeEmitter, 'change', (v) => v));
   }
 
   private async getReadViewIds(): Promise<any> {
@@ -59,7 +59,7 @@ export class UnreadService {
       if (page.__type == 'ListPageViewModel') {
         const listPage = page as ListPageViewModel;
         const readIdsOnPage: string[] = (readStatusData && readStatusData[listPage.viewId])
-        ? readStatusData[listPage.viewId] : [];
+          ? readStatusData[listPage.viewId] : [];
         this.updateUnreadInPage(listPage.body, readIdsOnPage);
       }
     });
