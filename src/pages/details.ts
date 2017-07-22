@@ -1,11 +1,12 @@
 import { Component } from '@angular/core';
-import { ActionSheetController, Config, NavController, NavParams, Platform } from 'ionic-angular';
+import { ActionSheetController, AlertController, Config,
+  NavController, NavParams, Platform } from 'ionic-angular';
 
 import { QrData } from 'deus-qr-lib/lib/qr';
-import { fixActionSheetTransitions } from '../elements/deus-alert-transitions';
+import { fixActionSheetTransitions, fixAlertTransitions } from '../elements/deus-alert-transitions';
 import { DataService } from '../services/data.service';
 import { QrCodeScanServiceCustom } from '../services/qrcode-scan.service';
-import { DetailsData } from '../services/viewmodel.types';
+import { ActionData, DetailsData } from '../services/viewmodel.types';
 
 @Component({
   selector: 'page-details',
@@ -16,6 +17,7 @@ export class DetailsPage {
   constructor(navParams: NavParams,
               private _navCtrl: NavController,
               private _actionSheetCtrl: ActionSheetController,
+              private _alertController: AlertController,
               private _dataService: DataService,
               private _platform: Platform,
               private _config: Config,
@@ -28,24 +30,25 @@ export class DetailsPage {
     for (const action of this.data.actions) {
       buttons.push({
         text: action.text,
+        cssClass: action.dangerous ? 'destructive-button' : null,
         handler: () => {
           if (action.needsQr) {
             this._qrCodeScanner.eventEmitter.subscribe((qrData: QrData) => {
               action.data.additionalQrData = qrData;
-              this._dataService.pushEvent(action.eventType, action.data);
+              this.pushActionEvent(action);
             });
             this._qrCodeScanner.scanQRCode();
           } else {
-            this._dataService.pushEvent(action.eventType, action.data);
+            this.pushActionEvent(action);
           }
           this._navCtrl.pop();
         },
       });
     }
     buttons.push({
-          text: 'Отмена',
-          role: 'cancel',
-        });
+      text: 'Отмена',
+      role: 'cancel',
+    });
     const actionSheet = this._actionSheetCtrl.create({
       title: '',
       buttons,
@@ -58,5 +61,38 @@ export class DetailsPage {
     }, 0);
     actionSheet.onWillDismiss(unregisterFn);
     actionSheet.present();
+  }
+
+  private pushActionEvent(action: ActionData) {
+    if (action.dangerous) {
+      const buttons = [{
+        text: 'Отмена',
+        role: 'cancel',
+      },
+      {
+        text: action.text,
+        cssClass: 'destructive-button',
+        handler: () => this.doPushActionEvent(action),
+      }];
+      const alert = this._alertController.create({
+        title: 'Подтверждение действия',
+        message: `Вы действительно хотите <b>${action.text} ${this.data.header}</b>?`,
+        buttons,
+      });
+
+      fixAlertTransitions(this._config);
+
+      const unregisterFn = this._platform.registerBackButtonAction(() => {
+        alert.dismiss();
+      }, 0);
+      alert.onWillDismiss(unregisterFn);
+      alert.present();
+    } else {
+      this.doPushActionEvent(action);
+    }
+  }
+
+  private doPushActionEvent(action: ActionData) {
+    this._dataService.pushEvent(action.eventType, action.data);
   }
 }
