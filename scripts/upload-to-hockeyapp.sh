@@ -16,6 +16,7 @@ curl \
   -F "notes=$changes" \
   -F "notes_type=0" \
   -F "status=2" \
+  -F "release_type=0" \
   -H "X-HockeyAppToken: $HOCKEY_APP_TOKEN" \
   https://rink.hockeyapp.net/api/2/apps/upload
 
