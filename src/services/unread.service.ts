@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 
+import { EventEmitter } from 'events';
 import { LocalDataService } from '../services/local-data.service';
 import { ApplicationViewModel, ListBody, ListPageViewModel } from '../services/viewmodel.types';
 import { DataService } from './data.service';
@@ -8,18 +9,28 @@ import { DataService } from './data.service';
 // "Unread" statuses for items and pages
 @Injectable()
 export class UnreadService {
+  private _storageKey = 'readViedId';
+  private _readStatusChangeEmitter = new EventEmitter();
+
   constructor(private _localDataService: LocalDataService,
               private _dataService: DataService) {
   }
 
-  public async markPageRead(viewId: string, pageBody: ListBody) {
-    const storageKey = 'unread/' + viewId;
+  public async markPageRead(pageId: string, pageBody: ListBody) {
+    const currentReadViewIds = await this.getReadViewIds();
     const modelIds = pageBody.items.filter((item) => item.viewId).map((item) => item.viewId);
-
     // It's by design that IDs removed from the model are also removed
     // from the list of read. If a condition is removed and then re-added,
     // user should be notified again.
-    await this._localDataService.setItem(storageKey, modelIds);
+    currentReadViewIds[pageId] = modelIds;
+    this._readStatusChangeEmitter.emit('change', currentReadViewIds);
+    await this._localDataService.setItem(this._storageKey, currentReadViewIds);
+  }
+
+  public getDataWithUnreadStatus(): Observable<ApplicationViewModel> {
+    return Observable.combineLatest(this._dataService.getData(),
+      this.observeReadViewIds(),
+      (appViewModel: ApplicationViewModel, readViewIds: any) => this.updateUnreadInModel(appViewModel, readViewIds));
   }
 
   public numUnreadChanges(): Observable<number> {
@@ -31,26 +42,32 @@ export class UnreadService {
     });
   }
 
-  public getDataWithUnreadStatus(): Observable<ApplicationViewModel> {
-    return this._dataService.getData().concatMap(
-      (appViewModel: ApplicationViewModel) => this.updateUnreadInModel(appViewModel));
+  private observeReadViewIds(): Observable<any> {
+    return Observable.fromPromise(this.getReadViewIds())
+    .concat(Observable.fromEvent(this._readStatusChangeEmitter, 'change', (v) => v));
   }
 
-  private async updateUnreadInModel(viewModel: ApplicationViewModel) {
+  private async getReadViewIds(): Promise<any> {
+    let currentReadViewIds = await this._localDataService.getItemOrNull(this._storageKey);
+    if (!currentReadViewIds) currentReadViewIds = {};
+    return currentReadViewIds;
+  }
+
+  private updateUnreadInModel(viewModel: ApplicationViewModel, readStatusData: any) {
     // TODO: Also highlight changes. Use map viewId->revision instead.
-    await Promise.all(viewModel.pages.map(async (page) => {
+    viewModel.pages.forEach((page) => {
       if (page.__type == 'ListPageViewModel') {
         const listPage = page as ListPageViewModel;
-        await this.updateUnreadInPage(listPage.viewId, listPage.body);
+        const readIdsOnPage: string[] = (readStatusData && readStatusData[listPage.viewId])
+        ? readStatusData[listPage.viewId] : [];
+        this.updateUnreadInPage(listPage.body, readIdsOnPage);
       }
-    }));
+    });
     return viewModel;
   }
 
-  private async updateUnreadInPage(viewId: string, pageBody: ListBody) {
-    const storageKey = 'unread/' + viewId;
-    const readIdsArray: string[] = await this._localDataService.getItemOrNull(storageKey);
-    const readIds: Set<string> = readIdsArray ? new Set(readIdsArray) : new Set();
+  private updateUnreadInPage(pageBody: ListBody, readIdsOnPageArray: string[]) {
+    const readIds: Set<string> = new Set(readIdsOnPageArray);
 
     pageBody.items.forEach((item) => {
       if (item.viewId) {
