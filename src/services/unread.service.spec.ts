@@ -30,7 +30,7 @@ describe('UnreadService', () => {
     unreadService.getDataWithUnreadStatus().subscribe((value) => {
       dataWithUnreadStatus = value;
     });
-  };
+  }
 
   function getListPageBody(model: ApplicationViewModel, numPage: number): ListBody {
     return (model.pages[numPage] as ListPageViewModel).body;
@@ -40,12 +40,12 @@ describe('UnreadService', () => {
     const model: ApplicationViewModel = {
       pages: [
         {
-          '__type': 'ListPageViewModel',
-          'viewId': 'page:changes',
-          'body': {
-            'items': [
-              { 'viewId': 'mid:0' },
-            ]
+          __type: 'ListPageViewModel',
+          viewId: 'page:changes',
+          body: {
+            items: [
+              { viewId: 'mid:0' },
+            ],
           },
         },
       ],
@@ -68,30 +68,30 @@ describe('UnreadService', () => {
     const model: ApplicationViewModel = {
       pages: [
         {
-          '__type': 'ListPageViewModel',
-          'viewId': 'page:changes',
-          'body': {
-            'items': [
-              { 'viewId': 'mid:0' },
-            ]
+          __type: 'ListPageViewModel',
+          viewId: 'page:changes',
+          body: {
+            items: [
+              { viewId: 'mid:0' },
+            ],
           },
         },
       ],
     } as any;
-    const model_empty: ApplicationViewModel = {
+    const modelEmpty: ApplicationViewModel = {
       pages: [
         {
-          '__type': 'ListPageViewModel',
-          'viewId': 'page:changes',
-          'body': {
-            'items': [
-            ]
+          __type: 'ListPageViewModel',
+          viewId: 'page:changes',
+          body: {
+            items: [
+            ],
           },
         },
       ],
     } as any;
 
-    setupTest([model, model_empty, model]);
+    setupTest([model, modelEmpty, model]);
 
     tick(1);
     expect(getListPageBody(dataWithUnreadStatus, 0).items[0].unread).toBeTruthy();
@@ -104,68 +104,68 @@ describe('UnreadService', () => {
   }));
 
   it ('Deals with new items', fakeAsync(() => {
-    const model_1: ApplicationViewModel = {
+    const model1: ApplicationViewModel = {
       pages: [
         {
-          '__type': 'ListPageViewModel',
-          'viewId': 'page:changes',
-          'body': {
-            'items': [
-              { 'viewId': 'mid:20' },
-            ]
+          __type: 'ListPageViewModel',
+          viewId: 'page:changes',
+          body: {
+            items: [
+              { viewId: 'mid:20' },
+            ],
           },
         },
       ],
     } as any;
-    const model_2: ApplicationViewModel = {
+    const model2: ApplicationViewModel = {
       pages: [
         {
-          '__type': 'ListPageViewModel',
-          'viewId': 'page:changes',
-          'body': {
-            'items': [
-              { 'viewId': 'mid:20' },
-              { 'viewId': 'mid:30' },
-            ]
+          __type: 'ListPageViewModel',
+          viewId: 'page:changes',
+          body: {
+            items: [
+              { viewId: 'mid:20' },
+              { viewId: 'mid:30' },
+            ],
           },
         },
       ],
     } as any;
-    const model_3: ApplicationViewModel = {
+    const model3: ApplicationViewModel = {
       pages: [
         {
-          '__type': 'ListPageViewModel',
-          'viewId': 'page:changes',
-          'body': {
-            'items': [
-              { 'viewId': 'mid:20' },
-              { 'viewId': 'mid:30' },
-              { 'viewId': 'mid:10' },
-              { 'viewId': 'mid:40' },
-            ]
+          __type: 'ListPageViewModel',
+          viewId: 'page:changes',
+          body: {
+            items: [
+              { viewId: 'mid:20' },
+              { viewId: 'mid:30' },
+              { viewId: 'mid:10' },
+              { viewId: 'mid:40' },
+            ],
           },
         },
       ],
     } as any;
 
-    setupTest([model_1, model_2, model_3, model_3]);
+    setupTest([model1, model2, model3, model3]);
 
     tick(1);
     expect(getListPageBody(dataWithUnreadStatus, 0).items[0].unread).toBeTruthy();
     expect(numUnreadChanges).toEqual(1);
-    unreadService.markPageRead('page:changes', getListPageBody(model_1, 0));
+    unreadService.markPageRead('page:changes', getListPageBody(model1, 0));
     tick(1);
     expect(getListPageBody(dataWithUnreadStatus, 0).items[0].unread).toBeFalsy();
     expect(getListPageBody(dataWithUnreadStatus, 0).items[1].unread).toBeTruthy();
     expect(numUnreadChanges).toEqual(1);
-    unreadService.markPageRead('page:changes', getListPageBody(model_2, 0));
+    unreadService.markPageRead('page:changes', getListPageBody(model2, 0));
     tick(1);
     expect(getListPageBody(dataWithUnreadStatus, 0).items[0].unread).toBeFalsy();
     expect(getListPageBody(dataWithUnreadStatus, 0).items[1].unread).toBeFalsy();
     expect(getListPageBody(dataWithUnreadStatus, 0).items[2].unread).toBeTruthy();
     expect(getListPageBody(dataWithUnreadStatus, 0).items[3].unread).toBeTruthy();
     expect(numUnreadChanges).toEqual(2);
-    unreadService.markPageRead('page:changes', getListPageBody(model_3, 0));
+    unreadService.markPageRead('page:changes', getListPageBody(model3, 0));
     tick(1);
     expect(numUnreadChanges).toEqual(0);
   }));
@@ -174,22 +174,22 @@ describe('UnreadService', () => {
     const model: ApplicationViewModel = {
       pages: [
         {
-          '__type': 'ListPageViewModel',
-          'viewId': 'page:unicorns',
-          'body': {
-            'items': [
-              { 'viewId': 'mid:magic:0' },
-            ]
+          __type: 'ListPageViewModel',
+          viewId: 'page:unicorns',
+          body: {
+            items: [
+              { viewId: 'mid:magic:0' },
+            ],
           },
         },
         {
-          '__type': 'ListPageViewModel',
-          'viewId': 'page:changes',
-          'body': {
-            'items': [
-              { 'viewId': 'mid:change:0' },
-              { 'viewId': 'mid:change:1' },
-            ]
+          __type: 'ListPageViewModel',
+          viewId: 'page:changes',
+          body: {
+            items: [
+              { viewId: 'mid:change:0' },
+              { viewId: 'mid:change:1' },
+            ],
           },
         },
       ],
@@ -215,4 +215,4 @@ describe('UnreadService', () => {
     expect(getListPageBody(dataWithUnreadStatus, 1).items[1].unread).toBeFalsy();
     expect(numUnreadChanges).toEqual(0);
   }));
-})
+});
