@@ -18,7 +18,7 @@ $standard-red:    #FF373F;  // Errors and dangerous actions
 
 $colors: (
   // Colors used by Ionic internally
-  standard:   #F3F5F8,  // Normal text
+  standard:   #F0F2F4,  // Normal text
   primary:      $standard-blue,
 
   // Foreground colors for use on dark backgrounds (toolbar)
@@ -44,6 +44,7 @@ $colors: (
 
 $text-color: color($colors, standard);
 $text-color-pale: darken($text-color, 16%);
+$text-color-bright: #FFFFFF;
 
 $background-color: #545B60;
 $background-color-activated: lighten($background-color, 8%);
