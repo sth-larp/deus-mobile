@@ -1,4 +1,5 @@
 import { JsonMember, JsonObject } from 'typedjson';
+import { QrType } from "deus-qr-lib/lib/qr.type";
 
 @JsonObject
 export class GeneralInformation {
@@ -57,8 +58,13 @@ export class ActionData {
   @JsonMember({isRequired: true})
   public eventType: string;
 
-  @JsonMember({isRequired: true})
-  public needsQr: boolean;
+  // If set, activating this action will start QR scanning.
+  // To proceed, user will need to scan a QR with type equal to needsQr.
+  @JsonMember
+  public needsQr?: number;
+
+  @JsonMember
+  public destructive: boolean;
 
   @JsonMember
   public data: any;
@@ -77,6 +83,52 @@ export class DetailsData {
 }
 
 @JsonObject
+export class SublistItemData {
+  @JsonMember({isRequired: true})
+  public text: string;
+
+  @JsonMember({isRequired: true})
+  public deletable: boolean;
+}
+
+export class AddItemAction {
+  @JsonMember({isRequired: true})
+  public buttonText: string;
+
+  @JsonMember({isRequired: true})
+  public inputDialogTitle: string;
+
+  @JsonMember
+  public inputDialogMessage?: string;
+
+  @JsonMember({isRequired: true})
+  public inputType: string;  // "text", "number"...
+}
+
+// A sublist is a list of items that can be added or removed.
+// It has OK/Cancel buttons. When OK is pressed, an event is sent
+// that contains the new list of items.
+@JsonObject
+export class SublistBody {
+  @JsonMember({isRequired: true})
+  public title: string;
+
+  @JsonMember({isRequired: true})
+  public eventType: string;
+
+  // Tag will be passed with any every sent alongside with the new items.
+  // It can be used to tell which system is being administrated.
+  @JsonMember({isRequired: true})
+  public eventTag: string;
+
+  @JsonMember({isRequired: true, elements: SublistItemData})
+  public items: SublistItemData[];
+
+  @JsonMember
+  public addAction?: AddItemAction;
+}
+
+@JsonObject
 export class ListItemData {
   @JsonMember({isRequired: true})
   public text: string;
@@ -86,6 +138,11 @@ export class ListItemData {
 
   @JsonMember
   public value?: string;
+
+  // Timestamp in seconds since Unix epoch (1970/01/01), UTC.
+  // If present, replaces the value.
+  @JsonMember
+  public unixSecondsValue?: number;
 
   @JsonMember
   public percent?: number;
@@ -102,13 +159,13 @@ export class ListItemData {
   @JsonMember
   public icon?: string;
 
-  // Only for normal lists (not sublists)
+  // At most one of 'details' and 'sublist' must be set.
   @JsonMember
   public details?: DetailsData;
 
-  // Only for sublists
+  // At most one of 'details' and 'sublist' must be set.
   @JsonMember
-  public deletable?: boolean;
+  public sublist?: SublistBody;
 
   @JsonMember
   public viewId?: string;

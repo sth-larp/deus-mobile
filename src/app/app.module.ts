@@ -14,15 +14,18 @@
  import { MenuPage } from '../pages/menu';
 
  import { ListItem } from '../elements/list-item';
+ import { SublistItem } from '../elements/sublist-item';
  import { SyncButton } from '../elements/sync-button';
 
  import { FormsModule, ReactiveFormsModule } from '@angular/forms';
  import { BrowserModule } from '@angular/platform-browser';
+ import { EnhancedActionSheetController, EnhancedAlertController } from '../elements/enhanced-controllers';
  import { QrCode } from '../elements/qrcode';
  import { QuickActionButton } from '../elements/quick-action-button';
  import { QuickActions } from '../elements/quick-actions';
  import { BillPage } from '../pages/bill';
  import { DetailsPage } from '../pages/details';
+ import { SublistPage } from '../pages/sublist';
  import { GeneralQRCodePage } from '../pages/general-qrcode';
  import { PassportPage } from '../pages/passport';
  import { TechnicalInfoPage } from '../pages/technical-info';
@@ -44,6 +47,7 @@
     MyApp,
     ListPage,
     ListItem,
+    SublistItem,
     QrCode,
     LoginPage,
     EconomyPage,
@@ -52,6 +56,7 @@
     GeneralQRCodePage,
     TechnicalInfoPage,
     DetailsPage,
+    SublistPage,
     PassportPage,
     QuickActionButton,
     QuickActions,
@@ -75,6 +80,7 @@
     GeneralQRCodePage,
     TechnicalInfoPage,
     DetailsPage,
+    SublistPage,
     PassportPage,
     QrCode,
   ],
@@ -96,6 +102,8 @@
     EconomyService,
     UnreadService,
     Keyboard,
+    EnhancedActionSheetController,
+    EnhancedAlertController,
   ],
 })
 export class AppModule {}

@@ -1,0 +1,8 @@
+<!-- Note: shares CSS with list-item.html -->
+
+<ion-item>
+  <h2 class="itemText">{{data.text}}</h2>
+  <button *ngIf="data.deletable" ion-button item-right icon-only clear color="standard" (click)="onDelete()">
+    <ion-icon name="trash"></ion-icon>
+  </button>
+</ion-item>

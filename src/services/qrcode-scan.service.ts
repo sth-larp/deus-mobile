@@ -1,10 +1,12 @@
-import { EventEmitter, Injectable } from '@angular/core';
+import { Injectable } from '@angular/core';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { AlertController, ModalController } from 'ionic-angular';
+import { ModalController } from 'ionic-angular';
 import { TSMap } from 'typescript-map';
 
 import { decode, QrData } from 'deus-qr-lib/lib/qr';
 import { QrType } from 'deus-qr-lib/lib/qr.type';
+import { EventEmitter } from 'events';
+import { EnhancedAlertController } from '../elements/enhanced-controllers';
 import { GeneralQRCodePage } from '../pages/general-qrcode';
 import { EconomyService } from './economy.service';
 import { LoggingService } from './logging.service';
@@ -29,7 +31,7 @@ export abstract class QrCodeScanServiceBase {
   };
 
   constructor(private _barcodeScanner: BarcodeScanner,
-              private _alertController: AlertController,
+              private _alertController: EnhancedAlertController,
               private _logging: LoggingService,
               private _monotonicClock: MonotonicTimeService) {
   }
@@ -43,11 +45,13 @@ export abstract class QrCodeScanServiceBase {
         this._logging.info('QR code scanning was canncelled by user');
     }, (err) => {
       this._logging.warning('Error reading QR code: ' + err);
+      this.onQrScanFailed();
       this.showCannotReadQrWarning();
     });
   }
 
   protected abstract onQrParsed(data: QrData);
+  protected abstract onQrScanFailed();
 
   private onQRScanned(qr: string) {
     try {
@@ -58,6 +62,7 @@ export abstract class QrCodeScanServiceBase {
       this.onQrParsed(data);
     } catch (e) {
       this._logging.warning('Unsupported QR code scanned, error: ' + e);
+      this.onQrScanFailed();
       if (e instanceof QrExpiredError)
         this.showExperidQrWarning();
       else
@@ -66,32 +71,32 @@ export abstract class QrCodeScanServiceBase {
   }
 
   private showCannotReadQrWarning() {
-    this._alertController.create({
+    this._alertController.show({
       title: 'Не получается отсканировать QR-код',
       message: 'Приложение не может отсканировать QR-код. Пожалуйста, убедитесь, что у приложения есть ' +
       'доступ к камере, QR код хорошего качества. Используйте кнопку включения подсветки при необходимости.',
       buttons: ['Ок'],
-    }).present();
+    });
   }
 
   private showInvalidQrFormatWarning() {
-    this._alertController.create({
+    this._alertController.show({
       title: 'Некорректный формат QR-кода',
       message: 'QR-код распознан, но имеет неправильный формат. Если вы уверены, что это допустимый код ' +
       'и вам точно необходимо его использовать, сфотографируйте код и отправьте эту фотографию ' +
       'с описанием ситуации на адрес support@alice.digital.',
       buttons: ['Ок'],
-    }).present();
+    });
   }
 
   private showExperidQrWarning() {
-    this._alertController.create({
+    this._alertController.show({
       title: 'Срок действия QR-кода истек',
       message: 'QR-код распознан, но срок его действия истек. Если вы уверены, что это допустимый код ' +
       'и вам точно необходимо его использовать, сфотографируйте код и отправьте эту фотографию ' +
       'с описанием ситуации на адрес support@alice.digital.',
       buttons: ['Ок'],
-    }).present();
+    });
   }
 }
 
@@ -101,7 +106,7 @@ export class QrCodeScanService extends QrCodeScanServiceBase {
   private _defaultCallback: QrCallback;
 
   constructor(barcodeScanner: BarcodeScanner,
-              alertController: AlertController,
+              alertController: EnhancedAlertController,
               logging: LoggingService,
               monotonicClock: MonotonicTimeService,
               private _modalController: ModalController,
@@ -125,6 +130,9 @@ export class QrCodeScanService extends QrCodeScanServiceBase {
       this._defaultCallback(data);
   }
 
+  protected onQrScanFailed() {
+  }
+
   private registerCallback(type: QrType, callback: QrCallback) {
     this._qrTypeToCallback.set(type, callback);
   }
@@ -133,16 +141,27 @@ export class QrCodeScanService extends QrCodeScanServiceBase {
 
 @Injectable()
 export class QrCodeScanServiceCustom extends QrCodeScanServiceBase {
-  public eventEmitter = new EventEmitter<QrData>();
+  private _eventEmitter = new EventEmitter();
 
   constructor(barcodeScanner: BarcodeScanner,
-              alertController: AlertController,
+              alertController: EnhancedAlertController,
               logging: LoggingService,
               monotonicClock: MonotonicTimeService) {
     super(barcodeScanner, alertController, logging, monotonicClock);
   }
 
+  public observeQrsParsed(): Promise<QrData> {
+    return new Promise((resolve, reject) => {
+      this._eventEmitter.on('qrParsed', (data) => resolve(data));
+      this._eventEmitter.on('qrScanFailed', () => reject());
+    });
+  }
+
   protected onQrParsed(data: QrData) {
-    this.eventEmitter.emit(data);
+    this._eventEmitter.emit('qrParsed', data);
+  }
+
+  protected onQrScanFailed() {
+    this._eventEmitter.emit('qrScanFailed', {});
   }
 }
