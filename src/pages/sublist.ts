@@ -58,7 +58,7 @@ export class SublistPage {
     this._navCtrl.pop();
   }
 
-  public onOk(): void {
+  public onSave(): void {
     this._dataService.pushEvent(this.body.eventType, {
       tag: this.body.eventTag,
       items: this.body.items.map((item) => (item.text)),
