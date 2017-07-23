@@ -72,9 +72,9 @@ export class QuickActions implements ILoginListener {
       },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
-    this._unreadSubscription = this._unreadService.numUnreadChanges().subscribe(
+    this._unreadSubscription = this._unreadService.getUnreadStats().subscribe(
       (value) => {
-        this.notificationIcon = (value == 0) ? 'notify-none.svg' : 'notify-changes.svg';
+        this.notificationIcon = (value.changes == 0) ? 'notify-none.svg' : 'notify-changes.svg';
       },
     );
     setInterval(() => { this.updateVrStatus(null); }, GlobalConfig.recalculateVrTimerEveryMs);
