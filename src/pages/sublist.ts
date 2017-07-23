@@ -59,11 +59,19 @@ export class SublistPage {
   }
 
   public onSave(): void {
-    this._dataService.pushEvent(this.body.eventType, {
-      tag: this.body.eventTag,
-      items: this.body.items.map((item) => (item.text)),
+    this._alertController.show({
+      title: 'Сохранить изменения?',
+      buttons: [
+        {
+          text: 'Отмена',
+          role: 'cancel',
+        },
+        {
+          text: 'Сохранить',
+          handler: (data) => this.doSave(),
+        },
+      ],
     });
-    this._navCtrl.pop();
   }
 
   private addItem(itemText: string) {
@@ -79,6 +87,14 @@ export class SublistPage {
       text: itemText,
       deletable: true,
     });
+  }
+
+  private doSave(): void {
+    this._dataService.pushEvent(this.body.eventType, {
+      tag: this.body.eventTag,
+      items: this.body.items.map((item) => (item.text)),
+    });
+    this._navCtrl.pop();
   }
 
   private restoreOriginalBody(): void {
