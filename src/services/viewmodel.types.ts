@@ -1,4 +1,5 @@
 import { JsonMember, JsonObject } from 'typedjson';
+import { QrType } from "deus-qr-lib/lib/qr.type";
 
 @JsonObject
 export class GeneralInformation {
@@ -57,8 +58,10 @@ export class ActionData {
   @JsonMember({isRequired: true})
   public eventType: string;
 
-  @JsonMember({isRequired: true})
-  public needsQr: boolean;
+  // If set, activating this action will start QR scanning.
+  // To proceed, user will need to scan a QR with type equal to needsQr.
+  @JsonMember
+  public needsQr?: number;
 
   @JsonMember
   public destructive: boolean;

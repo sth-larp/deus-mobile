@@ -31,8 +31,16 @@ export class DetailsPage {
         handler: () => {
           if (action.needsQr) {
             this._qrCodeScanner.observeQrsParsed().then((qrData: QrData) => {
-              action.data.additionalQrData = qrData;
-              this.pushActionEvent(action);
+              if (qrData.type != action.needsQr) {
+                this._alertController.show({
+                  title: 'Неправильный тип QR-кода',
+                  message: 'Тип отсканированного кода не соответствует предпринимаемому действию',
+                  buttons: ['Ок'],
+                });
+              } else {
+                action.data.additionalQrData = qrData;
+                this.pushActionEvent(action);
+              }
             })
             .catch(() => {});
             this._qrCodeScanner.scanQRCode();
