@@ -33,10 +33,11 @@ export class DetailsPage {
         cssClass: action.destructive ? 'destructive-button' : null,
         handler: () => {
           if (action.needsQr) {
-            this._qrCodeScanner.eventEmitter.subscribe((qrData: QrData) => {
+            this._qrCodeScanner.observeQrsParsed().then((qrData: QrData) => {
               action.data.additionalQrData = qrData;
               this.pushActionEvent(action);
-            });
+            })
+            .catch(() => {});
             this._qrCodeScanner.scanQRCode();
           } else {
             this.pushActionEvent(action);
