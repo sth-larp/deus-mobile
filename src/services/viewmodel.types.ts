@@ -80,6 +80,52 @@ export class DetailsData {
 }
 
 @JsonObject
+export class SublistItemData {
+  @JsonMember({isRequired: true})
+  public text: string;
+
+  @JsonMember({isRequired: true})
+  public deletable: boolean;
+}
+
+export class AddItemAction {
+  @JsonMember({isRequired: true})
+  public buttonText: string;
+
+  @JsonMember({isRequired: true})
+  public inputDialogTitle: string;
+
+  @JsonMember
+  public inputDialogMessage?: string;
+
+  @JsonMember({isRequired: true})
+  public inputType: string;  // "text", "number"...
+}
+
+// A sublist is a list of items that can be added or removed.
+// It has OK/Cancel buttons. When OK is pressed, an event is sent
+// that contains the new list of items.
+@JsonObject
+export class SublistBody {
+  @JsonMember({isRequired: true})
+  public title: string;
+
+  @JsonMember({isRequired: true})
+  public eventType: string;
+
+  // Tag will be passed with any every sent alongside with the new items.
+  // It can be used to tell which system is being administrated.
+  @JsonMember({isRequired: true})
+  public eventTag: string;
+
+  @JsonMember({isRequired: true, elements: SublistItemData})
+  public items: SublistItemData[];
+
+  @JsonMember
+  public addAction?: AddItemAction;
+}
+
+@JsonObject
 export class ListItemData {
   @JsonMember({isRequired: true})
   public text: string;
@@ -110,13 +156,13 @@ export class ListItemData {
   @JsonMember
   public icon?: string;
 
-  // Only for normal lists (not sublists)
+  // At most one of 'details' and 'sublist' must be set.
   @JsonMember
   public details?: DetailsData;
 
-  // Only for sublists
+  // At most one of 'details' and 'sublist' must be set.
   @JsonMember
-  public deletable?: boolean;
+  public sublist?: SublistBody;
 
   @JsonMember
   public viewId?: string;

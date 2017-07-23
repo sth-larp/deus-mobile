@@ -1,6 +1,6 @@
 <div *ngIf="!filter || filter == data.tag" [ngClass]="{'unread-container': data.unread}">
 
-<button ion-item *ngIf="data.details" (click)="openDetails(data.details)">
+<button ion-item *ngIf="hasSubpage()" (click)="openSubpage()">
   <img class="overProgressBar" style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' item-left>
   <h2 class="itemText overProgressBar" [ngClass]="{'unread-text': data.unread}">{{data.text}}</h2>
   <p class="itemSubtext overProgressBar">{{data.subtext}}</p>
@@ -10,19 +10,13 @@
   </ion-note>
 </button>
 
-<ion-item *ngIf="!data.details">
+<ion-item *ngIf="!hasSubpage()">
   <img style='height: 1.4em; width: 1.4em' *ngIf="data.hasIcon" [src]='getIcon()' class="overProgressBar" item-left/>
   <h2 class="itemText overProgressBar" [ngClass]="{'unread-text': data.unread}">{{data.text}}</h2>
   <p class="itemSubtext overProgressBar">{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}"></div>
-
   <ion-note class="itemValue overProgressBar" item-right [ngStyle]="{'color': getValueColor()}">
     {{getValue()}}
   </ion-note>
-
-  <button class="overProgressBar" *ngIf="data.deletable" ion-button item-right icon-only clear color="standard" (click)="onDelete()">
-    <ion-icon name="trash"></ion-icon>
-  </button>
-
 </ion-item>
 </div>
