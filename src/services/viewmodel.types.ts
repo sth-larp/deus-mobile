@@ -61,7 +61,7 @@ export class ActionData {
   public needsQr: boolean;
 
   @JsonMember
-  public dangerous: boolean;
+  public destructive: boolean;
 
   @JsonMember
   public data: any;

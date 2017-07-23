@@ -30,7 +30,7 @@ export class DetailsPage {
     for (const action of this.data.actions) {
       buttons.push({
         text: action.text,
-        cssClass: action.dangerous ? 'destructive-button' : null,
+        cssClass: action.destructive ? 'destructive-button' : null,
         handler: () => {
           if (action.needsQr) {
             this._qrCodeScanner.eventEmitter.subscribe((qrData: QrData) => {
@@ -64,7 +64,7 @@ export class DetailsPage {
   }
 
   private pushActionEvent(action: ActionData) {
-    if (action.dangerous) {
+    if (action.destructive) {
       const buttons = [{
         text: 'Отмена',
         role: 'cancel',
