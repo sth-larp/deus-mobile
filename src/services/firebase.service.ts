@@ -34,10 +34,13 @@ export class FirebaseService implements ILoginListener {
         android: {
           senderID: '786784916655',
           topics: ['all'],
+          sound: true,
+          vibrate: true,
         },
         ios: {
-          senderID: '786784916655 ',
+          senderID: '786784916655',
           alert: true,
+          sound: true,
           gcmSandbox: !GlobalConfig.useProductionAPNSChannel,
           topics: ['all'],
         },
