@@ -60,6 +60,14 @@ export class SublistPage {
   }
 
   private addItem(text: string) {
+    if (this.body.items.findIndex((item) => item.text == text) >= 0) {
+      this._alertController.show({
+        title: 'Ошибка добавления',
+        message: 'Такое значение уже существует',
+        buttons: ['Ок'],
+      });
+      return;
+    }
     this.body.items.push({
       text: text,
       deletable: true,
