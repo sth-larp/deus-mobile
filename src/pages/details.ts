@@ -1,11 +1,11 @@
 import { Component } from '@angular/core';
-import { ActionSheetController, Config, NavController, NavParams, Platform } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { QrData } from 'deus-qr-lib/lib/qr';
-import { fixActionSheetTransitions } from '../elements/deus-alert-transitions';
+import { EnhancedActionSheetController, EnhancedAlertController } from '../elements/enhanced-controllers';
 import { DataService } from '../services/data.service';
 import { QrCodeScanServiceCustom } from '../services/qrcode-scan.service';
-import { DetailsData } from '../services/viewmodel.types';
+import { ActionData, DetailsData } from '../services/viewmodel.types';
 
 @Component({
   selector: 'page-details',
@@ -15,10 +15,9 @@ export class DetailsPage {
   public data: DetailsData;
   constructor(navParams: NavParams,
               private _navCtrl: NavController,
-              private _actionSheetCtrl: ActionSheetController,
+              private _actionSheetCtrl: EnhancedActionSheetController,
+              private _alertController: EnhancedAlertController,
               private _dataService: DataService,
-              private _platform: Platform,
-              private _config: Config,
               private _qrCodeScanner: QrCodeScanServiceCustom) {
     this.data = navParams.data.value;
   }
@@ -28,35 +27,62 @@ export class DetailsPage {
     for (const action of this.data.actions) {
       buttons.push({
         text: action.text,
+        cssClass: action.destructive ? 'destructive-button' : null,
         handler: () => {
           if (action.needsQr) {
-            this._qrCodeScanner.eventEmitter.subscribe((qrData: QrData) => {
-              action.data.additionalQrData = qrData;
-              this._dataService.pushEvent(action.eventType, action.data);
-            });
+            this._qrCodeScanner.observeQrsParsed().then((qrData: QrData) => {
+              if (qrData.type != action.needsQr) {
+                this._alertController.show({
+                  title: 'Неправильный тип QR-кода',
+                  message: 'Тип отсканированного кода не соответствует предпринимаемому действию',
+                  buttons: ['Ок'],
+                });
+              } else {
+                action.data.additionalQrData = qrData;
+                this.pushActionEvent(action);
+              }
+            })
+            .catch(() => {});
             this._qrCodeScanner.scanQRCode();
           } else {
-            this._dataService.pushEvent(action.eventType, action.data);
+            this.pushActionEvent(action);
           }
           this._navCtrl.pop();
         },
       });
     }
     buttons.push({
-          text: 'Отмена',
-          role: 'cancel',
-        });
-    const actionSheet = this._actionSheetCtrl.create({
+      text: 'Отмена',
+      role: 'cancel',
+    });
+    this._actionSheetCtrl.show({
       title: '',
       buttons,
     });
+  }
 
-    fixActionSheetTransitions(this._config);
+  private pushActionEvent(action: ActionData) {
+    if (action.destructive) {
+      const buttons = [{
+        text: 'Отмена',
+        role: 'cancel',
+      },
+      {
+        text: action.text,
+        cssClass: 'destructive-button',
+        handler: () => this.doPushActionEvent(action),
+      }];
+      this._alertController.show({
+        title: 'Подтверждение действия',
+        message: `Вы действительно хотите <b>${action.text} ${this.data.header}</b>?`,
+        buttons,
+      });
+    } else {
+      this.doPushActionEvent(action);
+    }
+  }
 
-    const unregisterFn = this._platform.registerBackButtonAction(() => {
-      actionSheet.dismiss();
-    }, 0);
-    actionSheet.onWillDismiss(unregisterFn);
-    actionSheet.present();
+  private doPushActionEvent(action: ActionData) {
+    this._dataService.pushEvent(action.eventType, action.data);
   }
 }

@@ -182,7 +182,14 @@ describe('ViewModel subtypes parsing from JSON', () => {
                     {
                       "text": "Включить",
                       "eventType": "enableImplant",
-                      "needsQr": false,
+                      "data": {
+                        "mID": "26267ae6-0f6c-4efd-8f98-37c2e09a42a2"
+                      }
+                    },
+                    {
+                      "text": "Отдать",
+                      "eventType": "giveAway",
+                      "needsQr": 100,
                       "data": {
                         "mID": "26267ae6-0f6c-4efd-8f98-37c2e09a42a2"
                       }
@@ -201,7 +208,6 @@ describe('ViewModel subtypes parsing from JSON', () => {
                     {
                       "text": "Включить",
                       "eventType": "enableImplant",
-                      "needsQr": false,
                       "data": {
                         "mID": "cj3qwkjfc0002lwjsjkb226gm"
                       }
@@ -220,7 +226,6 @@ describe('ViewModel subtypes parsing from JSON', () => {
                     {
                       "text": "Выключить",
                       "eventType": "disableImplant",
-                      "needsQr": false,
                       "data": {
                         "mID": "cj3qwks1p0000lqjsm7dk519d"
                       }
@@ -252,6 +257,8 @@ describe('ViewModel subtypes parsing from JSON', () => {
         expect(applicationViewModel.pages[i] instanceof ListPageViewModel).toBeTruthy();
         expect(applicationViewModel.pages[i].__type).toEqual('ListPageViewModel');
       }
+      expect((applicationViewModel.pages[3] as ListPageViewModel).body.items[0].details.actions[1].needsQr)
+        .toEqual(100);
       expect(applicationViewModel.pages[4] instanceof EconomyPageViewModel).toBeTruthy();
       expect(applicationViewModel.pages[4].__type).toEqual('EconomyPageViewModel');
       expect(applicationViewModel.pages[5] instanceof TechnicalInfoPageViewModel).toBeTruthy();

@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Keyboard } from '@ionic-native/keyboard';
-import { ActionSheetController, AlertController, Config,
-  ModalController, NavController, Platform } from 'ionic-angular';
+import { ModalController, NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 import { Colors, GlobalConfig } from '../config';
+import { EnhancedActionSheetController, EnhancedAlertController } from '../elements/enhanced-controllers';
 import { ListPage } from '../pages/list';
 import { PassportPage } from '../pages/passport';
 import { AuthService } from '../services/auth.service';
@@ -16,7 +16,6 @@ import { QrCodeScanService } from '../services/qrcode-scan.service';
 import { UnreadService } from '../services/unread.service';
 import { ApplicationViewModel } from '../services/viewmodel.types';
 import { formatInteger, formatTime2, formatTime3} from '../utils/string-utils';
-import { fixActionSheetTransitions, fixAlertTransitions } from './deus-alert-transitions';
 
 @Component({
   selector: 'quick-actions',
@@ -46,13 +45,11 @@ export class QuickActions implements ILoginListener {
               private _localDataService: LocalDataService,
               private _unreadService: UnreadService,
               private _authService: AuthService,
-              private _platform: Platform,
-              private _actionSheetController: ActionSheetController,
-              private _alertController: AlertController,
+              private _actionSheetController: EnhancedActionSheetController,
+              private _alertController: EnhancedAlertController,
               private _navController: NavController,
               private _logging: LoggingService,
-              private _keyboard: Keyboard,
-              private _config: Config) {
+              private _keyboard: Keyboard) {
   }
 
   public ngOnInit() {
@@ -122,17 +119,9 @@ export class QuickActions implements ILoginListener {
       text: 'Отмена',
       role: 'cancel',
     });
-    const actionSheet = this._actionSheetController.create({
+    this._actionSheetController.show({
       buttons,
     });
-
-    fixActionSheetTransitions(this._config);
-
-    const unregisterFn = this._platform.registerBackButtonAction(() => {
-      actionSheet.dismiss();
-    }, 0);
-    actionSheet.onWillDismiss(unregisterFn);
-    actionSheet.present();
   }
 
   public async onVr() {
@@ -148,7 +137,7 @@ export class QuickActions implements ILoginListener {
     }];
 
     const maxTimeInVar = formatTime3(this.maxSecondsInVr, ':');
-    const alert = this._alertController.create({
+    this._alertController.show({
       title: inVr
         ? 'Выход из VR'
         : 'Вход в VR',
@@ -158,14 +147,6 @@ export class QuickActions implements ILoginListener {
           `Ваше максимальное время нахождения в VR составляет <b>${maxTimeInVar}</b>.`,
       buttons,
     });
-
-    fixAlertTransitions(this._config);
-
-    const unregisterFn = this._platform.registerBackButtonAction(() => {
-      alert.dismiss();
-    }, 0);
-    alert.onWillDismiss(unregisterFn);
-    alert.present();
   }
 
   public onNotifications() {
@@ -197,19 +178,11 @@ export class QuickActions implements ILoginListener {
       cssClass: 'destructive-button',
       handler: () => this.doSubtractHp(hpLost),
     }];
-    const alert = this._alertController.create({
+    this._alertController.show({
       title: 'Подтверждение урона',
       message: `Вы действительно потеряли <b>${hpLost}&nbspHP</b>?`,
       buttons,
     });
-
-    fixAlertTransitions(this._config);
-
-    const unregisterFn = this._platform.registerBackButtonAction(() => {
-      alert.dismiss();
-    }, 0);
-    alert.onWillDismiss(unregisterFn);
-    alert.present();
   }
 
   // TODO: Add tests

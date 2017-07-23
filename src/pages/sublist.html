@@ -10,11 +10,30 @@
 </ion-header>
 <ion-content>
   <ion-list>
-    <list-item *ngFor="let item of body.items" [data]="item"></list-item>
-    <!-- TODO: Add "Add" button -->
+    <sublist-item *ngFor="let item of body.items" [data]="item" (deleteMe)="onDelete(item.text)"></sublist-item>
+    <div padding>
+      <button *ngIf="body.addAction" ion-button full (click)="onAdd()">
+        {{body.addAction.buttonText}}
+      </button>
+    </div>
   </ion-list>
 </ion-content>
 
-<!-- TODO: Add OK/Cancel buttons -->
-
-<quick-actions></quick-actions>
+<ion-footer no-shadow>
+  <ion-toolbar>
+    <ion-grid no-padding>
+      <ion-row>
+        <ion-col>
+          <button ion-button block clear color='primary' (click)="onCancel()">
+            Отмена
+          </button>
+        </ion-col>
+        <ion-col>
+          <button ion-button block clear color='primary' (click)="onOk()">
+            OK
+          </button>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
