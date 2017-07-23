@@ -7,6 +7,7 @@ import { AuthService } from './auth.service';
 import { DataService } from './data.service';
 import { LoggingService } from './logging.service';
 import { ILoginListener } from './login-listener';
+import { ToastController } from "ionic-angular";
 
 @Injectable()
 export class FirebaseService implements ILoginListener {
@@ -20,7 +21,8 @@ export class FirebaseService implements ILoginListener {
               private _logging: LoggingService,
               private _dataService: DataService,
               private _authService: AuthService,
-              private _appVersion: AppVersion) {
+              private _appVersion: AppVersion,
+              private _toastCtrl: ToastController) {
     _authService.addListener(this);
     this._logging.debug('FirebaseService constructor run');
   }
@@ -59,6 +61,19 @@ export class FirebaseService implements ILoginListener {
         this._logging.debug('Got notification: ' + JSON.stringify(notification));
         if (notification.additionalData && notification.additionalData.refresh)
           await this._dataService.pushEvent('pushReceived', notification.additionalData);
+
+        if (notification.title || notification.message) {
+          const message: string = (notification.title ? notification.title + '. ' : '') + notification.message;
+          this._toastCtrl.create({
+            message,
+            duration: 8000,
+            position: 'middle',
+            showCloseButton: true,
+            closeButtonText: 'Ok',
+            dismissOnPageChange: false,
+          }).present();
+        }
+
         this._pushObject.finish();
       });
 
