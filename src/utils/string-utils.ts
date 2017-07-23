@@ -39,3 +39,34 @@ export function formatTime3(value: number, separator: string): string {
          formatInteger(min, 2) + separator +
          formatInteger(sec, 2);
 }
+
+// TODO: test
+export function renderTimestamp(unixSeconds: number): string {
+  const timestamp = new Date(unixSeconds * 1000);
+  const now = new Date();
+
+  if (timestamp.getFullYear() == now.getFullYear() &&
+      timestamp.getMonth() == now.getMonth() &&
+      timestamp.getDate() == now.getDate()) {
+    const minutesSinceMidnight = timestamp.getHours() * 60 + timestamp.getMinutes();
+    return formatTime2(minutesSinceMidnight, ':');
+  }
+
+  // TODO: fix leap seconds
+  const microsPerDay = 24 * 3600 * 1000;
+  const localOffset = now.getTimezoneOffset() * 60 * 1000;
+  const timestampDaysSinceEpoch = Math.floor((timestamp.getTime() - localOffset) / microsPerDay);
+  const nowDaysSinceEpoch = Math.floor((now.getTime() - localOffset) / microsPerDay);
+  const dayDiff = Math.abs(nowDaysSinceEpoch - timestampDaysSinceEpoch);
+  if (timestampDaysSinceEpoch < nowDaysSinceEpoch) {
+    if (dayDiff == 1)
+      return 'вчера';
+    else
+      return dayDiff + /*U+00A0*/ ' д. назад';
+  } else {
+    if (dayDiff == 1)
+      return 'завтра';
+    else
+      return 'через ' + dayDiff + /*U+00A0*/ ' д.';
+  }
+}

@@ -90,6 +90,11 @@ export class ListItemData {
   @JsonMember
   public value?: string;
 
+  // Timestamp in seconds since Unix epoch (1970/01/01), UTC.
+  // If present, replaces the value.
+  @JsonMember
+  public unixSecondsValue?: number;
+
   @JsonMember
   public percent?: number;
 

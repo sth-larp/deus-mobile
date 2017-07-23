@@ -1,8 +1,9 @@
 import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { ModalController } from 'ionic-angular';
-import { Colors } from '../config'
+import { Colors } from '../config';
 import { DetailsPage } from '../pages/details';
 import { DetailsData, ListItemData } from '../services/viewmodel.types';
+import { renderTimestamp } from '../utils/string-utils';
 
 @Component({
   selector: 'list-item',
@@ -17,6 +18,10 @@ export class ListItem {
   public deleteMe: EventEmitter<string> = new EventEmitter();
 
   constructor(private _modalCtrl: ModalController) { }
+
+  public getValue(): string {
+    return this.data.unixSecondsValue ? renderTimestamp(this.data.unixSecondsValue) : this.data.value;
+  }
 
   public getValueColor(): string {
     return this.data.valueColor ? this.data.valueColor : Colors.standard;

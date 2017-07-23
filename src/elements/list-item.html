@@ -6,7 +6,7 @@
   <p class="itemSubtext overProgressBar">{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}"></div>
   <ion-note class="itemValue overProgressBar" item-right [ngStyle]="{'color': getValueColor()}">
-    {{data.value}}
+    {{getValue()}}
   </ion-note>
 </button>
 
@@ -17,7 +17,7 @@
   <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}"></div>
 
   <ion-note class="itemValue overProgressBar" item-right [ngStyle]="{'color': getValueColor()}">
-    {{data.value}}
+    {{getValue()}}
   </ion-note>
 
   <button class="overProgressBar" *ngIf="data.deletable" ion-button item-right icon-only clear color="standard" (click)="onDelete()">
