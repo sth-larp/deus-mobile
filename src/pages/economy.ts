@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
-import { AlertController, ModalController, Refresher } from 'ionic-angular';
+import { ModalController, Refresher } from 'ionic-angular';
 import { CustomValidators } from 'ng2-validation';
+
 import { AuthService } from '../services/auth.service';
 import { EconomyService } from '../services/economy.service';
 import { ListItemData } from '../services/viewmodel.types';
@@ -25,7 +26,6 @@ export class EconomyPage {
   constructor(private _http: Http,
               private _authService: AuthService,
               private _modalController: ModalController,
-              private _alertCtrl: AlertController,
               private _formBuilder: FormBuilder,
               private _economyService: EconomyService) {
 

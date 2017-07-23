@@ -1,18 +1,16 @@
 import { Injectable } from '@angular/core';
 import { Http } from '@angular/http';
-import { AlertController, Config } from 'ionic-angular';
 
 import { GlobalConfig } from '../config';
-import { fixAlertTransitions } from '../elements/deus-alert-transitions';
+import { EnhancedAlertController } from '../elements/enhanced-controllers';
 import { AuthService } from './auth.service';
 import { ListItemData } from './viewmodel.types';
 
 @Injectable()
 export class EconomyService {
   constructor(private _authService: AuthService,
-              private _alertCtrl: AlertController,
-              private _http: Http,
-              private _config: Config) { }
+              private _alertCtrl: EnhancedAlertController,
+              private _http: Http) { }
 
   public getBalance(): Promise<number> {
     return this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUserId(),
@@ -44,28 +42,22 @@ export class EconomyService {
     // TODO: validate amount?
     return new Promise((resolve, reject) => {
       const notifyAndReject = (e: string) => {
-        const alert = this._alertCtrl.create({
+        this._alertCtrl.show({
           title: 'Ошибка',
           message: e,
           buttons: [{text: 'Ок', handler: reject}],
         });
-
-        fixAlertTransitions(this._config);
-        alert.present();
       };
 
       const notifySuccess = () => {
-        const alert = this._alertCtrl.create({
+        this._alertCtrl.show({
           title: 'Успешно',
           message: 'Перевод выполнен!',
           buttons: [{text: 'Ок', handler: resolve}],
         });
-
-        fixAlertTransitions(this._config);
-        alert.present();
       };
 
-      const alert = this._alertCtrl.create({
+      this._alertCtrl.show({
         title: 'Подтверждение перевода',
         message: `Вы хотите перевести <b>${amount} кр.</b> на счет <b>${receiver}</b>?`,
         buttons: [
@@ -89,10 +81,6 @@ export class EconomyService {
           },
         ],
       });
-
-      fixAlertTransitions(this._config);
-
-      alert.present();
     });
   }
 

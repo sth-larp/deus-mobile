@@ -18,6 +18,7 @@
 
  import { FormsModule, ReactiveFormsModule } from '@angular/forms';
  import { BrowserModule } from '@angular/platform-browser';
+ import { EnhancedActionSheetController, EnhancedAlertController } from '../elements/enhanced-controllers';
  import { QrCode } from '../elements/qrcode';
  import { QuickActionButton } from '../elements/quick-action-button';
  import { QuickActions } from '../elements/quick-actions';
@@ -96,6 +97,8 @@
     EconomyService,
     UnreadService,
     Keyboard,
+    EnhancedActionSheetController,
+    EnhancedAlertController,
   ],
 })
 export class AppModule {}

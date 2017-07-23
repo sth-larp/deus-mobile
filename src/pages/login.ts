@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AppVersion } from '@ionic-native/app-version';
-import { AlertController, Loading, LoadingController, NavController } from 'ionic-angular';
+import { Loading, LoadingController, NavController } from 'ionic-angular';
 
+import { EnhancedAlertController } from '../elements/enhanced-controllers';
 import { AuthService } from '../services/auth.service';
 import { LoggingService } from '../services/logging.service';
 import { MenuPage } from './menu';
@@ -18,7 +19,7 @@ export class LoginPage {
 
   constructor(private _navCtrl: NavController,
               private _loadingCtrl: LoadingController,
-              private _alertCtrl: AlertController,
+              private _alertCtrl: EnhancedAlertController,
               private _formBuilder: FormBuilder,
               private _authService: AuthService,
               private _logging: LoggingService,
@@ -58,11 +59,10 @@ export class LoginPage {
   }
 
   private showLoginFailedAlert(msg: string) {
-    const alert = this._alertCtrl.create({
+    this._alertCtrl.show({
       message: msg,
       buttons: ['Ок'],
     });
-    alert.present();
   }
 
   private _checkIfAlreadyAuthentificated() {

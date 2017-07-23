@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
-import { ActionSheetController, AlertController, Config,
-  NavController, NavParams, Platform } from 'ionic-angular';
+import { NavController, NavParams } from 'ionic-angular';
 
 import { QrData } from 'deus-qr-lib/lib/qr';
-import { fixActionSheetTransitions, fixAlertTransitions } from '../elements/deus-alert-transitions';
+import { EnhancedActionSheetController, EnhancedAlertController } from '../elements/enhanced-controllers';
 import { DataService } from '../services/data.service';
 import { QrCodeScanServiceCustom } from '../services/qrcode-scan.service';
 import { ActionData, DetailsData } from '../services/viewmodel.types';
@@ -16,11 +15,9 @@ export class DetailsPage {
   public data: DetailsData;
   constructor(navParams: NavParams,
               private _navCtrl: NavController,
-              private _actionSheetCtrl: ActionSheetController,
-              private _alertController: AlertController,
+              private _actionSheetCtrl: EnhancedActionSheetController,
+              private _alertController: EnhancedAlertController,
               private _dataService: DataService,
-              private _platform: Platform,
-              private _config: Config,
               private _qrCodeScanner: QrCodeScanServiceCustom) {
     this.data = navParams.data.value;
   }
@@ -50,18 +47,10 @@ export class DetailsPage {
       text: 'Отмена',
       role: 'cancel',
     });
-    const actionSheet = this._actionSheetCtrl.create({
+    this._actionSheetCtrl.show({
       title: '',
       buttons,
     });
-
-    fixActionSheetTransitions(this._config);
-
-    const unregisterFn = this._platform.registerBackButtonAction(() => {
-      actionSheet.dismiss();
-    }, 0);
-    actionSheet.onWillDismiss(unregisterFn);
-    actionSheet.present();
   }
 
   private pushActionEvent(action: ActionData) {
@@ -75,19 +64,11 @@ export class DetailsPage {
         cssClass: 'destructive-button',
         handler: () => this.doPushActionEvent(action),
       }];
-      const alert = this._alertController.create({
+      this._alertController.show({
         title: 'Подтверждение действия',
         message: `Вы действительно хотите <b>${action.text} ${this.data.header}</b>?`,
         buttons,
       });
-
-      fixAlertTransitions(this._config);
-
-      const unregisterFn = this._platform.registerBackButtonAction(() => {
-        alert.dismiss();
-      }, 0);
-      alert.onWillDismiss(unregisterFn);
-      alert.present();
     } else {
       this.doPushActionEvent(action);
     }
