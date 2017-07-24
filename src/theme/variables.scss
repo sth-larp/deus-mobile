@@ -97,6 +97,7 @@ $alert-md-message-text-color: $text-color;
 $alert-md-background-color: $background-color;
 $alert-md-button-background-color-activated: $background-color-activated;
 $alert-md-max-width: $alert-min-width;
+$alert-md-input-text-color: $text-color;
 
 .alert-md .alert-title {
   color: color($colors, standard);
@@ -136,6 +137,7 @@ $alert-ios-background: $background-color;
 $alert-ios-button-background-color-activated: $background-color-activated;
 $alert-ios-max-width: $alert-min-width;
 $alert-ios-button-border-color: lighten($background-color, 20%);
+$alert-ios-input-background-color: lighten($background-color, 6%);
 
 .alert-ios .alert-title {
   color: color($colors, standard);

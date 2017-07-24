@@ -3,12 +3,12 @@ export const GlobalConfig = {
   getViewmodelBaseUrl: 'https://alice.digital/api/viewmodel',
   sendEventsBaseUrl: 'https://alice.digital/api/events',
 
-  // TODO: Use seconds instead of milliseconds
+  sendEventsEveryMs: 60 * 1000,
   recalculateVrTimerEveryMs: 500,
-  vrTimerYellowThresholdMs: 600000,
-  recalculateUpdateStatusEveryMs: 1000,
-  viewModelLagTimeMsYellowStatus: 30000,
-  viewModelLagTimeMsRedStatus: 30000,
+  vrTimerYellowThresholdMs: 10 * 60 * 1000,
+  recalculateUpdateStatusEveryMs: 1 * 1000,
+  viewModelLagTimeMsYellowStatus: 3 * 60 * 1000,
+  viewModelLagTimeMsRedStatus: 15 * 60 * 1000,
 
   numHpQuickActionIcons: 12,
 

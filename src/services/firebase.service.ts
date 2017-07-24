@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { AppVersion } from '@ionic-native/app-version';
 import { Push, PushObject, PushOptions } from '@ionic-native/push';
+import { ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Rx';
 import { GlobalConfig } from '../config';
 import { AuthService } from './auth.service';
 import { DataService } from './data.service';
 import { LoggingService } from './logging.service';
 import { ILoginListener } from './login-listener';
-import { ToastController } from "ionic-angular";
 
 @Injectable()
 export class FirebaseService implements ILoginListener {

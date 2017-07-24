@@ -32,9 +32,11 @@ export class QuickActions implements ILoginListener {
   public vrTimer: string = null;
   public vrTimerColor: string = null;
   public notificationIcon: string = null;
+  public notificationText: string = null;
 
   private _hpSubscription: Subscription = null;
   private _unreadSubscription: Subscription = null;
+  private _notificationDestination: string = null;
 
   private _keyboardShowSubscription: Subscription = null;
   private _keyboardHideSubscription: Subscription = null;
@@ -72,9 +74,21 @@ export class QuickActions implements ILoginListener {
       },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
-    this._unreadSubscription = this._unreadService.numUnreadChanges().subscribe(
-      (value) => {
-        this.notificationIcon = (value == 0) ? 'notify-none.svg' : 'notify-changes.svg';
+    this._unreadSubscription = this._unreadService.getUnreadStats().subscribe(
+      (unreadStart) => {
+        if (unreadStart.messages > 0) {
+          this.notificationIcon = 'notify-messages.svg';
+          this.notificationText = unreadStart.messages.toString();
+          this._notificationDestination = 'page:messages';
+        } else if (unreadStart.changes > 0) {
+          this.notificationIcon = 'notify-changes.svg';
+          this.notificationText = unreadStart.changes.toString();
+          this._notificationDestination = 'page:changes';
+        } else {
+          this.notificationIcon = 'notify-none.svg';
+          this.notificationText = '';
+          this._notificationDestination = null;
+        }
       },
     );
     setInterval(() => { this.updateVrStatus(null); }, GlobalConfig.recalculateVrTimerEveryMs);
@@ -150,7 +164,8 @@ export class QuickActions implements ILoginListener {
   }
 
   public onNotifications() {
-    this._navController.setRoot(ListPage, { id: 'page:changes' });
+    if (this._notificationDestination)
+      this._navController.setRoot(ListPage, { id: this._notificationDestination });
   }
 
   private updateHp(modelViewJson: ApplicationViewModel) {
