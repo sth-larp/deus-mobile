@@ -45,8 +45,8 @@ export class SyncButton implements ILoginListener {
   private getUpdateStatusIcon(status: UpdateStatus): string {
     switch (status) {
       case UpdateStatus.Green: return 'sync-green.svg';
-      case UpdateStatus.Yellow: return 'sync-green.svg';
-      case UpdateStatus.Red: return 'sync-green.svg';
+      case UpdateStatus.Yellow: return 'sync-yellow.svg';
+      case UpdateStatus.Red: return 'sync-red.svg';
     }
     return null;
   }
