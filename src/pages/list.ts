@@ -68,7 +68,13 @@ export class ListPage extends UpdatablePage {
   public doRefresh(refresher: Refresher) {
     // TODO: error indication?
     this._dataService.trySendEvents()
-    .then(() => refresher.complete())
+    .then(() => {
+      refresher.complete();
+      this._toastCtrl.create({
+        message: 'Данные успешно обновлены',
+        duration: 2000,
+      }).present();
+    })
     .catch(() => {
       refresher.complete();
       this._toastCtrl.create({
