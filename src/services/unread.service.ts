@@ -6,6 +6,11 @@ import { LocalDataService } from '../services/local-data.service';
 import { ApplicationViewModel, ListBody, ListPageViewModel } from '../services/viewmodel.types';
 import { DataService } from './data.service';
 
+export class UnreadStats {
+  public changes: number = 0;
+  public messages: number = 0;
+}
+
 // "Unread" statuses for items and pages
 @Injectable()
 export class UnreadService {
@@ -33,12 +38,20 @@ export class UnreadService {
       (appViewModel: ApplicationViewModel, readViewIds: any) => this.updateUnreadInModel(appViewModel, readViewIds));
   }
 
-  public numUnreadChanges(): Observable<number> {
+  public getUnreadStats(): Observable<UnreadStats> {
     return this.getDataWithUnreadStatus().map((appViewModel: ApplicationViewModel) => {
+      const stats: UnreadStats = {changes: 0, messages: 0};
       const changesPages = appViewModel.pages.filter((page) => page.viewId == 'page:changes');
-      if (changesPages.length != 1) return 0;
-      const changesPage = (changesPages[0] as ListPageViewModel);
-      return changesPage.body.items.filter((item) => item.unread).length;
+      if (changesPages.length == 1) {
+        const changesPage = (changesPages[0] as ListPageViewModel);
+        stats.changes = changesPage.body.items.filter((item) => item.unread).length;
+      }
+      const messagesPages = appViewModel.pages.filter((page) => page.viewId == 'page:messages');
+      if (messagesPages.length == 1) {
+        const messagesPage = (messagesPages[0] as ListPageViewModel);
+        stats.messages = messagesPage.body.items.filter((item) => item.unread).length;
+      }
+      return stats;
     });
   }
 

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 
+import { ToastController } from 'ionic-angular';
 import { AuthService } from '../services/auth.service';
 import { DataService, UpdateStatus } from '../services/data.service';
 import { ILoginListener } from '../services/login-listener';
@@ -15,7 +16,8 @@ export class SyncButton implements ILoginListener {
   private _updateStatusSubscription: Subscription = null;
 
   constructor(private _dataService: DataService,
-              private _authService: AuthService) {
+              private _authService: AuthService,
+              private _toastCtrl: ToastController) {
   }
 
   public ngOnInit() {
@@ -39,14 +41,26 @@ export class SyncButton implements ILoginListener {
   }
 
   public onRefresh() {
-    this._dataService.trySendEvents();
+    this._dataService.trySendEvents()
+    .then(() => {
+      this._toastCtrl.create({
+        message: 'Данные успешно обновлены',
+        duration: 2000,
+      }).present();
+    })
+    .catch(() => {
+      this._toastCtrl.create({
+        message: 'Ошибка обращения к серверу, повторите попытку позже',
+        duration: 3000,
+      }).present();
+    });
   }
 
   private getUpdateStatusIcon(status: UpdateStatus): string {
     switch (status) {
       case UpdateStatus.Green: return 'sync-green.svg';
-      case UpdateStatus.Yellow: return 'sync-green.svg';
-      case UpdateStatus.Red: return 'sync-green.svg';
+      case UpdateStatus.Yellow: return 'sync-yellow.svg';
+      case UpdateStatus.Red: return 'sync-red.svg';
     }
     return null;
   }
