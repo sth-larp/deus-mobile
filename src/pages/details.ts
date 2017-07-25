@@ -29,9 +29,9 @@ export class DetailsPage {
         text: action.text,
         cssClass: action.destructive ? 'destructive-button' : null,
         handler: () => {
-          if (action.needsQr) {
+          if (action.needsQr || action.needsQrOfType) {
             this._qrCodeScanner.observeQrsParsed().then((qrData: QrData) => {
-              if (qrData.type != action.needsQr) {
+              if (action.needsQrOfType && qrData.type != action.needsQrOfType) {
                 this._alertController.show({
                   title: 'Неправильный тип QR-кода',
                   message: 'Тип отсканированного кода не соответствует предпринимаемому действию',
