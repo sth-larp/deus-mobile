@@ -2,43 +2,27 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ToastController } from 'ionic-angular';
-import { AuthService } from '../services/auth.service';
 import { DataService, UpdateStatus } from '../services/data.service';
-import { ILoginListener } from '../services/login-listener';
 
 @Component({
   selector: 'sync-button',
   templateUrl: 'sync-button.html',
 })
-export class SyncButton implements ILoginListener {
-  public updateStatusIcon: string = null;
+export class SyncButton  {
+  public updateStatusIcon: string = 'sync-green.svg';
 
   private _updateStatusSubscription: Subscription = null;
 
   constructor(private _dataService: DataService,
-              private _authService: AuthService,
               private _toastCtrl: ToastController) {
-  }
-
-  public ngOnInit() {
-    this._authService.addListener(this);
-  }
-
-  public ngOnDestroy() {
-    this._authService.removeListener(this);
-  }
-
-  public onSuccessfulLogin(_id: string) {
     this._updateStatusSubscription = this._dataService.getUpdateStatus().subscribe(
       (status) => { this.updateStatusIcon = this.getUpdateStatusIcon(status); },
       (error) => console.error('Cannot get update status: ' + error));
-  }
-  public onLogout() {
-    if (this._updateStatusSubscription) {
-      this._updateStatusSubscription.unsubscribe();
-      this._updateStatusSubscription = null;
-    }
-  }
+   }
+
+   public ngOnDestroy() {
+     this._updateStatusSubscription.unsubscribe();
+   }
 
   public onRefresh() {
     this._dataService.trySendEvents()

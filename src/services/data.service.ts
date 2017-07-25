@@ -33,6 +33,7 @@ export class DataService implements ILoginListener {
   private _getDataObservable: Observable<ApplicationViewModel>;
 
   private _sendEventsLastStatusEmitter = new EventEmitter();
+  private _updateStatus: Observable<UpdateStatus>;
 
   constructor(private _logging: LoggingService,
               private _time: MonotonicTimeService,
@@ -56,6 +57,8 @@ export class DataService implements ILoginListener {
       });
       return () => { changesStream.cancel(); };
     });
+
+    this._updateStatus = this.getUpdateStatusInternal().publish().refCount();
   }
 
   public onLogout() {
@@ -73,6 +76,8 @@ export class DataService implements ILoginListener {
     }
     this._inMemoryViewmodel = null;
     this._getDataObservable = null;
+
+    this._updateStatus = null;
   }
 
   public getData(): Observable<ApplicationViewModel> {
@@ -84,23 +89,7 @@ export class DataService implements ILoginListener {
   }
 
   public getUpdateStatus(): Observable<UpdateStatus> {
-    const currentViewModelTmestamp = this.getData().map((appViewModel) => appViewModel.timestamp);
-    const currentTimestamp =
-      Observable.timer(0, GlobalConfig.recalculateUpdateStatusEveryMs).map(() => this._time.getUnixTimeMs());
-    const lastUpdateStatus: Observable<boolean> = Observable.fromEvent(this._sendEventsLastStatusEmitter, 'status');
-
-    return Observable.combineLatest(currentViewModelTmestamp, currentTimestamp, lastUpdateStatus,
-      (modelTimestamp, timestamp, updateStatus) => {
-        if (!updateStatus)
-          return UpdateStatus.Red;
-        const viewModelLagTimeMs = timestamp - modelTimestamp;
-        if (viewModelLagTimeMs < GlobalConfig.viewModelLagTimeMsYellowStatus)
-          return UpdateStatus.Green;
-        else if (viewModelLagTimeMs < GlobalConfig.viewModelLagTimeMsRedStatus)
-          return UpdateStatus.Yellow;
-        else
-          return UpdateStatus.Red;
-      });
+    return this._updateStatus;
   }
 
   public async pushEvent(eventType: string, data: any) {
@@ -139,6 +128,26 @@ export class DataService implements ILoginListener {
       upsert(this._viewModelDb, errorViewModel);
       this._inMemoryViewmodel = errorViewModel;
     }
+  }
+
+  private getUpdateStatusInternal(): Observable<UpdateStatus> {
+    const currentViewModelTmestamp = this.getData().map((appViewModel) => appViewModel.timestamp);
+    const currentTimestamp =
+      Observable.timer(0, GlobalConfig.recalculateUpdateStatusEveryMs).map(() => this._time.getUnixTimeMs());
+    const lastUpdateStatus: Observable<boolean> = Observable.fromEvent(this._sendEventsLastStatusEmitter, 'status');
+
+    return Observable.combineLatest(currentViewModelTmestamp, currentTimestamp, lastUpdateStatus,
+      (modelTimestamp, timestamp, updateStatus) => {
+        if (!updateStatus)
+          return UpdateStatus.Red;
+        const viewModelLagTimeMs = timestamp - modelTimestamp;
+        if (viewModelLagTimeMs < GlobalConfig.viewModelLagTimeMsYellowStatus)
+          return UpdateStatus.Green;
+        else if (viewModelLagTimeMs < GlobalConfig.viewModelLagTimeMsRedStatus)
+          return UpdateStatus.Yellow;
+        else
+          return UpdateStatus.Red;
+      });
   }
 
   private async trySendEventsInternal() {
