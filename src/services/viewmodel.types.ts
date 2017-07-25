@@ -59,9 +59,13 @@ export class ActionData {
   public eventType: string;
 
   // If set, activating this action will start QR scanning.
+  // (potentially without type validation).
+  @JsonMember
+  public needsQr?: boolean;
+
   // To proceed, user will need to scan a QR with type equal to needsQr.
   @JsonMember
-  public needsQr?: number;
+  public needsQrOfType?: number;
 
   @JsonMember
   public destructive: boolean;

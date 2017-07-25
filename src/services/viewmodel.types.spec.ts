@@ -189,7 +189,8 @@ describe('ViewModel subtypes parsing from JSON', () => {
                     {
                       "text": "Отдать",
                       "eventType": "giveAway",
-                      "needsQr": 100,
+                      "needsQr": true,
+                      "needsQrOfType": 100,
                       "data": {
                         "mID": "26267ae6-0f6c-4efd-8f98-37c2e09a42a2"
                       }
@@ -257,8 +258,9 @@ describe('ViewModel subtypes parsing from JSON', () => {
         expect(applicationViewModel.pages[i] instanceof ListPageViewModel).toBeTruthy();
         expect(applicationViewModel.pages[i].__type).toEqual('ListPageViewModel');
       }
-      expect((applicationViewModel.pages[3] as ListPageViewModel).body.items[0].details.actions[1].needsQr)
-        .toEqual(100);
+      const giveAwayAction = (applicationViewModel.pages[3] as ListPageViewModel).body.items[0].details.actions[1];
+      expect(giveAwayAction.needsQr).toEqual(true);
+      expect(giveAwayAction.needsQrOfType).toEqual(100);
       expect(applicationViewModel.pages[4] instanceof EconomyPageViewModel).toBeTruthy();
       expect(applicationViewModel.pages[4].__type).toEqual('EconomyPageViewModel');
       expect(applicationViewModel.pages[5] instanceof TechnicalInfoPageViewModel).toBeTruthy();
