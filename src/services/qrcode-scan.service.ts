@@ -119,7 +119,10 @@ export class QrCodeScanService extends QrCodeScanServiceBase {
 
     this.registerCallback(QrType.Bill, (data) => {
       const splitPayload = data.payload.split(',');
-      this._economyService.makeTransaction(splitPayload[0], Number(splitPayload[1]));
+      const receiver = splitPayload[0];
+      const amount = Number(splitPayload[1]);
+      const description = splitPayload.slice(2).join(',');
+      this._economyService.makeTransaction(receiver, amount, description);
     });
   }
 
