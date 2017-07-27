@@ -71,6 +71,7 @@
         "@types/node": "7.0.12",
         "codecov": "2.1.0",
         "codelyzer": "2.1.1",
+        "ionic": "3.6.0",
         "jasmine-core": "2.5.2",
         "jasmine-spec-reporter": "3.3.0",
         "karma": "1.6.0",
