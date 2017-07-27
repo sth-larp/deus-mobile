@@ -1,5 +1,4 @@
 import { JsonMember, JsonObject } from 'typedjson';
-import { QrType } from "deus-qr-lib/lib/qr.type";
 
 @JsonObject
 export class GeneralInformation {

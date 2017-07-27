@@ -24,7 +24,7 @@ export class BillPage {
       type: QrType.Bill, kind: 0,
       // TODO: add helper for expiring QR generation
       validUntil: (_clock.getUnixTimeMs() + GlobalConfig.transactionQrLifespan) / 1000,
-      payload: `${this.billPageData.receiverAccount},${this.billPageData.amount}`,
+      payload: `${this.billPageData.receiverAccount},${this.billPageData.amount},`,
     });
   }
 }

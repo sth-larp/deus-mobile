@@ -58,7 +58,7 @@ export class EconomyPage {
   public sendMoney() {
     return this._economyService.makeTransaction(
       this.sendForm.value.receiverId,
-      this.sendForm.value.amount)
+      this.sendForm.value.amount, '')
       .then(() => {
         this.refreshData();
         this.sendForm.reset();
