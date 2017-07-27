@@ -20,7 +20,7 @@ export class EconomyService {
 
   public getShortTransactionHistory(): Promise<ListItemData[]> {
     return this._http.get(GlobalConfig.economyTransactionsUrl +
-      '?login=' + this._authService.getUserId() + '&take=10&skip=0',
+      '?login=' + this._authService.getUserId() + '&take=50&skip=0',
       this._authService.getRequestOptionsWithSavedCredentials())
       .map((response) => {
         const entries: any[] = response.json();
@@ -28,6 +28,7 @@ export class EconomyService {
           return {
             text: `${entry.Sender} → ${entry.Receiver}`,
             value: `${entry.Amount} кр.`,
+            subtext: entry.Comment,
             details: {
               header: 'Детали операции',
               text: '<div class="pre">' + JSON.stringify(entry, null, 2) + '</div>',
@@ -38,7 +39,7 @@ export class EconomyService {
       }).toPromise();
   }
 
-  public makeTransaction(receiver: string, amount: number): Promise<{}> {
+  public makeTransaction(receiver: string, amount: number, description: string): Promise<{}> {
     // TODO: validate amount?
     return new Promise((resolve, reject) => {
       const notifyAndReject = (e: string) => {
@@ -57,9 +58,13 @@ export class EconomyService {
         });
       };
 
+      let message = `Вы хотите перевести <b>${amount} кр.</b> на счет <b>${receiver}</b>?`;
+      if (description.length)
+        message = message + ` Назначение платежа: <b>${description}</b>.`;
+
       this._alertCtrl.show({
         title: 'Подтверждение перевода',
-        message: `Вы хотите перевести <b>${amount} кр.</b> на счет <b>${receiver}</b>?`,
+        message,
         buttons: [
           {
             text: 'Отмена',
@@ -69,7 +74,7 @@ export class EconomyService {
             text: 'Перевести',
             handler: async () => {
               try {
-                await this._makeTransaction(receiver, amount);
+                await this._makeTransaction(receiver, amount, description);
                 notifySuccess();
               } catch (e) {
                 if (e && e.json && e.json() && e.json().Message)
@@ -84,11 +89,12 @@ export class EconomyService {
     });
   }
 
-  private _makeTransaction(receiver: string, amount: number) {
+  private _makeTransaction(receiver: string, amount: number, description: string) {
     const requestBody = JSON.stringify({
       Sender: this._authService.getUserId(),
       Receiver: receiver,
       Amount: amount,
+      Description: description,
     });
 
     return this._http.post(GlobalConfig.economyTransferMoneyUrl, requestBody,
