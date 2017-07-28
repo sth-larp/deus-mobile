@@ -5,9 +5,7 @@
   <h2 class="itemText overProgressBar" [ngClass]="{'unread-text': data.unread}">{{data.text}}</h2>
   <p class="itemSubtext overProgressBar">{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}"></div>
-  <ion-note class="itemValue overProgressBar" item-right [ngStyle]="{'color': getValueColor()}">
-    {{getValue()}}
-  </ion-note>
+  <ion-note *ngIf="getValue()" class="itemValue overProgressBar" item-right [ngStyle]="{'color': getValueColor()}">{{getValue()}}</ion-note>
 </button>
 
 <ion-item *ngIf="!hasSubpage()">
@@ -15,8 +13,6 @@
   <h2 class="itemText overProgressBar" [ngClass]="{'unread-text': data.unread}">{{data.text}}</h2>
   <p class="itemSubtext overProgressBar">{{data.subtext}}</p>
   <div class="backgroundprogressbar" [ngStyle]="{'width': getProgressBarWidth(), 'background-color': getProgressBarColor()}"></div>
-  <ion-note class="itemValue overProgressBar" item-right [ngStyle]="{'color': getValueColor()}">
-    {{getValue()}}
-  </ion-note>
+  <ion-note *ngIf="getValue()" class="itemValue overProgressBar" item-right [ngStyle]="{'color': getValueColor()}">{{getValue()}}</ion-note>
 </ion-item>
 </div>
