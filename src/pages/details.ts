@@ -27,7 +27,7 @@ export class DetailsPage {
     for (const action of this.data.actions) {
       buttons.push({
         text: action.text,
-        cssClass: action.destructive ? 'destructive-button' : null,
+        cssClass: (action.destructive || action.dangerous) ? 'destructive-button' : null,
         handler: () => {
           if (action.needsQr || action.needsQrOfType) {
             this._qrCodeScanner.observeQrsParsed().then((qrData: QrData) => {

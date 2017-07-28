@@ -29,8 +29,8 @@ export class PassportScreenViewModel {
   @JsonMember({isRequired: true})
   public fullName: string;
 
-  @JsonMember({isRequired: true})
-  public corporation: string;
+  @JsonMember
+  public corporation?: string;
 
   @JsonMember({isRequired: true})
   public email: string;
@@ -71,6 +71,9 @@ export class ActionData {
 
   @JsonMember
   public destructive: boolean;
+
+  @JsonMember
+  public dangerous?: boolean;
 
   @JsonMember
   public data: any;
