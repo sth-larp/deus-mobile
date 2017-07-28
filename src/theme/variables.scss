@@ -45,6 +45,7 @@ $colors: (
 $text-color: color($colors, standard);
 $text-color-pale: darken($text-color, 16%);
 $text-color-bright: #FFFFFF;
+$text-color-unread: #FFFFFF;
 
 $background-color: #545B60;
 $background-color-activated: lighten($background-color, 8%);
@@ -138,6 +139,7 @@ $alert-ios-button-background-color-activated: $background-color-activated;
 $alert-ios-max-width: $alert-min-width;
 $alert-ios-button-border-color: lighten($background-color, 20%);
 $alert-ios-input-background-color: lighten($background-color, 6%);
+$alert-ios-input-border-color: lighten($background-color, 20%);	
 
 .alert-ios .alert-title {
   color: color($colors, standard);
