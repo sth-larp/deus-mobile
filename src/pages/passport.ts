@@ -25,7 +25,7 @@ export class PassportPage {
     this.id = {text: 'ID', value: passportScreenData.id };
     this.fullName = {text: 'Имя', value: passportScreenData.fullName };
     this.email = {text: 'e-mail', value: passportScreenData.email };
-    this.corporation = {text: 'Корпорация', value: passportScreenData.corporation || '' };
+    this.corporation = {text: 'Работа', value: passportScreenData.corporation || '' };
     this.insurance = {text: 'Страховка', value: passportScreenData.insurance || ''};
 
     this.qrContent = encode({
