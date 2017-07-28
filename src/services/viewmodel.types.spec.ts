@@ -322,7 +322,13 @@ describe('ViewModel subtypes parsing from JSON', () => {
     }`;
 
     it('Throws on incorrect JSON', () => {
-      expect(() => TypedJSON.parse(exampleApplicationViewModelWithInvalidListPage, ApplicationViewModel)).toThrow();
+      expect(() => TypedJSON.parse(exampleApplicationViewModelWithInvalidListPage, ApplicationViewModel))
+        .toThrowError(/required/);
+    });
+
+    it('Reports the name of missing field', () => {
+      expect(() => TypedJSON.parse(exampleApplicationViewModelWithInvalidListPage, ApplicationViewModel))
+        .toThrowError(/eventType/);
     });
   });
 
