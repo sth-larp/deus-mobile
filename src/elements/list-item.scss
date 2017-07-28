@@ -27,7 +27,7 @@ list-item, sublist-item {
     border-color: color($colors, light-blue);
   }
   .unread-text {
-    color: $text-color-bright;
+    color: color($colors, light-blue);
     font-weight: bold;
   }
 
