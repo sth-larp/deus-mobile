@@ -10,11 +10,11 @@ matrix:
           - build-tools-25.0.0
           - android-25
       sudo: required
-    - os: osx
-      osx_image: xcode8.3
-      language: objective-c
-      addons:
-        firefox: latest
+#    - os: osx
+#      osx_image: xcode8.3
+#      language: objective-c
+#      addons:
+#        firefox: latest
 git:
   depth: 100000
 before_install:
