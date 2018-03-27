@@ -11,7 +11,7 @@ fi
 
 if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
   mkdir -p /usr/local/android-sdk/licenses/
-  sudo echo 8933bad161af4178b1185d1a37fbf41ea5269c55 > /usr/local/android-sdk/licenses/android-sdk-license
+  sudo echo d56f5187479451eabf01fb78af6dfcb131a6481e > /usr/local/android-sdk/licenses/android-sdk-license
   ionic cordova platform add android --noresources --no-interactive --verbose
   ionic cordova build android --device --no-interactive --verbose
 fi

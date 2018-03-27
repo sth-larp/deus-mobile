@@ -8,7 +8,7 @@ if [[ "$TRAVIS_OS_NAME" == "osx" ]]; then
 fi
 
 if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then
-  file_to_upload="platforms/android/build/outputs/apk/android-debug.apk"
+  file_to_upload="platforms/android/app/build/outputs/apk/debug/app-debug.apk"
 fi
 
 curl \
