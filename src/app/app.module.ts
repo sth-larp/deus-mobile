@@ -25,9 +25,9 @@
  import { QuickActions } from '../elements/quick-actions';
  import { BillPage } from '../pages/bill';
  import { DetailsPage } from '../pages/details';
- import { SublistPage } from '../pages/sublist';
  import { GeneralQRCodePage } from '../pages/general-qrcode';
  import { PassportPage } from '../pages/passport';
+ import { SublistPage } from '../pages/sublist';
  import { TechnicalInfoPage } from '../pages/technical-info';
  import { AuthService } from '../services/auth.service';
  import { DataService } from '../services/data.service';

@@ -68,7 +68,7 @@ export class SublistPage {
         },
         {
           text: 'Сохранить',
-          handler: (data) => this.doSave(),
+          handler: () => this.doSave(),
         },
       ],
     });
