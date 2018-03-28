@@ -38,7 +38,7 @@ script:
 - npm install
 # - xvfb-run karma start karma.conf.js --single-run --browsers Firefox
 - "./scripts/update-app-version.sh"
-- travis_wait 50 "./scripts/build.sh"
+- "./scripts/build.sh"
 - "./scripts/upload-to-hockeyapp.sh || travis_terminate 1"
 env:
   global:
