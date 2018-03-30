@@ -1,0 +1,42 @@
+version: '3.2'
+services:
+  deus-server:
+    image: "deus-server"
+    networks:
+      - overlay
+    ports:
+     - "8157:8157"
+  deus-worker-manager:
+    image: "deus-worker-manager"
+    volumes:
+      - type: volume
+        source: models_src
+        target: /deus-models
+    networks:
+      - overlay
+  deus-models:
+    image: "deus-models"
+    volumes:
+      - type: volume
+        source: models_src
+        target: /app
+  couchdb:
+    image: "apache/couchdb"
+    networks:
+      - overlay
+    ports:
+     - "5988:5984" # Remove when using in prod
+    volumes:
+      - type: volume
+        source: couchdb_data
+        target: /opt/couchdb/data
+        volume:
+          nocopy: true
+
+volumes:
+  couchdb_data:
+    external: true
+  models_src:
+
+networks:
+  overlay:
