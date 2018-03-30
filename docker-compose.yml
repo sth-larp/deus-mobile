@@ -12,6 +12,7 @@ services:
       - type: volume
         source: models_src
         target: /deus-models
+        read_only: true
     networks:
       - overlay
   deus-models:
