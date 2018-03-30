@@ -154,7 +154,7 @@ export class DataService implements ILoginListener {
     console.debug('Trying to send events to server');
     await this.pushRefreshModelEvent();
     const alldocsResponse = await this._eventsDb.allDocs({ include_docs: true });
-    const events = alldocsResponse.rows.map((row) => {
+    let events = alldocsResponse.rows.map((row) => {
       return {
         timestamp: Number(row.doc._id),
         characterId: this._authService.getUserId(),
@@ -162,6 +162,13 @@ export class DataService implements ILoginListener {
         data: row.doc.data,
       };
     });
+    const refreshModelEvents = events.filter((event) => event.eventType == '_RefreshModel');
+
+    const lastRefreshModelEventTimestamp =
+      Math.max(...refreshModelEvents.map((event) => event.timestamp));
+    events = events.filter((value: any) =>
+      value.eventType != '_RefreshModel' || value.timestamp == lastRefreshModelEventTimestamp);
+
     console.info(`Sending ${events.length} events to server`);
     console.debug(JSON.stringify(events));
     const requestBody = JSON.stringify({ events });
