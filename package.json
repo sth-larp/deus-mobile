@@ -30,7 +30,7 @@
         "@ionic/storage": "2.0.1",
         "@types/pouchdb": "5.4.28",
         "basic-authorization-header": "^0.2.7",
-        "cordova-android": "7.0.0",
+        "cordova-android": "7.1.0",
         "cordova-browser": "5.0.3",
         "cordova-custom-config": "^4.0.2",
         "cordova-ios": "4.5.4",

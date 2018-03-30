@@ -25,7 +25,7 @@
         <splash density="xhdpi" src="resources/android/splash/and-land-ss17-720-xhdpi.png" />
         <splash density="xxhdpi" src="resources/android/splash/and-land-ss16-960-xxhdpi.png" />
         <splash density="xxxhdpi" src="resources/android/splash/and-land-ss17-1080-xxxhdpi.png" />
-        <resource-file src="google-services.json" target="google-services.json" />
+        <resource-file src="google-services.json" target="app/google-services.json" />
     </platform>
     <platform name="ios">
         <allow-intent href="itms:*" />
@@ -94,5 +94,5 @@
     </plugin>
     <engine name="browser" spec="5.0.3" />
     <engine name="ios" spec="4.5.4" />
-    <engine name="android" spec="7.0.0" />
+    <engine name="android" spec="7.1.0" />
 </widget>
