@@ -2,6 +2,7 @@
  import { HttpModule } from '@angular/http';
  import { AppVersion } from '@ionic-native/app-version';
  import { BarcodeScanner } from '@ionic-native/barcode-scanner';
+ import { Brightness } from '@ionic-native/brightness';
  import { Keyboard } from '@ionic-native/keyboard';
  import { Push } from '@ionic-native/push';
  import { IonicApp, IonicModule } from 'ionic-angular';
@@ -87,6 +88,7 @@
   providers: [
     AppVersion,
     AuthService,
+    Brightness,
     NativeStorageService,
     DataService,
     LocalDataService,

@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Brightness } from '@ionic-native/brightness';
 import { encode } from 'deus-qr-lib/lib/qr';
 import { QrType } from 'deus-qr-lib/lib/qr.type';
 import { NavParams } from 'ionic-angular';
@@ -17,8 +18,10 @@ export class BillPageData {
 export class BillPage {
   public qrContent = '';
   public billPageData: BillPageData;
+
   constructor(navParams: NavParams,
-              private _clock: MonotonicTimeService) {
+              private _clock: MonotonicTimeService,
+              private _brightness: Brightness) {
     this.billPageData = navParams.data.value;
     this.qrContent = encode({
       type: QrType.Bill, kind: 0,
@@ -26,5 +29,15 @@ export class BillPage {
       validUntil: (_clock.getUnixTimeMs() + GlobalConfig.transactionQrLifespan) / 1000,
       payload: `${this.billPageData.receiverAccount},${this.billPageData.amount},`,
     });
+  }
+
+  public ionViewDidEnter() {
+    this._brightness.setBrightness(1);
+    this._brightness.setKeepScreenOn(true);
+  }
+
+  public ionViewWillLeave() {
+    this._brightness.setBrightness(-1);
+    this._brightness.setKeepScreenOn(false);
   }
 }
