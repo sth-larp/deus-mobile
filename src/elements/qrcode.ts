@@ -23,7 +23,7 @@ export class QrCode {
 
     // TODO: device-dependent size? Or how properly adjust it?
     const cellSize = 10;
-    const margin = cellSize * 3;
+    const margin = cellSize * 6;
 
     const size = qr.getModuleCount() * cellSize + margin * 2;
     this._canvasRef.nativeElement.width = size;
