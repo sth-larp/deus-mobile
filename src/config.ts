@@ -1,7 +1,11 @@
 // tslint:disable-next-line:variable-name
+
+const baseAliceUrl = "http://magellan2018.aerem.in:8157/"
+const baseEconomyUrl = "http://magellan2018.aerem.in:54294/"
+
 export const GlobalConfig = {
-  getViewmodelBaseUrl: 'http://localhost:8157/viewmodel',
-  sendEventsBaseUrl: 'http://localhost:8157/events',
+  getViewmodelBaseUrl: baseAliceUrl + 'viewmodel',
+  sendEventsBaseUrl: baseAliceUrl + 'events',
 
   sendEventsEveryMs: 60 * 1000,
   recalculateVrTimerEveryMs: 500,
@@ -14,15 +18,15 @@ export const GlobalConfig = {
 
   remoteLoggingDbUrl: 'no-logging-in-prod',
 
-  timeServerUrl: 'http://localhost:8157/time',
+  timeServerUrl: baseAliceUrl + 'time',
   fetchTimeFromServerEveryMs: 60000,
 
   passportQrLifespan: 60000, // 1 min
   transactionQrLifespan: 300000, // 5 min
 
-  economyGetBalanceBaseUrl: 'https://alice.digital/econ/api/accounts/profile?login=',
-  economyTransferMoneyUrl: 'https://alice.digital/econ/api/transfer',
-  economyTransactionsUrl: 'https://alice.digital/econ/api/transactions',
+  economyGetBalanceBaseUrl: baseEconomyUrl + 'api/accounts/profile?login=',
+  economyTransferMoneyUrl: baseEconomyUrl + 'api/transfer',
+  economyTransactionsUrl: baseEconomyUrl + 'api/transactions',
 
   useProductionAPNSChannel: false,
 };
