@@ -8,17 +8,8 @@ describe('ViewModel subtypes parsing from JSON', () => {
 
   describe('GeneralInformation', () => {
     it('Parses correct JSON', () => {
-      const generalInfo = TypedJSON.parse('{ "maxSecondsInVr": 17 }', GeneralInformation);
+      const generalInfo = TypedJSON.parse('{ }', GeneralInformation);
       expect(generalInfo).toBeTruthy();
-      expect(generalInfo.maxSecondsInVr).toEqual(17);
-    });
-
-    it('Throws for incorrect type of field', () => {
-      expect(() => TypedJSON.parse('{ "maxSecondsInVr": "ALOT" }', GeneralInformation)).toThrow();
-    });
-
-    it('Throws for missing field', () => {
-      expect(() => TypedJSON.parse('{}', GeneralInformation)).toThrow();
     });
   });
 
@@ -44,7 +35,6 @@ describe('ViewModel subtypes parsing from JSON', () => {
       "_id": "vasya",
       "timestamp": 1499970465030,
       "general": {
-        "maxSecondsInVr": 1200
       },
       "menu": {
         "characterName": "Arnold Schwarzenegger"
@@ -276,7 +266,6 @@ describe('ViewModel subtypes parsing from JSON', () => {
       "_id": "vasya",
       "timestamp": 1499970465030,
       "general": {
-        "maxSecondsInVr": 1200
       },
       "menu": {
         "characterName": "Arnold Schwarzenegger"

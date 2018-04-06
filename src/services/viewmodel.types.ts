@@ -2,8 +2,6 @@ import { JsonMember, JsonObject } from 'typedjson';
 
 @JsonObject
 export class GeneralInformation {
-  @JsonMember({isRequired: true})
-  public maxSecondsInVr: number;
 }
 
 @JsonObject

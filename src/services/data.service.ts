@@ -236,7 +236,7 @@ export class DataService implements ILoginListener {
     return {
       _id: this._authService.getUserId(),
       timestamp: this._time.getUnixTimeMs(),
-      general: { maxSecondsInVr: 0 },
+      general: { },
       menu: { characterName: this._authService.getUserId() },
       toolbar: { hitPoints: 9000, maxHitPoints: 9000 },
       passportScreen: { corporation: 'Ошибка', email: 'Ошибка', fullName: 'Ошибка', id: this._authService.getUserId() },

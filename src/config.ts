@@ -8,8 +8,6 @@ export const GlobalConfig = {
   sendEventsBaseUrl: baseAliceUrl + 'events',
 
   sendEventsEveryMs: 60 * 1000,
-  recalculateVrTimerEveryMs: 500,
-  vrTimerYellowThresholdMs: 10 * 60 * 1000,
   recalculateUpdateStatusEveryMs: 100,
   viewModelLagTimeMsYellowStatus: 3 * 60 * 1000,
   viewModelLagTimeMsRedStatus: 15 * 60 * 1000,

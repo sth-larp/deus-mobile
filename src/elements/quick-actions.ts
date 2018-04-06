@@ -27,10 +27,6 @@ export class QuickActions implements ILoginListener {
   public hpIcon: string = null;
   public hpText: string = null;
   public hpTextColor: string = null;
-  public maxSecondsInVr: number = null;
-  public vrIcon: string = null;
-  public vrTimer: string = null;
-  public vrTimerColor: string = null;
   public notificationIcon: string = null;
   public notificationText: string = null;
 
@@ -70,7 +66,6 @@ export class QuickActions implements ILoginListener {
     this._hpSubscription = this._dataService.getData().subscribe(
       (json) => {
         this.updateHp(json);
-        this.updateVrStatus(json);
       },
       (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
     );
@@ -91,7 +86,6 @@ export class QuickActions implements ILoginListener {
         }
       },
     );
-    setInterval(() => { this.updateVrStatus(null); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
 
   public onLogout() {
@@ -138,31 +132,6 @@ export class QuickActions implements ILoginListener {
     });
   }
 
-  public async onVr() {
-    const inVr: boolean = await this._localDataService.inVr();
-    const buttons = [{
-      text: 'Отмена',
-      role: 'cancel',
-    },
-    {
-      text: inVr ? 'Выйти из VR' : 'Войти в VR',
-      cssClass: inVr ? null : 'destructive-button',
-      handler: () => this.doToggleVr(),
-    }];
-
-    const maxTimeInVar = formatTime3(this.maxSecondsInVr, ':');
-    this._alertController.show({
-      title: inVr
-        ? 'Выход из VR'
-        : 'Вход в VR',
-      message: inVr
-        ? 'Вы действительно хотите покинуть VR?'
-        : 'Вы действительно хотите войти в VR?<br/>' +
-          `Ваше максимальное время нахождения в VR составляет <b>${maxTimeInVar}</b>.`,
-      buttons,
-    });
-  }
-
   public onNotifications() {
     if (this._notificationDestination)
       this._navController.setRoot(ListPage, { id: this._notificationDestination });
@@ -198,39 +167,5 @@ export class QuickActions implements ILoginListener {
       message: `Вы действительно потеряли <b>${hpLost}&nbspHP</b>?`,
       buttons,
     });
-  }
-
-  // TODO: Add tests
-  private getVrTimerWithColor(secondsLeft: number): string[] {
-    if (secondsLeft < 0) {
-      return [formatTime2(secondsLeft, '.'), Colors.red];
-    } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
-      return [formatTime2(secondsLeft, '.'), Colors.yellow];
-    else
-      return [formatTime2(secondsLeft / 60, ':'), Colors.primary];
-  }
-
-  // 'json' may be null: means "no change"
-  private async updateVrStatus(json: ApplicationViewModel) {
-    if (json != null)
-      this.maxSecondsInVr = json.general.maxSecondsInVr;
-
-    let maxSecondsInVr = this.maxSecondsInVr;
-    if (maxSecondsInVr % 60 == 0)
-      maxSecondsInVr++;  // Let the user see initial time first
-    this.vrIcon = (await this._localDataService.inVr())
-      ? 'virtual-reality-on.svg'
-      : 'virtual-reality-off.svg';
-    const secondsInVr = await this._localDataService.secondsInVr();
-    [this.vrTimer, this.vrTimerColor] =
-      (secondsInVr == null)
-        ? ['', null]
-        : this.getVrTimerWithColor(maxSecondsInVr - secondsInVr);
-  }
-
-  private async doToggleVr() {
-    this._dataService.pushEvent(await this._localDataService.inVr() ? 'exitVr' : 'enterVr', {});
-    await this._localDataService.toggleVr();
-    await this.updateVrStatus(null);
   }
 }
