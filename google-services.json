@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "786784916655",
-    "firebase_url": "https://deus-larp.firebaseio.com",
-    "project_id": "deus-larp",
-    "storage_bucket": "deus-larp.appspot.com"
+    "project_number": "336009309109",
+    "firebase_url": "https://magellan-2018-larp.firebaseio.com",
+    "project_id": "magellan-2018-larp",
+    "storage_bucket": "magellan-2018-larp.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:786784916655:android:820fc157621d2da8",
+        "mobilesdk_app_id": "1:336009309109:android:c3fdc07c4f9f9296",
         "android_client_info": {
-          "package_name": "digital.alice.app.prod"
+          "package_name": "ru.magellan2018.alice"
         }
       },
       "oauth_client": [
         {
-          "client_id": "786784916655-hv7trc6qd9nl3lkhja5dm65vgp7mv0r4.apps.googleusercontent.com",
+          "client_id": "336009309109-jli3cfino3v64kmbno9nrk313oukvpfv.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBH6uXOT-Rn4WVO3C5384Twl1aNeL1stZI"
+          "current_key": "AIzaSyCS-tvCLlHbjq3nksTGuZPCbI91rST-re8"
         }
       ],
       "services": {

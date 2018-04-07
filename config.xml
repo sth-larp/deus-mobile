@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="digital.alice.app.prod" ios-CFBundleVersion="1.3.3" version="1.3.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
-    <name>Deus LARP 2017</name>
-    <description>Deus Ex Machina LARP Mobile Application.</description>
-    <author email="info@deus.rpg.ru/" href="http://deus.rpg.ru/">Stairway to Heaven</author>
+<widget id="ru.magellan2018.alice" ios-CFBundleVersion="1.3.3" version="1.3.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+    <name>Magellan LARP 2018</name>
+    <description>Magellan 2018 LARP Mobile Application.</description>
+    <author email="info@magellan2018.ru" href="http://magellan2018.ru/">Saint-Petersburg Format</author>
     <content src="index.html" />
     <access origin="*" />
     <allow-intent href="http://*/*" />
