@@ -25,8 +25,8 @@ export class LoginPage {
               private _logging: LoggingService,
               appVersion: AppVersion) {
     this.loginForm = this._formBuilder.group({
-      loginOrId: ['vasya', Validators.required],
-      password: ['vasya', Validators.required],
+      loginOrId: ['', Validators.required],
+      password: ['', Validators.required],
     });
     appVersion.getVersionNumber()
       .then((v) => this.version = 'v' + v)
