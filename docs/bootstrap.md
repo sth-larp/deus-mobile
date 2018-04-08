@@ -89,13 +89,13 @@ and open [http://localhost:8100/ionic-lab](http://localhost:8100/ionic-lab).
 
 Add Android support:
 
-    ionic platform add android
+    ionic cordova platform add android
 
 Attach your Android phone and make sure that USB debugging is enabled. Alternatively, you can use an emulator.
 
 Launch the app in another console:
 
-    ionic run android --device  # for emulator, replace "--device" with "--emulator"
+    ionic cordova run android --device  # for emulator, replace "--device" with "--emulator"
 
 ## Set up iOS app
 
@@ -103,9 +103,9 @@ NB: NOT TESTED
 
 Add iOS support:
 
-    ionic platform add ios
+    ionic cordova platform add ios
 
 Start app:
 
-    ionic run ios --device  # for emulator, replace "--device" with "--emulator"
+    ionic cordova run ios --device  # for emulator, replace "--device" with "--emulator"
 
