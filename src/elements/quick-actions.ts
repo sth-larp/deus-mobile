@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Keyboard } from '@ionic-native/keyboard';
-import { ModalController, NavController } from 'ionic-angular';
+import { NavController } from 'ionic-angular';
 import { Subscription } from 'rxjs';
 
 import { Colors, GlobalConfig } from '../config';
-import { EnhancedActionSheetController, EnhancedAlertController } from '../elements/enhanced-controllers';
+import { EnhancedActionSheetController, EnhancedAlertController, EnhancedModalController } from '../elements/enhanced-controllers';
 import { ListPage } from '../pages/list';
 import { PassportPage } from '../pages/passport';
 import { AuthService } from '../services/auth.service';
@@ -37,7 +37,7 @@ export class QuickActions implements ILoginListener {
   private _keyboardShowSubscription: Subscription = null;
   private _keyboardHideSubscription: Subscription = null;
 
-  constructor(private _modalController: ModalController,
+  constructor(private _modalController: EnhancedModalController,
               private _qrCodeScanService: QrCodeScanService,
               private _dataService: DataService,
               private _localDataService: LocalDataService,
@@ -105,9 +105,8 @@ export class QuickActions implements ILoginListener {
 
   public async onId() {
     const passportPageScreenData = (await this._dataService.getCurrentData()).passportScreen;
-    const accessModal = this._modalController.create(PassportPage,
+    const accessModal = this._modalController.show(PassportPage,
       { value: passportPageScreenData });
-    accessModal.present();
   }
 
   public async onHp() {

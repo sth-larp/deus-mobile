@@ -1,12 +1,11 @@
 import { Injectable } from '@angular/core';
 import { BarcodeScanner } from '@ionic-native/barcode-scanner';
-import { ModalController } from 'ionic-angular';
 import { TSMap } from 'typescript-map';
 
 import { decode, QrData } from 'deus-qr-lib/lib/qr';
 import { QrType } from 'deus-qr-lib/lib/qr.type';
 import { EventEmitter } from 'events';
-import { EnhancedAlertController } from '../elements/enhanced-controllers';
+import { EnhancedAlertController, EnhancedModalController } from '../elements/enhanced-controllers';
 import { GeneralQRCodePage } from '../pages/general-qrcode';
 import { EconomyService } from './economy.service';
 import { LoggingService } from './logging.service';
@@ -109,13 +108,11 @@ export class QrCodeScanService extends QrCodeScanServiceBase {
               alertController: EnhancedAlertController,
               logging: LoggingService,
               monotonicClock: MonotonicTimeService,
-              private _modalController: ModalController,
+              private _modalController: EnhancedModalController,
               private _economyService: EconomyService) {
     super(barcodeScanner, alertController, logging, monotonicClock);
-    this._defaultCallback = (data: QrData) => {
-      const modal = this._modalController.create(GeneralQRCodePage, { value: data });
-      modal.present();
-    };
+    this._defaultCallback = (data: QrData) =>
+      this._modalController.show(GeneralQRCodePage, { value: data });
 
     this.registerCallback(QrType.Bill, (data) => {
       const splitPayload = data.payload.split(',');

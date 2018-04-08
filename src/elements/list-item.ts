@@ -1,10 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { ModalController } from 'ionic-angular';
 import { Colors } from '../config';
 import { DetailsPage } from '../pages/details';
 import { SublistPage } from '../pages/sublist';
 import { ListItemData } from '../services/viewmodel.types';
 import { renderTimestamp } from '../utils/string-utils';
+import { EnhancedModalController } from './enhanced-controllers';
 
 @Component({
   selector: 'list-item',
@@ -16,7 +16,7 @@ export class ListItem {
   @Input()
   public filter: string;
 
-  constructor(private _modalCtrl: ModalController) { }
+  constructor(private _modalCtrl: EnhancedModalController) { }
 
   public getValue(): string {
     return this.data.unixSecondsValue ? renderTimestamp(this.data.unixSecondsValue) : this.data.value;
@@ -44,8 +44,7 @@ export class ListItem {
 
   public openSubpage(): void {
     const accessModal = this.data.details
-      ? this._modalCtrl.create(DetailsPage, { value: this.data.details })
-      : this._modalCtrl.create(SublistPage, { value: this.data.sublist });
-    accessModal.present();
+      ? this._modalCtrl.show(DetailsPage, { value: this.data.details })
+      : this._modalCtrl.show(SublistPage, { value: this.data.sublist });
   }
 }

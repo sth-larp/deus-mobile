@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
-import { ModalController, Refresher } from 'ionic-angular';
+import { Refresher } from 'ionic-angular';
 import { CustomValidators } from 'ng2-validation';
 
 import { AuthService } from '../services/auth.service';
 import { EconomyService } from '../services/economy.service';
 import { ListItemData } from '../services/viewmodel.types';
 import { BillPage } from './bill';
+import { EnhancedModalController } from '../elements/enhanced-controllers';
 
 @Component({
   selector: 'page-economy',
@@ -25,7 +26,7 @@ export class EconomyPage {
 
   constructor(private _http: Http,
               private _authService: AuthService,
-              private _modalController: ModalController,
+              private _modalController: EnhancedModalController,
               private _formBuilder: FormBuilder,
               private _economyService: EconomyService) {
 
@@ -69,12 +70,12 @@ export class EconomyPage {
   }
 
   public receiveMoney() {
-    this._modalController.create(BillPage, {
+    this._modalController.show(BillPage, {
       value: {
         amount: this.receiveForm.value.amount,
         receiverAccount: this._authService.getUserId(),
       },
-    }).present();
+    });
   }
 
   private async refreshData() {

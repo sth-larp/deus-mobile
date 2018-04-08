@@ -17,6 +17,10 @@ export class MyApp {
       StatusBar.styleDefault();
       Splashscreen.hide();
       this.rootPage = LoginPage;
-    });
+
+      platform.registerBackButtonAction(() => {
+        // Do nothing. Prevents app from exiting.
+      });
+    })
   }
 }
