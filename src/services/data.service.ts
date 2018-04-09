@@ -35,6 +35,8 @@ export class DataService implements ILoginListener {
   private _sendEventsLastStatusEmitter = new EventEmitter();
   private _updateStatus: Observable<UpdateStatus>;
 
+  private _sendingEvents = false;
+
   constructor(private _logging: LoggingService,
               private _time: MonotonicTimeService,
               private _authService: AuthService,
@@ -106,10 +108,14 @@ export class DataService implements ILoginListener {
   }
 
   public async trySendEvents() {
+    if (this._sendingEvents) return;
+    this._sendingEvents = true;
     try {
       await this.trySendEventsInternal();
+      this._sendingEvents = false;
       this._sendEventsLastStatusEmitter.emit('status', true);
     } catch (e) {
+      this._sendingEvents = false;
       this._sendEventsLastStatusEmitter.emit('status', false);
       throw e;
     }
