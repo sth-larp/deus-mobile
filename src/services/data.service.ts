@@ -22,6 +22,8 @@ export enum UpdateStatus {
   Red,
 }
 
+export class TooManyRequests extends Error {};
+
 @Injectable()
 export class DataService implements ILoginListener {
   private _inMemoryViewmodel: ApplicationViewModel = null;
@@ -108,7 +110,7 @@ export class DataService implements ILoginListener {
   }
 
   public async trySendEvents() {
-    if (this._sendingEvents) return;
+    if (this._sendingEvents) throw new TooManyRequests();
     this._sendingEvents = true;
     try {
       await this.trySendEventsInternal();

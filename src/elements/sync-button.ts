@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Subscription } from 'rxjs';
 
 import { ToastController } from 'ionic-angular';
-import { DataService, UpdateStatus } from '../services/data.service';
+import { DataService, UpdateStatus, TooManyRequests } from '../services/data.service';
 
 @Component({
   selector: 'sync-button',
@@ -32,7 +32,8 @@ export class SyncButton  {
         duration: 2000,
       }).present();
     })
-    .catch(() => {
+    .catch((e) => {
+      if (e instanceof TooManyRequests) return;
       this._toastCtrl.create({
         message: 'Ошибка обращения к серверу, повторите попытку позже',
         duration: 3000,

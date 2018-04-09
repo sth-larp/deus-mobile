@@ -2,7 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { Content, NavController, NavParams, Refresher, Segment, ToastController } from 'ionic-angular';
 import { Subscription } from 'rxjs/Rx';
 
-import { DataService } from '../services/data.service';
+import { DataService, TooManyRequests } from '../services/data.service';
 import { LocalDataService } from '../services/local-data.service';
 import { UnreadService } from '../services/unread.service';
 import { ListBody, PageViewModel } from '../services/viewmodel.types';
@@ -75,7 +75,8 @@ export class ListPage extends UpdatablePage {
         duration: 2000,
       }).present();
     })
-    .catch(() => {
+    .catch((e) => {
+      if (e instanceof TooManyRequests) return;
       refresher.complete();
       this._toastCtrl.create({
         message: 'Ошибка обращения к серверу, повторите попытку позже',
