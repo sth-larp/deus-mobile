@@ -71,6 +71,16 @@ export class QuickActions implements ILoginListener {
     );
     this._unreadSubscription = this._unreadService.getUnreadStats().subscribe(
       (unreadStart) => {
+        const currentPageData = this._navController.getActive().data;
+        if (currentPageData.id) {
+          if (currentPageData.id == 'page:changes')
+            unreadStart.changes = 0;
+
+          if (currentPageData.id == 'page:messages')
+            unreadStart.messages = 0;
+        } else {
+          console.log("Not an instance");
+        }
         if (unreadStart.messages > 0) {
           this.notificationIcon = 'notify-messages.svg';
           this.notificationText = unreadStart.messages.toString();
