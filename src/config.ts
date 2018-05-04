@@ -1,7 +1,7 @@
 // tslint:disable-next-line:variable-name
 
 const baseAliceUrl = "http://magellan2018.aerem.in:8157/"
-const baseEconomyUrl = "http://magellan2018.aerem.in:54294/"
+const baseEconomyUrl = "http://magellan2018.aerem.in:8157"
 
 export const GlobalConfig = {
   getViewmodelBaseUrl: baseAliceUrl + 'viewmodel',
@@ -22,9 +22,9 @@ export const GlobalConfig = {
   passportQrLifespan: 60000, // 1 min
   transactionQrLifespan: 300000, // 5 min
 
-  economyGetBalanceBaseUrl: baseEconomyUrl + 'api/accounts/profile?login=',
-  economyTransferMoneyUrl: baseEconomyUrl + 'api/transfer',
-  economyTransactionsUrl: baseEconomyUrl + 'api/transactions',
+  economyGetBalanceBaseUrl: baseEconomyUrl + '/economy/',
+  economyTransferMoneyUrl: baseEconomyUrl + '/economy/transfer',
+  economyTransactionsUrl: baseEconomyUrl + '/economy/',
 
   useProductionAPNSChannel: false,
 };

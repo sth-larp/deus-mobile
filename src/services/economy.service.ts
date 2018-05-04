@@ -15,20 +15,19 @@ export class EconomyService {
   public getBalance(): Promise<number> {
     return this._http.get(GlobalConfig.economyGetBalanceBaseUrl + this._authService.getUserId(),
       this._authService.getRequestOptionsWithSavedCredentials())
-      .map((response) => response.json().Cash).toPromise();
+      .map((response) => response.json().balance).toPromise();
   }
 
   public getShortTransactionHistory(): Promise<ListItemData[]> {
-    return this._http.get(GlobalConfig.economyTransactionsUrl +
-      '?login=' + this._authService.getUserId() + '&take=50&skip=0',
+    return this._http.get(GlobalConfig.economyTransactionsUrl + this._authService.getUserId(),
       this._authService.getRequestOptionsWithSavedCredentials())
       .map((response) => {
-        const entries: any[] = response.json();
+        const entries: any[] = response.json().history;
         return entries.map((entry): ListItemData => {
           return {
-            text: `${entry.Sender} → ${entry.Receiver}`,
-            value: `${entry.Amount} кр.`,
-            subtext: entry.Comment,
+            text: `${entry.sender} → ${entry.receiver}`,
+            value: `${entry.amount} кр.`,
+            subtext: entry.description,
             details: {
               header: 'Детали операции',
               text: '<div class="pre">' + JSON.stringify(entry, null, 2) + '</div>',
@@ -91,10 +90,10 @@ export class EconomyService {
 
   private _makeTransaction(receiver: string, amount: number, description: string) {
     const requestBody = JSON.stringify({
-      Sender: this._authService.getUserId(),
-      Receiver: receiver,
-      Amount: amount,
-      Description: description,
+      sender: this._authService.getUserId(),
+      receiver,
+      amount,
+      description,
     });
 
     return this._http.post(GlobalConfig.economyTransferMoneyUrl, requestBody,
