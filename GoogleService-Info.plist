@@ -7,34 +7,34 @@
 	<key>AD_UNIT_ID_FOR_INTERSTITIAL_TEST</key>
 	<string>ca-app-pub-3940256099942544/4411468910</string>
 	<key>CLIENT_ID</key>
-	<string>786784916655-m9a9jdvt8b7738dg14gb7cj6io1ef0b5.apps.googleusercontent.com</string>
+	<string>336009309109-pfk503gbl8ngqo0f2tdpdot2dftvuij6.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.786784916655-m9a9jdvt8b7738dg14gb7cj6io1ef0b5</string>
+	<string>com.googleusercontent.apps.336009309109-pfk503gbl8ngqo0f2tdpdot2dftvuij6</string>
 	<key>API_KEY</key>
-	<string>AIzaSyCqXtEn0oCwif5Q-klretY69k8LkLJ9u20</string>
+	<string>AIzaSyDVc6KtM4OZFw3XTxv1F43UENXrMzpsdrE</string>
 	<key>GCM_SENDER_ID</key>
-	<string>786784916655</string>
+	<string>336009309109</string>
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
 	<string>ru.magellan2018.alice</string>
 	<key>PROJECT_ID</key>
-	<string>deus-larp</string>
+	<string>magellan-2018-larp</string>
 	<key>STORAGE_BUCKET</key>
-	<string>deus-larp.appspot.com</string>
+	<string>magellan-2018-larp.appspot.com</string>
 	<key>IS_ADS_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_ANALYTICS_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_APPINVITE_ENABLED</key>
-	<false/>
+	<false></false>
 	<key>IS_GCM_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>IS_SIGNIN_ENABLED</key>
-	<true/>
+	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:786784916655:ios:820fc157621d2da8</string>
+	<string>1:336009309109:ios:c3fdc07c4f9f9296</string>
 	<key>DATABASE_URL</key>
-	<string>https://deus-larp.firebaseio.com</string>
+	<string>https://magellan-2018-larp.firebaseio.com</string>
 </dict>
 </plist>

@@ -52,6 +52,7 @@
         <icon height="50" src="resources/ios/icon/ios-icon-50.png" width="50" />
         <icon height="40" src="resources/ios/icon/ios-icon-40.png" width="40" />
         <icon height="29" src="resources/ios/icon/ios-icon-29.png" width="29" />
+        <resource-file src="GoogleService-Info.plist" target="app/GoogleService-Info.plist" />
         <config-file parent="UIBackgroundModes" platform="ios" target="*-Info.plist">
             <array>
                 <string>remote-notification</string>
