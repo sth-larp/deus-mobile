@@ -76,10 +76,10 @@ export class EconomyService {
                 await this._makeTransaction(receiver, amount, description);
                 notifySuccess();
               } catch (e) {
-                if (e && e.json && e.json() && e.json().Message)
-                  notifyAndReject(e.json().Message);
+                if (e && e.json && e.json() && e.json().message)
+                  notifyAndReject(e.json().message);
                 else
-                  notifyAndReject('Сервер недоступен');
+                  notifyAndReject('Неизвестная ошибка сервера');
               }
             },
           },
