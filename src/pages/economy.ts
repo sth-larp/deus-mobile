@@ -92,11 +92,8 @@ export class EconomyPage {
   }
 
   private async refreshData() {
-    let balanceNum = 0;
-    [balanceNum, this.history] = await Promise.all([
-      this._economyService.getBalance(),
-      this._economyService.getShortTransactionHistory(),
-    ]);
-    this.balance = balanceNum;
+    const data = await this._economyService.getEconomyData();
+    this.balance = data.balance;
+    this.history = data.history;
   }
 }

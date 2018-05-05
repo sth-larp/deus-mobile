@@ -22,9 +22,8 @@ export const GlobalConfig = {
   passportQrLifespan: 60000, // 1 min
   transactionQrLifespan: 300000, // 5 min
 
-  economyGetBalanceBaseUrl: baseEconomyUrl + '/economy/',
+  economyGetDataUrl: baseEconomyUrl + '/economy/',
   economyTransferMoneyUrl: baseEconomyUrl + '/economy/transfer',
-  economyTransactionsUrl: baseEconomyUrl + '/economy/',
 
   useProductionAPNSChannel: false,
 };
