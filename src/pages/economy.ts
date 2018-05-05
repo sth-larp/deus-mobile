@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
-import { Refresher } from 'ionic-angular';
+import { Refresher, ToastController } from 'ionic-angular';
 import { CustomValidators } from 'ng2-validation';
 
 import { AuthService } from '../services/auth.service';
@@ -27,6 +27,7 @@ export class EconomyPage {
   constructor(private _http: Http,
               private _authService: AuthService,
               private _modalController: EnhancedModalController,
+              private _toastCtrl: ToastController,
               private _formBuilder: FormBuilder,
               private _economyService: EconomyService) {
 
@@ -52,8 +53,20 @@ export class EconomyPage {
   public doRefresh(refresher: Refresher) {
     // TODO: error indication?
     this.refreshData()
-      .then(() => refresher.complete())
-      .catch(() => refresher.complete());
+    .then(() => {
+      refresher.complete();
+      this._toastCtrl.create({
+        message: 'Данные успешно обновлены',
+        duration: 2000,
+      }).present();
+    })
+    .catch((e) => {
+      refresher.complete();
+      this._toastCtrl.create({
+        message: 'Ошибка обращения к серверу, повторите попытку позже',
+        duration: 3000,
+      }).present();
+    });
   }
 
   public sendMoney() {
