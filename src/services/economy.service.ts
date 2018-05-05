@@ -24,15 +24,14 @@ export class EconomyService {
       .map((response) => {
         const entries: any[] = response.json().history;
         return entries.map((entry): ListItemData => {
+          if (entry.sender == this._authService.getUserId()) {
+            [entry.sender, entry.receiver] = [entry.receiver, entry.sender];
+            entry.amount = -entry.amount;
+          }
           return {
-            text: `${entry.sender} → ${entry.receiver}`,
-            value: `${entry.amount} кр.`,
+            text: `${entry.amount} кр. (счет ${entry.sender})`,
+            unixSecondsValue: entry.timestamp / 1000,
             subtext: entry.description,
-            details: {
-              header: 'Детали операции',
-              text: '<div class="pre">' + JSON.stringify(entry, null, 2) + '</div>',
-              actions: null,
-            },
           };
         });
       }).toPromise();
