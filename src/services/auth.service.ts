@@ -33,7 +33,7 @@ export class AuthService {
   }
 
   public async tryLoginAndGetViewmodel(loginOrUserId: string, password: string): Promise<any> {
-    const fullUrl = GlobalConfig.getViewmodelBaseUrl + '/' + loginOrUserId + '?type=mobile';
+    const fullUrl = GlobalConfig.getViewmodelBaseUrl + '/mobile/' + loginOrUserId;
     const response = await this._http.get(fullUrl,
       this.getRequestOptionsWithCredentials(loginOrUserId, password)).toPromise();
     await this._saveCredentials(response.json().id, password);
