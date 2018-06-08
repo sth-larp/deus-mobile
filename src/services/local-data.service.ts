@@ -30,6 +30,24 @@ export class LocalDataService {
     return this._nativeStorage.remove(this.makeGlobalKey(key));
   }
 
+  // VR API
+  public async toggleVr() {
+    if (await this.inVr()) {
+      await this.remove('vrEnterTime');
+    } else {
+      await this.setItem('vrEnterTime', this._time.getUnixTimeMs());
+    }
+  }
+  public async inVr(): Promise<boolean> {
+    return (await this.secondsInVr()) != null;
+  }
+  public async secondsInVr(): Promise<number> {
+    const vrEnterTime = await this.getItemOrNull('vrEnterTime');
+    return vrEnterTime != null
+      ? (this._time.getUnixTimeMs() - vrEnterTime) / 1000.
+      : null;
+  }
+
   // Helper functions
   protected makeGlobalKey(localKey: string): string {
     return this._authService.getUserId() + '/' + localKey;

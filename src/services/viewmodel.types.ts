@@ -1,10 +1,6 @@
 import { JsonMember, JsonObject } from 'typedjson';
 
 @JsonObject
-export class GeneralInformation {
-}
-
-@JsonObject
 export class MenuViewModel {
   @JsonMember({isRequired: true})
   public characterName: string;
@@ -12,11 +8,6 @@ export class MenuViewModel {
 
 @JsonObject
 export class ToolbarViewModel {
-  @JsonMember({isRequired: true})
-  public hitPoints: number;
-
-  @JsonMember({isRequired: true})
-  public maxHitPoints: number;
 }
 
 @JsonObject
@@ -32,9 +23,6 @@ export class PassportScreenViewModel {
 
   @JsonMember({isRequired: true})
   public email: string;
-
-  @JsonMember
-  public insurance?: string;
 }
 
 @JsonObject
@@ -219,13 +207,10 @@ export class ApplicationViewModel {
   public timestamp: number;
 
   @JsonMember({isRequired: true})
-  public general: GeneralInformation;
-
-  @JsonMember({isRequired: true})
   public menu: MenuViewModel;
 
-  @JsonMember({isRequired: true})
-  public toolbar: ToolbarViewModel;
+  @JsonMember({isRequired: false})
+  public toolbar?: ToolbarViewModel;
 
   @JsonMember({isRequired: true})
   public passportScreen: PassportScreenViewModel;

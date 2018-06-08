@@ -1,17 +1,10 @@
 import {} from 'jasmine';
 import { TypedJSON } from 'typedjson';
 
-import { ApplicationViewModel, EconomyPageViewModel, GeneralInformation,
+import { ApplicationViewModel, EconomyPageViewModel,
   ListPageViewModel, MenuViewModel, TechnicalInfoPageViewModel } from './viewmodel.types';
 
 describe('ViewModel subtypes parsing from JSON', () => {
-
-  describe('GeneralInformation', () => {
-    it('Parses correct JSON', () => {
-      const generalInfo = TypedJSON.parse('{ }', GeneralInformation);
-      expect(generalInfo).toBeTruthy();
-    });
-  });
 
   describe('MenuViewmodel', () => {
     it('Parses correct JSON', () => {
@@ -35,6 +28,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
       "_id": "vasya",
       "timestamp": 1499970465030,
       "general": {
+        "maxSecondsInVr": 1200
       },
       "menu": {
         "characterName": "Arnold Schwarzenegger"
@@ -266,6 +260,7 @@ describe('ViewModel subtypes parsing from JSON', () => {
       "_id": "vasya",
       "timestamp": 1499970465030,
       "general": {
+        "maxSecondsInVr": 1200
       },
       "menu": {
         "characterName": "Arnold Schwarzenegger"
