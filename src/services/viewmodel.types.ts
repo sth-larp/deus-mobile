@@ -8,6 +8,8 @@ export class MenuViewModel {
 
 @JsonObject
 export class ToolbarViewModel {
+  @JsonMember({isRequired: true})
+  airSecondsLeft: number;
 }
 
 @JsonObject
@@ -209,8 +211,8 @@ export class ApplicationViewModel {
   @JsonMember({isRequired: true})
   public menu: MenuViewModel;
 
-  @JsonMember({isRequired: false})
-  public toolbar?: ToolbarViewModel;
+  @JsonMember({isRequired: true})
+  public toolbar: ToolbarViewModel;
 
   @JsonMember({isRequired: true})
   public passportScreen: PassportScreenViewModel;
