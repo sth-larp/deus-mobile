@@ -40,6 +40,16 @@ export class EconomyService {
 
   public makeTransaction(receiver: string, amount: number, description: string): Promise<{}> {
     // TODO: validate amount?
+    if (receiver == this._authService.getUserId()) {
+      return new Promise((_, reject) => {
+          this._alertCtrl.show({
+            title: 'Ошибка',
+            message: 'Нельзя переводить деньги самому себе.',
+            buttons: [{ text: 'Ок', handler: reject }],
+          });
+        });
+    }
+
     return new Promise((resolve, reject) => {
       const notifyAndReject = (e: string) => {
         this._alertCtrl.show({
