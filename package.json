@@ -32,6 +32,7 @@
         "@types/pouchdb": "5.4.28",
         "basic-authorization-header": "^0.2.7",
         "cordova-android": "7.1.0",
+        "cordova-android-support-gradle-release": "^1.4.4",
         "cordova-browser": "5.0.3",
         "cordova-custom-config": "^4.0.2",
         "cordova-ios": "4.5.4",
@@ -42,8 +43,9 @@
         "cordova-plugin-device": "^1.1.7",
         "cordova-plugin-nativestorage": "^2.3.1",
         "cordova-plugin-splashscreen": "^4.1.0",
-        "cordova-plugin-statusbar": "^2.4.1",
+        "cordova-plugin-statusbar": "^2.4.2",
         "cordova-plugin-whitelist": "^1.3.3",
+        "cordova-support-google-services": "^1.1.0",
         "deus-qr-lib": "git+https://github.com/sth-larp/deus-qr-lib.git",
         "ionic-angular": "3.0.1",
         "ionic-native": "2.9.0",
@@ -51,8 +53,9 @@
         "ionicons": "3.0.0",
         "ng2-validation": "^4.2.0",
         "os-name": "^2.0.1",
-        "phonegap-plugin-barcodescanner": "^7.1.0",
-        "phonegap-plugin-push": "^2.2.2",
+        "phonegap-plugin-barcodescanner": "^7.1.2",
+        "phonegap-plugin-multidex": "^1.0.0",
+        "phonegap-plugin-push": "^2.2.3",
         "pouchdb": "6.2.0",
         "proxy-middleware": "^0.15.0",
         "qrcode-generator-ts": "0.0.4",
@@ -115,7 +118,10 @@
                 "FCM_VERSION": "11.6.2",
                 "SENDER_ID": "786784916655"
             },
-            "cordova-plugin-brightness": {}
+            "cordova-plugin-brightness": {},
+            "cordova-android-support-gradle-release": {
+                "ANDROID_SUPPORT_VERSION": "27.+"
+            }
         },
         "platforms": [
             "browser",
