@@ -22,7 +22,7 @@ export const GlobalConfig = {
   fetchTimeFromServerEveryMs: 60000,
 
   passportQrLifespan: 60000, // 1 min
-  transactionQrLifespan: 300000, // 5 min
+  transactionQrLifespan: 86400000, // 5 days
 
   economyGetDataUrl: baseEconomyUrl + '/economy/',
   economyTransferMoneyUrl: baseEconomyUrl + '/economy/transfer',
