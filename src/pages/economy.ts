@@ -38,13 +38,15 @@ export class EconomyPage {
     this.sendForm = this._formBuilder.group({
       receiverId: ['', Validators.required],
       amount: ['', Validators.compose([Validators.required, CustomValidators.digits,
-        CustomValidators.gt(0), lessThanBalanceValidator])],
+      CustomValidators.gt(0), lessThanBalanceValidator])],
+      description: [''],
     });
 
     this.receiveForm = this._formBuilder.group({
       amount: ['', Validators.compose([Validators.required, CustomValidators.digits,
-        CustomValidators.gt(0),
-        CustomValidators.lt(1000000000000000000000000)])],
+      CustomValidators.gt(0),
+      CustomValidators.lt(1000000000000000000000000)])],
+      description: [''],
     });
 
     this.refreshData();
@@ -72,7 +74,8 @@ export class EconomyPage {
   public sendMoney() {
     return this._economyService.makeTransaction(
       this.sendForm.value.receiverId,
-      Number(this.sendForm.value.amount), '')
+      Number(this.sendForm.value.amount),
+      this.sendForm.value.description)
       .then(() => {
         this.refreshData();
         this.sendForm.reset();
@@ -87,6 +90,7 @@ export class EconomyPage {
       value: {
         amount: this.receiveForm.value.amount,
         receiverAccount: this._authService.getUserId(),
+        description: this.receiveForm.value.description,
       },
     });
   }

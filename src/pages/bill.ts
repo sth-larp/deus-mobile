@@ -9,6 +9,7 @@ import { MonotonicTimeService } from '../services/monotonic-time.service';
 export class BillPageData {
   public amount: number;
   public receiverAccount: string;
+  public description: string;
 }
 
 @Component({
@@ -27,7 +28,7 @@ export class BillPage {
       type: QrType.Bill, kind: 0,
       // TODO: add helper for expiring QR generation
       validUntil: (_clock.getUnixTimeMs() + GlobalConfig.transactionQrLifespan) / 1000,
-      payload: `${this.billPageData.receiverAccount},${this.billPageData.amount},`,
+      payload: `${this.billPageData.receiverAccount},${this.billPageData.amount},${this.billPageData.description}`,
     });
   }
 

@@ -50,6 +50,10 @@
             <ion-label fixed>Сумма</ion-label>
             <ion-input type="number" formControlName="amount" placeholder="сумма перевода">></ion-input>
           </ion-item>
+          <ion-item no-padding>
+            <ion-label fixed>Описание</ion-label>
+            <ion-input type="text" formControlName="description" placeholder="описание (опционально)">></ion-input>
+          </ion-item>
           <button class="submitButton" ion-button type="submit" [disabled]="!sendForm.valid">Перевести</button>
         </form>
       </div>
@@ -60,6 +64,10 @@
           <ion-item no-padding>
             <ion-label fixed>Сумма</ion-label>
             <ion-input type="number" formControlName="amount" placeholder="сумма счета"></ion-input>
+          </ion-item>
+          <ion-item no-padding>
+            <ion-label fixed>Описание</ion-label>
+            <ion-input type="text" formControlName="description" placeholder="описание (опционально)">></ion-input>
           </ion-item>
           <button class="submitButton" ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
         </form>
