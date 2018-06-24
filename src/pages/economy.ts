@@ -39,7 +39,7 @@ export class EconomyPage {
       receiverId: ['', Validators.required],
       amount: ['', Validators.compose([Validators.required, CustomValidators.digits,
       CustomValidators.gt(0), lessThanBalanceValidator])],
-      description: [''],
+      description: [],
     });
 
     this.receiveForm = this._formBuilder.group({
@@ -72,10 +72,13 @@ export class EconomyPage {
   }
 
   public sendMoney() {
+    const description =
+      (this.sendForm.value.description != null && this.sendForm.value.description != undefined)
+      ? this.sendForm.value.description : '';
     return this._economyService.makeTransaction(
       this.sendForm.value.receiverId,
       Number(this.sendForm.value.amount),
-      this.sendForm.value.description)
+      description)
       .then(() => {
         this.refreshData();
         this.sendForm.reset();
