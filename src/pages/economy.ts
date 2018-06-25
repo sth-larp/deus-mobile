@@ -46,7 +46,7 @@ export class EconomyPage {
       amount: ['', Validators.compose([Validators.required, CustomValidators.digits,
       CustomValidators.gt(0),
       CustomValidators.lt(1000000000000000000000000)])],
-      description: [''],
+      description: ['', Validators.maxLength(40)],
     });
 
     this.refreshData();

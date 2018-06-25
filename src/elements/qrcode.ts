@@ -13,10 +13,23 @@ export class QrCode {
 
   public ngOnInit() {
     const qr = new QRCode();
-    qr.setTypeNumber(3);
-    qr.setErrorCorrectLevel(ErrorCorrectLevel.M);
-    qr.addData(this.qrContent);
-    qr.make();
+    // Lazy man qrTypeNumber (aka version) choice:
+    // Try, if failed, increase and retry.
+    // TODO(aeremin) Switch to better QR generation library (one providing auto-choice of that parameter).
+    for (let qrTypeNumber = 3; qrTypeNumber < 40; ++qrTypeNumber) {
+      try {
+        qr.setTypeNumber(qrTypeNumber);
+        qr.setErrorCorrectLevel(ErrorCorrectLevel.M);
+        qr.clearData();
+        qr.addData(this.qrContent);
+        qr.make();
+        break;
+      } catch (e) {
+        if (e && typeof e == 'string' && e.includes('code length overflow'))
+          continue;
+        throw e;
+      }
+    }
 
     const ctx: CanvasRenderingContext2D =
       this._canvasRef.nativeElement.getContext('2d');
