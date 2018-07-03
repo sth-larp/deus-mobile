@@ -1,11 +1,11 @@
 // tslint:disable-next-line:variable-name
 
-const baseAliceUrl = 'https://api.magellan2018.aerem.in/';
+const baseAliceUrl = 'https://api.magellan2018.aerem.in';
 const baseEconomyUrl = baseAliceUrl;
 
 export const GlobalConfig = {
-  getViewmodelBaseUrl: baseAliceUrl + 'viewmodel',
-  sendEventsBaseUrl: baseAliceUrl + 'events',
+  getViewmodelBaseUrl: baseAliceUrl + '/viewmodel',
+  sendEventsBaseUrl: baseAliceUrl + '/events',
 
   sendEventsEveryMs: 60 * 1000,
   recalculateVrTimerEveryMs: 500,
@@ -18,7 +18,7 @@ export const GlobalConfig = {
 
   remoteLoggingDbUrl: 'no-logging-in-prod',
 
-  timeServerUrl: baseAliceUrl + 'time',
+  timeServerUrl: baseAliceUrl + '/time',
   fetchTimeFromServerEveryMs: 60000,
 
   passportQrLifespan: 60000, // 1 min
