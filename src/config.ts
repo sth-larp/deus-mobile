@@ -1,7 +1,7 @@
 // tslint:disable-next-line:variable-name
 
-const baseAliceUrl = "http://magellan2018.aerem.in:8157/"
-const baseEconomyUrl = "http://magellan2018.aerem.in:8157"
+const baseAliceUrl = 'https://api.magellan2018.aerem.in/';
+const baseEconomyUrl = baseAliceUrl;
 
 export const GlobalConfig = {
   getViewmodelBaseUrl: baseAliceUrl + 'viewmodel',
