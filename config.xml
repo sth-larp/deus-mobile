@@ -1,5 +1,5 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="ru.magellan2018.alice" ios-CFBundleVersion="1.3.3" version="1.3.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+<widget id="ru.magellan2018.alice.app" ios-CFBundleVersion="1.3.3" version="1.3.3" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
     <name>Magellan LARP 2018</name>
     <description>Magellan 2018 LARP Mobile Application.</description>
     <author email="info@magellan2018.ru" href="http://magellan2018.ru/">Saint-Petersburg Format</author>

@@ -1,27 +1,27 @@
 {
   "project_info": {
-    "project_number": "336009309109",
-    "firebase_url": "https://magellan-2018-larp.firebaseio.com",
-    "project_id": "magellan-2018-larp",
-    "storage_bucket": "magellan-2018-larp.appspot.com"
+    "project_number": "1007383280876",
+    "firebase_url": "https://magellan-2018-larp-74d4f.firebaseio.com",
+    "project_id": "magellan-2018-larp-74d4f",
+    "storage_bucket": "magellan-2018-larp-74d4f.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:336009309109:android:c3fdc07c4f9f9296",
+        "mobilesdk_app_id": "1:1007383280876:android:d5d68393d833c30b",
         "android_client_info": {
-          "package_name": "ru.magellan2018.alice"
+          "package_name": "ru.magellan2018.alice.app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "336009309109-jli3cfino3v64kmbno9nrk313oukvpfv.apps.googleusercontent.com",
+          "client_id": "1007383280876-d7vp43j8joi831bno8dl2mq2kt5uc8ki.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyCS-tvCLlHbjq3nksTGuZPCbI91rST-re8"
+          "current_key": "AIzaSyDvbzLjYqkG3EgWVofeezdc4Z7_nJ_rhPs"
         }
       ],
       "services": {
