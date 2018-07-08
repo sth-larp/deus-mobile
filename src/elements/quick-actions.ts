@@ -1,10 +1,10 @@
 import { Component } from '@angular/core';
 import { Keyboard } from '@ionic-native/keyboard';
 import { NavController } from 'ionic-angular';
-import { Subscription } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 
 import { Colors, GlobalConfig } from '../config';
-import { EnhancedActionSheetController, EnhancedAlertController, EnhancedModalController } from '../elements/enhanced-controllers';
+import { EnhancedAlertController, EnhancedModalController } from '../elements/enhanced-controllers';
 import { ListPage } from '../pages/list';
 import { PassportPage } from '../pages/passport';
 import { AuthService } from '../services/auth.service';
@@ -12,10 +12,11 @@ import { DataService } from '../services/data.service';
 import { LocalDataService } from '../services/local-data.service';
 import { LoggingService } from '../services/logging.service';
 import { ILoginListener } from '../services/login-listener';
+import { MonotonicTimeService } from '../services/monotonic-time.service';
 import { QrCodeScanService } from '../services/qrcode-scan.service';
 import { UnreadService } from '../services/unread.service';
 import { ApplicationViewModel } from '../services/viewmodel.types';
-import { formatInteger, formatTime2, formatTime3} from '../utils/string-utils';
+import { formatTime2, formatTime3} from '../utils/string-utils';
 
 @Component({
   selector: 'quick-actions',
@@ -23,10 +24,6 @@ import { formatInteger, formatTime2, formatTime3} from '../utils/string-utils';
 })
 export class QuickActions implements ILoginListener {
   public hidden: boolean = false;
-  public hp: number = null;
-  public hpIcon: string = null;
-  public hpText: string = null;
-  public hpTextColor: string = null;
   public maxSecondsInVr: number = null;
   public vrIcon: string = null;
   public vrTimer: string = null;
@@ -34,7 +31,7 @@ export class QuickActions implements ILoginListener {
   public notificationIcon: string = null;
   public notificationText: string = null;
 
-  private _hpSubscription: Subscription = null;
+  private _dataSubscription: Subscription = null;
   private _unreadSubscription: Subscription = null;
   private _notificationDestination: string = null;
 
@@ -45,9 +42,9 @@ export class QuickActions implements ILoginListener {
               private _qrCodeScanService: QrCodeScanService,
               private _dataService: DataService,
               private _localDataService: LocalDataService,
+              private _timeService: MonotonicTimeService,
               private _unreadService: UnreadService,
               private _authService: AuthService,
-              private _actionSheetController: EnhancedActionSheetController,
               private _alertController: EnhancedAlertController,
               private _navController: NavController,
               private _logging: LoggingService,
@@ -67,12 +64,9 @@ export class QuickActions implements ILoginListener {
   }
 
   public onSuccessfulLogin(_id: string) {
-    this._hpSubscription = this._dataService.getData().subscribe(
-      (json) => {
-        this.updateVrStatus(json);
-      },
-      (error) => this._logging.error('JSON parsing error: ' + JSON.stringify(error)),
-    );
+    Observable.combineLatest(this._dataService.getData(), Observable.interval(500))
+      .subscribe((v) => this.updateSpaceSuitStatus(v[0]));
+
     this._unreadSubscription = this._unreadService.getUnreadStats().subscribe(
       (unreadStart) => {
         const currentPageData = this._navController.getActive().data;
@@ -83,7 +77,7 @@ export class QuickActions implements ILoginListener {
           if (currentPageData.id == 'page:messages')
             unreadStart.messages = 0;
         } else {
-          console.log("Not an instance");
+          console.log('Not an instance');
         }
         if (unreadStart.messages > 0) {
           this.notificationIcon = 'notify-messages.svg';
@@ -100,13 +94,12 @@ export class QuickActions implements ILoginListener {
         }
       },
     );
-    setInterval(() => { this.updateVrStatus(null); }, GlobalConfig.recalculateVrTimerEveryMs);
   }
 
   public onLogout() {
-    if (this._hpSubscription) {
-      this._hpSubscription.unsubscribe();
-      this._hpSubscription = null;
+    if (this._dataSubscription) {
+      this._dataSubscription.unsubscribe();
+      this._dataSubscription = null;
     }
     if (this._unreadSubscription) {
       this._unreadSubscription.unsubscribe();
@@ -120,11 +113,12 @@ export class QuickActions implements ILoginListener {
 
   public async onId() {
     const passportPageScreenData = (await this._dataService.getCurrentData()).passportScreen;
-    const accessModal = this._modalController.show(PassportPage,
-      { value: passportPageScreenData });
+    this._modalController.show(PassportPage, { value: passportPageScreenData });
   }
 
   public async onVr() {
+    if (1 + 1 == 2) return;
+
     const inVr: boolean = await this._localDataService.inVr();
     const buttons = [{
       text: 'Отмена',
@@ -155,36 +149,27 @@ export class QuickActions implements ILoginListener {
   }
 
   // TODO: Add tests
-  private getVrTimerWithColor(secondsLeft: number): string[] {
+  private getOxygenTimerWithColor(secondsLeft: number): string[] {
     if (secondsLeft < 0) {
-      return [formatTime2(secondsLeft, '.'), Colors.red];
-    } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000.)
-      return [formatTime2(secondsLeft, '.'), Colors.yellow];
+      return [formatTime2(secondsLeft, ':'), Colors.red];
+    } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000)
+      return [formatTime2(secondsLeft, ':'), Colors.yellow];
     else
-      return [formatTime2(secondsLeft / 60, ':'), Colors.primary];
+      return [formatTime2(secondsLeft, ':'), Colors.primary];
   }
 
-  // 'json' may be null: means "no change"
-  private async updateVrStatus(json: ApplicationViewModel) {
-    if (json != null)
-      this.maxSecondsInVr = 1000;
-
-    let maxSecondsInVr = this.maxSecondsInVr;
-    if (maxSecondsInVr % 60 == 0)
-      maxSecondsInVr++;  // Let the user see initial time first
-    this.vrIcon = (await this._localDataService.inVr())
+  private updateSpaceSuitStatus(json: ApplicationViewModel) {
+    this.vrIcon = json.toolbar.spaceSuitOn
       ? 'virtual-reality-on.svg'
       : 'virtual-reality-off.svg';
-    const secondsInVr = await this._localDataService.secondsInVr();
+    const oxygenSecondsLeft = (json.toolbar.oxygenCapacity +
+      (json.toolbar.timestampWhenPutOn - this._timeService.getUnixTimeMs())) / 1000;
+
     [this.vrTimer, this.vrTimerColor] =
-      (secondsInVr == null)
-        ? ['', null]
-        : this.getVrTimerWithColor(maxSecondsInVr - secondsInVr);
+      (json.toolbar.spaceSuitOn) ? this.getOxygenTimerWithColor(oxygenSecondsLeft) : ['', null];
   }
 
   private async doToggleVr() {
     this._dataService.pushEvent(await this._localDataService.inVr() ? 'exitVr' : 'enterVr', {});
-    await this._localDataService.toggleVr();
-    await this.updateVrStatus(null);
   }
 }

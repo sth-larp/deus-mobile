@@ -9,7 +9,13 @@ export class MenuViewModel {
 @JsonObject
 export class ToolbarViewModel {
   @JsonMember({isRequired: true})
-  airSecondsLeft: number;
+  public spaceSuitOn: boolean;
+
+  @JsonMember({isRequired: true})
+  public oxygenCapacity: number;
+
+  @JsonMember({isRequired: true})
+  public timestampWhenPutOn: number;
 }
 
 @JsonObject
