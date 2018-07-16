@@ -151,11 +151,14 @@ export class QuickActions implements ILoginListener {
   // TODO: Add tests
   private getOxygenTimerWithColor(secondsLeft: number): string[] {
     if (secondsLeft < 0) {
+      return ['', null];
+    } else if (secondsLeft < GlobalConfig.vrTimerRedThresholdMs / 1000) {
       return [formatTime2(secondsLeft, ':'), Colors.red];
-    } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000)
+    } else if (secondsLeft < GlobalConfig.vrTimerYellowThresholdMs / 1000) {
       return [formatTime2(secondsLeft, ':'), Colors.yellow];
-    else
+    } else {
       return [formatTime2(secondsLeft, ':'), Colors.primary];
+    }
   }
 
   private updateSpaceSuitStatus(json: ApplicationViewModel) {
