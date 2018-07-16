@@ -29,7 +29,7 @@ export class EconomyService {
             entry.amount = -entry.amount;
           }
           return {
-            text: `${entry.amount} кр. (счет ${entry.sender})`,
+            text: `${entry.amount} кал (счет ${entry.sender})`,
             unixSecondsValue: entry.timestamp / 1000,
             subtext: entry.description,
           };
@@ -67,7 +67,7 @@ export class EconomyService {
         });
       };
 
-      let message = `Вы хотите перевести <b>${amount} кр.</b> на счет <b>${receiver}</b>?`;
+      let message = `Вы хотите перевести <b>${amount} кал</b> на счет <b>${receiver}</b>?`;
       if (description.length)
         message = message + ` Назначение платежа: <b>${description}</b>.`;
 
