@@ -25,7 +25,7 @@ before_install:
 - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then ./scripts/install-jdk.sh; fi
 - if [[ "$TRAVIS_OS_NAME" != "osx" ]]; then nvm install v8.10.0; nvm use v8.10.0; fi
 - node -v
-- npm install -g npm
+- npm install -g npm@5.8.0
 - npm -v
 - npm install -g typescript@2.6.2
 - tsc -v
