@@ -14,9 +14,7 @@ import { ListItemData, PassportScreenViewModel } from '../services/viewmodel.typ
 export class PassportPage {
   public id: ListItemData;
   public fullName: ListItemData;
-  public email: ListItemData;
   public corporation: ListItemData;
-  public insurance: ListItemData;
 
   public qrContent = '';
 
@@ -26,7 +24,6 @@ export class PassportPage {
     const passportScreenData = navParams.data.value as PassportScreenViewModel;
     this.id = {text: 'ID', value: passportScreenData.id };
     this.fullName = {text: 'Имя', value: passportScreenData.fullName };
-    this.email = {text: 'e-mail', value: passportScreenData.email };
     this.corporation = {text: 'Работа', value: passportScreenData.corporation || '' };
 
     this.qrContent = encode({

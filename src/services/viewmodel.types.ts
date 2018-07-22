@@ -28,9 +28,6 @@ export class PassportScreenViewModel {
 
   @JsonMember
   public corporation?: string;
-
-  @JsonMember({isRequired: true})
-  public email: string;
 }
 
 @JsonObject
