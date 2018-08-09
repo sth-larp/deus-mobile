@@ -72,6 +72,21 @@
           <button class="submitButton" ion-button type="submit" [disabled]="!receiveForm.valid">Выставить счет</button>
         </form>
       </div>
+
+      <div padding ng-if="isTop">
+        <div class="sectionHeader">Установить премию</div>
+        <form [formGroup]="setBonusForm" (ngSubmit)="setBonus()">
+          <ion-item no-padding>
+            <ion-label fixed>Получатель</ion-label>
+            <ion-input type="text" formControlName="receiverId" placeholder="номер счета">></ion-input>
+          </ion-item>
+          <ion-item no-padding>
+            <ion-label>Премия будет установлена согласно галочке</ion-label>
+            <ion-checkbox formControlName="setBonus"></ion-checkbox>
+          </ion-item>
+          <button class="submitButton" ion-button type="submit" [disabled]="!setBonusForm.valid">Установить премию</button>
+        </form>
+      </div>
     </div>
     <div *ngSwitchCase="'history'">
       <ion-list>
