@@ -9,6 +9,7 @@ import { EconomyService } from '../services/economy.service';
 import { ListItemData, EconomyPageViewModel } from '../services/viewmodel.types';
 import { BillPage } from './bill';
 import { EnhancedModalController } from '../elements/enhanced-controllers';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'page-economy',
@@ -22,23 +23,25 @@ export class EconomyPage {
 
   public setBonusForm: FormGroup;
 
-  public isTop: boolean = true;
+  public isTop: boolean = false;
 
   public history: ListItemData[];
 
   public tab: string = 'main';
 
-  constructor(
-              navParams: NavParams,
-              private _http: Http,
+  constructor(private _http: Http,
+              private _dataService: DataService,
               private _authService: AuthService,
               private _modalController: EnhancedModalController,
               private _toastCtrl: ToastController,
               private _formBuilder: FormBuilder,
               private _economyService: EconomyService) {
-
-    const viewmodel = navParams.data.value as EconomyPageViewModel;
-    this.isTop = viewmodel.isTopManager === true;
+    // FIXME: Kill this hack with fire
+    this._dataService.getData().subscribe({
+      next: (viewmodel) =>
+        this.isTop =
+          (viewmodel.pages.find((page) => page.viewId == 'page:economy') as EconomyPageViewModel).isTopManager == true,
+    });
 
     const lessThanBalanceValidator: ValidatorFn = (control: AbstractControl): ValidationErrors => {
       return Number(control.value) <= this.balance ? null : { lessThenBalance: false };
