@@ -28,6 +28,8 @@ export const GlobalConfig = {
   economyGetDataUrl: baseEconomyUrl + '/economy/',
   economyTransferMoneyUrl: baseEconomyUrl + '/economy/transfer',
 
+  economySetBonusUrl: baseEconomyUrl + '/economy/set_bonus',
+
   useProductionAPNSChannel: false,
 };
 

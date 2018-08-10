@@ -1,14 +1,15 @@
 import { Component } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ValidationErrors, ValidatorFn, Validators } from '@angular/forms';
 import { Http } from '@angular/http';
-import { Refresher, ToastController } from 'ionic-angular';
+import { Refresher, ToastController, NavParams } from 'ionic-angular';
 import { CustomValidators } from 'ng2-validation';
 
 import { AuthService } from '../services/auth.service';
 import { EconomyService } from '../services/economy.service';
-import { ListItemData } from '../services/viewmodel.types';
+import { ListItemData, EconomyPageViewModel } from '../services/viewmodel.types';
 import { BillPage } from './bill';
 import { EnhancedModalController } from '../elements/enhanced-controllers';
+import { DataService } from '../services/data.service';
 
 @Component({
   selector: 'page-economy',
@@ -20,16 +21,27 @@ export class EconomyPage {
   public sendForm: FormGroup;
   public receiveForm: FormGroup;
 
+  public setBonusForm: FormGroup;
+
+  public isTop: boolean = false;
+
   public history: ListItemData[];
 
   public tab: string = 'main';
 
   constructor(private _http: Http,
+              private _dataService: DataService,
               private _authService: AuthService,
               private _modalController: EnhancedModalController,
               private _toastCtrl: ToastController,
               private _formBuilder: FormBuilder,
               private _economyService: EconomyService) {
+    // FIXME: Kill this hack with fire
+    this._dataService.getData().subscribe({
+      next: (viewmodel) =>
+        this.isTop =
+          (viewmodel.pages.find((page) => page.viewId == 'page:economy') as EconomyPageViewModel).isTopManager == true,
+    });
 
     const lessThanBalanceValidator: ValidatorFn = (control: AbstractControl): ValidationErrors => {
       return Number(control.value) <= this.balance ? null : { lessThenBalance: false };
@@ -47,6 +59,11 @@ export class EconomyPage {
       CustomValidators.gt(0),
       CustomValidators.lt(1000000000000000000000000)])],
       description: ['', Validators.maxLength(40)],
+    });
+
+    this.setBonusForm = this._formBuilder.group({
+      receiverId: ['', Validators.required],
+      setBonus: [],
     });
 
     this.refreshData();
@@ -82,6 +99,19 @@ export class EconomyPage {
       .then(() => {
         this.refreshData();
         this.sendForm.reset();
+      })
+      .catch(() => {
+        this.refreshData();
+      });
+  }
+
+  public setBonus() {
+    return this._economyService.setBonus(
+      this.setBonusForm.value.receiverId,
+      Boolean(this.setBonusForm.value.setBonus))
+      .then(() => {
+        this.refreshData();
+        this.setBonusForm.reset();
       })
       .catch(() => {
         this.refreshData();

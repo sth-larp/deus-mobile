@@ -197,6 +197,8 @@ export class ListPageViewModel extends PageViewModel {
 
 @JsonObject
 export class EconomyPageViewModel extends PageViewModel {
+  @JsonMember({isRequired: false})
+  public isTopManager?: boolean;
 }
 
 @JsonObject

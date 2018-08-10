@@ -98,6 +98,55 @@ export class EconomyService {
     });
   }
 
+  public setBonus(receiver: string, setBonus: boolean): Promise<{}> {
+    return new Promise((resolve, reject) => {
+      const notifyAndReject = (e: string) => {
+        this._alertCtrl.show({
+          title: 'Ошибка',
+          message: e,
+          buttons: [{ text: 'Ок', handler: reject }],
+        });
+      };
+
+      const notifySuccess = () => {
+        this._alertCtrl.show({
+          title: 'Успешно',
+          message: 'Премия установлена!',
+          buttons: [{ text: 'Ок', handler: resolve }],
+        });
+      };
+
+      const action = setBonus ? 'начать выплачивать' : 'прекратить выплачивать';
+
+      const message = `Вы хотите <b>${action}</b> премию на счет <b>${receiver}</b>?`;
+
+      this._alertCtrl.show({
+        title: 'Подтверждение премии',
+        message,
+        buttons: [
+          {
+            text: 'Отмена',
+            role: 'cancel',
+          },
+          {
+            text: 'Установить',
+            handler: async () => {
+              try {
+                await this._setBonus(receiver, setBonus);
+                notifySuccess();
+              } catch (e) {
+                if (e && e.json && e.json() && e.json().message)
+                  notifyAndReject(e.json().message);
+                else
+                  notifyAndReject('Неизвестная ошибка сервера');
+              }
+            },
+          },
+        ],
+      });
+    });
+  }
+
   private _makeTransaction(receiver: string, amount: number, description: string) {
     const requestBody = JSON.stringify({
       sender: this._authService.getUserId(),
@@ -107,6 +156,16 @@ export class EconomyService {
     });
 
     return this._http.post(GlobalConfig.economyTransferMoneyUrl, requestBody,
+      this._authService.getRequestOptionsWithSavedCredentials()).toPromise();
+  }
+
+  private _setBonus(receiver: string, setBonus: boolean) {
+    const requestBody = JSON.stringify({
+      userId: receiver,
+      bonusSet: setBonus,
+    });
+
+    return this._http.post(GlobalConfig.economySetBonusUrl, requestBody,
       this._authService.getRequestOptionsWithSavedCredentials()).toPromise();
   }
 }
